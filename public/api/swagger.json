@@ -1,0 +1,96 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Bang Sini Bang API",
+        "description": "Service application without payment it's only order driver or food from a seller/tukang jualan not a shop",
+        "contact": {
+            "name": "Devina",
+            "email": "shidei.chis@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "basePath": "",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/buyers": {
+            "get": {
+                "tags": [
+                    "buyer"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "We send 'get' http request with header contain authorization token",
+                "operationId": "index",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success fetch all data."
+                    },
+                    "401": {
+                        "description": "Unauthorized action."
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Error": {
+            "required": [
+                "message",
+                "code"
+            ],
+            "properties": {
+                "message": {
+                    "description": "Class ApiController",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "Class ApiController",
+                    "type": "integer"
+                }
+            }
+        },
+        "Success for single data": {
+            "required": [
+                "data",
+                "code"
+            ],
+            "properties": {
+                "data": {
+                    "description": "Class ApiController",
+                    "type": "object"
+                },
+                "code": {
+                    "description": "Class ApiController",
+                    "type": "integer"
+                }
+            }
+        },
+        "Success for multiples data": {
+            "required": [
+                "data",
+                "code"
+            ],
+            "properties": {
+                "data": {
+                    "description": "Class ApiController",
+                    "type": "array"
+                },
+                "code": {
+                    "description": "Class ApiController",
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
