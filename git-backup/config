@@ -1,8 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = false
-	logallrefupdates = true
-[remote "team"]
-	url = git@bitbucket.org:sysprogie/bangsinibang.git
-	fetch = +refs/heads/*:refs/remotes/team/*

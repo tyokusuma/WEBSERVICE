@@ -101,11 +101,10 @@ class ServiceController extends ApiController
                     'category_id' => 'required|numeric',    
                 ];
         }
-        // comment anything
         $this->validate($request, $rules);
         $data = $request->all();
 
-
+        //create anything
 
         if ($request->has('sim_image')) {
             $data['sim_image'] = $request->sim_image->store('');
