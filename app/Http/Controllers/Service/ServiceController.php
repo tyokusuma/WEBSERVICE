@@ -60,6 +60,21 @@ class ServiceController extends ApiController
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
                 ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['service_code'] = $serviceCode;
+                $data['ktp_image'] = $request->ktp_image->store('');
+                $data['vehicle_image'] = $request->vehicle_image->store('');
+                $data['sim_image'] = null;
+                $data['stnk_image'] = null; 
+                $data['license_platenumber'] = null; 
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['vehicle_type'] = null;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
             case 'abang':
                 $rules = [
@@ -69,17 +84,34 @@ class ServiceController extends ApiController
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
                 ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['service_code'] = $serviceCode;
+                $data['ktp_image'] = $request->ktp_image->store('');
+                $data['vehicle_image'] = $request->vehicle_image->store('');
+                $data['sim_image'] = null;
+                $data['stnk_image'] = null; 
+                $data['license_platenumber'] = null; 
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['vehicle_type'] = null;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
             case 'taksi':
                 $rules = [
                     'main_service_id' => 'required|unique:services',
                     'ktp_image' => 'required|image',
                     'vehicle_image' => 'required|image',
-                    'sim_image' => 'required|image',
-                    'stnk_image' => 'required|image',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',
+                    'sim_image' => 'required|image',
+                    'stnk_image' => 'required|image',
                     'id_driver' => 'required|string',
+                    'license_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+                    'vehicle_type' => 'required|string',
                 ];
                 $armada = Armada::where('id_driver', $request->id_driver)->first();
                 if($armada == null) {
@@ -87,42 +119,46 @@ class ServiceController extends ApiController
                 } else {
                     $request['armada'] = '1';
                 }
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['sim_image'] = $request->sim_image->store('');
+                $data['stnk_image'] = $request->stnk_image->store('');
+                $data['ktp_image'] = $request->ktp_image->store('');
+                $data['vehicle_image'] = $request->vehicle_image->store('');
+                $data['service_code'] = $serviceCode;
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::IN_ARMADA;
+
                 break;
             default:
                 $rules = [
                     'main_service_id' => 'required|unique:services',
                     'ktp_image' => 'required|image',
-                    'sim_image' => 'image|nullable',
-                    'stnk_image' => 'image|nullable',
+                    'sim_image' => 'required|image',
+                    'stnk_image' => 'required|image',
                     'vehicle_image' => 'required|image',
-                    'license_platenumber' => 'regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/||nullable',
-                    'vehicle_type' => 'string|nullable',
+                    'license_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+                    'vehicle_type' => 'required|string',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
                 ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['service_code'] = $serviceCode;
+                $data['ktp_image'] = $request->ktp_image->store('');
+                $data['vehicle_image'] = $request->vehicle_image->store('');
+                $data['sim_image'] = $request->sim_image->store('');
+                $data['stnk_image'] = $request->stnk_image->store('');
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
         }
-        $this->validate($request, $rules);
-        $data = $request->all();
-
-        //create anything
-
-        if ($request->has('sim_image')) {
-            $data['sim_image'] = $request->sim_image->store('');
-        }
-
-        if ($request->has('stnk_image')) {
-            $data['stnk_image'] = $request->stnk_image->store('');
-        }
-
-        $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
-        $data['service_code'] = $serviceCode;
-        $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-        $data['status'] = Service::ACTIVE_SERVICE;
-        $data['available'] = Service::UNAVAILABLE_SERVICE;        
-
-        $data['ktp_image'] = $request->ktp_image->store('');
-        $data['vehicle_image'] = $request->vehicle_image->store('');
-
 
         $service = Service::create($data);
 
@@ -166,68 +202,108 @@ class ServiceController extends ApiController
             $service->main_service_id = $request->main_service_id; 
         }
 
-        if ($request->has('ktp_image') || $request->has('sim_image') || $request->has('stnk_image') || $request->has('vehicle_image') || $request->has('license_platenumber')) {
-            $service['verified_service'] = Service::UNVERIFIED_SERVICE;
-            $service['available'] = Service::UNAVAILABLE_SERVICE;
+        $find = Category::where('id', $request->category_id)->first();
+        switch (strtolower($find->category_type)) {
+            case 'becak':
+                $rules = [
+                    'main_service_id' => 'required|unique:services',
+                    'ktp_image' => 'required|image',
+                    'vehicle_image' => 'required|image',
+                    'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
+                    'category_id' => 'required|numeric',    
+                ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+
+                $data['service_code'] = $serviceCode;
+                $data['sim_image'] = null;
+                $data['stnk_image'] = null; 
+                $data['license_platenumber'] = null; 
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['vehicle_type'] = null;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+                break;
+            case 'abang':
+                $rules = [
+                    'main_service_id' => 'required|unique:services',
+                    'ktp_image' => 'required|image',
+                    'vehicle_image' => 'required|image',
+                    'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
+                    'category_id' => 'required|numeric',    
+                ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['service_code'] = $serviceCode;
+                $data['sim_image'] = null;
+                $data['stnk_image'] = null; 
+                $data['license_platenumber'] = null; 
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['vehicle_type'] = null;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+                break;
+            case 'taksi':
+                $rules = [
+                    'main_service_id' => 'required|unique:services',
+                    'ktp_image' => 'required|image',
+                    'vehicle_image' => 'required|image',
+                    'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
+                    'category_id' => 'required|numeric',
+                    'sim_image' => 'required|image',
+                    'stnk_image' => 'required|image',
+                    'id_driver' => 'required|string',
+                    'license_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+                    'vehicle_type' => 'required|string',
+                ];
+                $armada = Armada::where('id_driver', $request->id_driver)->first();
+                if($armada == null) {
+                    $request['armada'] = '0';
+                } else {
+                    $request['armada'] = '1';
+                }
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['sim_image'] = $request->sim_image->store('');
+                $data['stnk_image'] = $request->stnk_image->store('');
+                $data['service_code'] = $serviceCode;
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::IN_ARMADA;
+
+                break;
+            default:
+                $rules = [
+                    'main_service_id' => 'required|unique:services',
+                    'ktp_image' => 'required|image',
+                    'sim_image' => 'required|image',
+                    'stnk_image' => 'required|image',
+                    'vehicle_image' => 'required|image',
+                    'license_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+                    'vehicle_type' => 'required|string',
+                    'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
+                    'category_id' => 'required|numeric',    
+                ];
+                $this->validate($request, $rules);
+                $data = $request->all();
+                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
+                $data['service_code'] = $serviceCode;
+                $data['sim_image'] = $request->sim_image->store('');
+                $data['stnk_image'] = $request->stnk_image->store('');
+                $data['status'] = Service::ACTIVE_SERVICE;
+                $data['available'] = Service::UNAVAILABLE_SERVICE;
+                $data['armada'] = Service::NOT_IN_ARMADA;
+                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
         }
-
-        if ($request->has('ktp_image')) {
-            $service->ktp_image = $request->ktp_image->store('');
-        }
-
-        if ($request->has('sim_image')) {
-            $service->sim_image = $request->sim_image->store('');
-        }
-
-        if ($request->has('stnk_image')) {
-            $service->stnk_image = $request->stnk_image->store('');
-        }
-
-        if ($request->has('vehicle_image')) {
-            $service->vehicle_image = $request->vehicle_image->store('');
-        }
-
-        if ($request->has('license_platenumber')) {
-            $service->license_platenumber = $request->license_platenumber;
-        }        
-
-        if ($request->has('verified_service')) {
-            $service->verified_service = $request->verified_service;
-        }
-
-        if ($request->has('status')) {
-            $service->status = $request->status;
-        }
-
-        if ($request->has('available')) {
-            $service->available = $request->available;
-        }
-
-        if ($request->has('vehicle_type')) {
-            $service->vehicle_type = $request->vehicle_type;
-        }
-
-        if ($request->has('setting_mode')) {
-            $service->setting_mode = $request->setting_mode;
-        }        
-
-        if ($request->has('category_id')) {
-            $service->category_id = $request->category_id;
-        }
-
-        $rules = [
-            'main_service_id' => 'required|unique:services',
-            'ktp_image' => 'required|image',
-            'sim_image' => 'image',
-            'stnk_image' => 'image',
-            'vehicle_image' => 'required|image',
-            'license_platenumber' => 'regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
-            'vehicle_type' => 'string',
-            'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
-            'category_id' => 'required',      
-        ];
-
-        $this->validate($service, $rules);
 
         $service->save();
 
@@ -236,11 +312,15 @@ class ServiceController extends ApiController
 
     public function index()
     {
-        // $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
-        $servicedetails = Service::all();
+        $servicedetails = MainService::has('service')->with(['service.category'])->get();
+        // $servicedetails = Service::all();
+        // $servicedetails = Category::all()->groupBy('category_type');
 
         // return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
-        return $this->showAll($servicedetails);
+        return response()->json([
+                'data'=> $servicedetails,
+                'count' => $servicedetails->count(),
+            ]);
 
     }
 }

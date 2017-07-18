@@ -219,15 +219,15 @@ class UserWebController extends Controller
         //
     }
 
-    public function verify($token)
-    {
-        $user = User::where('verification_link', $token)->firstOrFail();
+    // public function verify($token)
+    // {
+    //     $user = User::where('verification_link', $token)->firstOrFail();
 
-        $user->verified = User::VERIFIED_USER;
-        $user->verification_link = null;
+    //     $user->verified = User::VERIFIED_USER;
+    //     $user->verification_link = null;
 
-        $user->save();
+    //     $user->save();
 
-        return view('layouts.http_response.verify');
-    }
+    //     return view('layouts.http_response.verify');
+    // }
 }

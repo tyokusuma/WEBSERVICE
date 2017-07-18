@@ -81,7 +81,7 @@ class User extends Authenticatable
     }
 
     public static function generateVerificationPhone() {
-        return str_random(6);
+        return rand(111111, 999999);
     }
 
     public static function generateResetPassword() {

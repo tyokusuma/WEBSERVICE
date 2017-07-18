@@ -23,6 +23,11 @@ class Service extends Model
     const AVAILABLE_SERVICE = '1';
     const UNAVAILABLE_SERVICE = '0';
 
+    const IN_ARMADA = '1';
+    const NOT_IN_ARMADA = '0';
+
+    const NOT_HAVE_ID_DRIVER = '0';
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'main_service_id',

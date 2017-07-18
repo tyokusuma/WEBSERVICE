@@ -20,8 +20,6 @@
         <link href="{{ asset('/bower_components/admin-lte/plugins/select2/select2.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/slideshow.css') }}">
-        <!-- <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/reset.css') }}"> -->
-        <!-- <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/default.css') }}"> -->
 
         <link href="{{ asset('/bower_components/admin-lte/dist/css/style.default.css') }}" rel="stylesheet" type="text/css" />
         

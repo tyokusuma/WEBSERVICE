@@ -22,9 +22,9 @@ class CreateUsersTable extends Migration
             $table->string('email', 255)->unique();
             $table->string('password', 255);
             $table->string('gender', 1); 
-            $table->string('phone');
+            $table->bigInteger('phone')->unsigned();
             $table->string('profile_image', 255);
-            $table->string('verification_link', 255)->nullable(); 
+            $table->integer('verification_link')->unsigned()->nullable(); 
             $table->string('reset_password', 255)->nullable(); 
             $table->string('verified', 1)->default(User::UNVERIFIED_USER);
             $table->string('admin', 1)->default(User::REGULER_USER);

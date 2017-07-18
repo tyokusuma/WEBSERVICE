@@ -11,7 +11,7 @@
 	       	<div class="form-group {{ $errors->has('full_name') ? ' has-error' : '' }}">
               	<label class="col-sm-3 control-label">Full Name <span class="asterisk">*</span></label>
               	<div class="col-sm-7 col-sm-offset-1 form-style">
-	        		<input type="text" name="full_name" class="form-control" placeholder="Full Name" required autofocus/>
+	        		<input type="text" name="full_name" class="form-control" placeholder="Full Name" required/>
 		           	@if ($errors->has('full_name'))
 		            	<span class="help-block">
 		                	<strong>{{ $errors->first('full_name') }}</strong>

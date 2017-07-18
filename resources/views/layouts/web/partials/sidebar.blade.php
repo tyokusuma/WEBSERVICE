@@ -45,11 +45,6 @@
           </ul>
         </li>
 
-        <!-- Favorite menu -->
-        <li class="treeview">
-          <a href="{{ route('view-favorites') }}"><i class="fa fa-heart" aria-hidden="true"></i> <span>Favorite</span></a>
-        </li>
-
         <!-- Transaction menu -->
         <li class="treeview">
           <a href="{{ route('view-transactions') }}"><i class="glyphicon glyphicon-duplicate"></i> <span>Transaction</span></a>
@@ -70,6 +65,32 @@
           <ul class="treeview-menu">
             <li class="treeview"><a href="{{ route('view-create-servicedetails') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new service detail</span></i></a></li>
             <li class="treeview"><a href="{{ route('view-servicedetails') }}"><i class="fa fa-eye" aria-hidden="true"><span>View all services and details</span></i></a></li>
+          </ul>
+        </li>
+
+        <!-- Armada menu -->
+        <li class="treeview">
+          <a href="#"><i class="fa fa-taxi"></i> <span>Armada</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="treeview"><a href="{{ route('view-create-armadas') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new armada</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-armadas') }}"><i class="fa fa-eye" aria-hidden="true"><span>View all armada</span></i></a></li>
+          </ul>
+        </li>
+
+        <!-- Province menu -->
+        <li class="treeview">
+          <a href="#"><i class="fa fa-list-alt"></i> <span>Province</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="treeview"><a href="{{ route('view-create-provinces') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new province</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="fa fa-eye" aria-hidden="true"><span>View provinces</span></i></a></li>
           </ul>
         </li>
 

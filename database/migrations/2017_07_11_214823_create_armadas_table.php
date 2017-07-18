@@ -18,8 +18,8 @@ class CreateArmadasTable extends Migration
             $table->string('company_name');
             $table->string('id_driver');
             $table->string('driver_name');
+            $table->string('vehicle_platenumber');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -5,10 +5,11 @@
 <div class="contentpanel cs_df">
     @include ('flash::message')
 	<div class="row">
-   			<form action="{{ route('create-servicedetails') }}" method="post" role="form" enctype="multipart/form-data">
+   			<form action="{{ route('create-servicedetails') }}" method="post" role="form" enctype="multipart/form-data" id="live_form">
 	       	{{ csrf_field() }}
 	       	
             <div class="form-group {{ $errors->has('main_service_id') ? ' has-error' : '' }}">
+	            <input type="text" class="hidden" id="setting_mode" name="setting_mode" value="1">	
                 <label class="col-sm-3 control-label">Service Name <span class="asterisk">*</span></label>
                 <div class="col-sm-6 col-sm-offset-1 form-style">
                   	<select id="main_service_id" name="main_service_id" class="form-control chosen-select mySelect" required>
@@ -27,7 +28,22 @@
 
                 </div>	           	
             </div>
-
+            <div class="form-group">
+	    		<label class="col-sm-3 control-label">Choose category service <span class="asterisk">*</span></label>
+	    		<div class="col-sm-7 col-sm-offset-1 form-style funkyradio">
+	    			@foreach($lists as $list)
+	    			<div class="funkyradio-info radio-inline">
+			            <input type="radio" name="category_type" id="category_type{{ $list[0]->category_type }}" value="{{ $list[0]->category_type }}"/>
+			            <label for="category_type{{ $list[0]->category_type }}">{{ $list[0]->category_type }}</label>
+			        </div>
+			        @endforeach
+			    </div>
+			    @if ($errors->has('gender'))
+			 	<span class="help-block">
+			     	<strong>{{ $errors->first('gender') }}</strong>
+			    	</span>
+				@endif
+			</div>
 	       	<div class="form-group {{ $errors->has('ktp_image') ? ' has-error' : '' }}">
                 <label class="col-sm-3 control-label">KTP Photo <span class="asterisk">*</span></label>
                 <div class="col-sm-7 col-sm-offset-1 form-style">
@@ -122,7 +138,7 @@
                   	<select id="category_id" name="category_id" class="form-control chosen-select mySelect1" required>
 
                 	@foreach($categories as $category)
-                     	<option value="{{ $category->id }}">{{ $category->subcategory_type }}</option>
+                     	<option value="{{ $category->id }}">{{ $category->category_type }}<span> {{ $category->subcategory_type }}</span> </option>
 	                @endforeach
 
                   	</select>
@@ -196,5 +212,36 @@
 	    }
 		document.getElementById('vehicle_image_show').value = filename;
 	}
+
+	// to reveal the hidden field based on category_type
+	$(document).ready(function() {
+		var filledIn = false;
+
+		// Input radio 
+		var category = $('input:radio[name=category_type]');
+
+		// Choose with fields to visible
+		var simImage = $('input:text[name=sim_image_show]');
+
+		// When category change, choose which one to open
+		category.change(function(){ 
+			var value=this.value;						
+			all.addClass('hidden'); 
+			
+			if (value == 'Taksi' || value == 'Ojek' || value == 'Bajaj' || value == 'Bentor' || value == 'Bemo'){
+				simImage.removeClass('hidden');
+			}
+			else if (value == 'Abang'){
+				// sim.removeClass('hidden'); //show feedback_ok	
+			}		
+			// else if (value == 'Excellent'){
+			// 	testimonial_parent.removeClass('hidden'); //show testimonial question
+				
+			// 	//if testimonial has already been answered
+			// 	if (testimonial_ok == 'yes'){great.removeClass('hidden');} 
+			// 	else if (testimonial_ok == 'no'){thanks_anyway.removeClass('hidden');}
+			// }
+		});	
+	});
 </script>
 @endsection

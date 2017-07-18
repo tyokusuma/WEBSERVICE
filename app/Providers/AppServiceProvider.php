@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         User::created(function($user) {
-           Mail::to($user->email)->send(new UserCreated($user));
+           // Mail::to($user->email)->send(new UserCreated($user));
            $data['user_id'] = $user->id;
            $data['title'] = 'New User';
            $data['content'] = 'A new user with name '.$user->full_name.', and email '.$user->email.' successfully created';

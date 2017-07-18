@@ -2804,10 +2804,10 @@ div.error label.error:before {
 
 /* sign in */
 
-/*.signinpanel {
+.signinpanel {
    width: 780px;
    margin: 10% auto 0 auto;
-}*/
+}
 
 .signinpanel .logopanel {
    float: none;
@@ -2924,15 +2924,6 @@ div.error label.error:before {
 .feat-list p {
    margin-left: 45px;
 }
-
-.signup-footer {
-   border-top: 1px solid #ddd;
-   margin-top: 30px;
-   padding-top: 10px;
-   font-size: 12px;
-   text-align: center;
-}
-
 
 /***** LEFT PANEL COLLAPSE *****/
 /*******************************/
@@ -3772,7 +3763,12 @@ table#datatable tr.error td.table-action-hide a {
    }
    
    .signup-footer {
-      margin-bottom: 10px;
+      border-top: 1px solid #ddd;
+      margin-top: 30px;
+      padding-top: 10px;
+      font-size: 12px;
+      text-align: center;
+      margin-bottom: 20px !important;
    }
    
    .signuppanel .form-control {
@@ -3783,6 +3779,7 @@ table#datatable tr.error td.table-action-hide a {
    .signup-footer .pull-right {
       float: none !important;
       text-align: center;
+      padding-bottom: 2% !important;
    }
    
    .widget-quick-status-post .nav-tabs.nav-justified > li {
@@ -4192,7 +4189,7 @@ table#datatable tr.error td.table-action-hide a {
   border-radius: 3px;
   border: 1px solid #D1D3D4;
   font-weight: normal;
-  padding-right: 5%;
+  padding-right: 10px;
 }
 
 .funkyradio input[type="radio"]:empty,
@@ -4448,6 +4445,7 @@ table#datatable tr.error td.table-action-hide a {
 .primary-font 
 {
    font-weight: 700;
+   color: #473b3b !important;
 }
 
 .img-circle

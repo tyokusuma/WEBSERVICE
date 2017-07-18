@@ -102,7 +102,7 @@ class UserController extends ApiController
             $data['admin_code'] = null;            
         }
 
-        $data['verification_link'] = User::generateVerificationEmail();
+        $data['verification_link'] = User::generateVerificationPhone();
         $data['profile_image'] = $request->profile_image->store('');
         $data['reset_password'] = User::generateResetPassword();
         $user = User::create($data);

@@ -22,7 +22,7 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('users/verify/{token}', 'User\UserWebController@verify')->name('verify');
+// Route::get('users/verify/{token}', 'User\UserWebController@verify')->name('verify');
 Route::get('error-401', function() {
 	return view('layouts.error.master_error');
 })->name('error-401');
@@ -71,12 +71,26 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('inbox-detail/{id}/{user_id}/{full_name}', 'MessageDetail\MessageDetailWebController@getDetail')->name('view-inbox-details');
 		Route::post('inbox-detail/add', 'MessageDetail\MessageDetailWebController@store')->name('create-inbox-detail');
+
 		Route::get('misc/{id}', 'Other\OtherController@create')->name('view-edit-others');
 		Route::patch('misc/{id}', 'Other\OtherController@store')->name('edit-others');
 		
-		// Route::get('services', 'MainService\MainServiceWebController@index')->name('services-only');
-		Route::get('favorites', 'Favorite\FavoriteWebController@index')->name('view-favorites');
+
+		Route::get('armadas', 'Armada\ArmadaWebController@index')->name('view-armadas');
+		Route::get('armadas/add', 'Armada\ArmadaWebController@create')->name('view-create-armadas');
+		Route::post('armadas/add', 'Armada\ArmadaWebController@store')->name('create-armadas');
+		Route::patch('armadas/update/{id}', 'Armada\ArmadaWebController@update')->name('update-armadas');
+		Route::delete('armadas/delete/{id}', 'Armada\ArmadaWebController@destroy')->name('delete-armadas');
+		
+		Route::get('provinces', 'Province\ProvinceController@index')->name('view-provinces');
+		Route::get('provinces/add', 'Province\ProvinceController@create')->name('view-create-provinces');
+		Route::post('provinces/add', 'Province\ProvinceController@store')->name('create-provinces');
+		Route::patch('provinces/update/{id}', 'Province\ProvinceController@update')->name('update-provinces');
+		Route::delete('provinces/delete/{id}', 'Province\ProvinceController@destroy')->name('delete-provinces');
+
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');
 	});
 });
+		// Route::get('favorites', 'Favorite\FavoriteWebController@index')->name('view-favorites');
+		// Route::get('services', 'MainService\MainServiceWebController@index')->name('services-only');

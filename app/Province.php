@@ -11,7 +11,8 @@ class Province extends Model
     
     protected $dates = ['deleted_at'];
     protected $fillable = [
-        'name',
+        'name_province',
+        'name_city',
     ];
 
     protected $hidden = [
@@ -19,4 +20,20 @@ class Province extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function setCompanyNameAttribute($company_name) {
+        $this->attributes['company_name'] = strtolower($company_name);
+    }
+
+    public function getCompanyNameAttribute($company_name) {
+        return ucwords($company_name);
+    }
+
+    public function setIdDriverAttribute($id_driver) {
+        $this->attributes['id_driver'] = strtoupper($subcategory_type);
+    }
+
+    public function getDriverNameAttribute($driver_name) {
+        return ucwords($driver_name);
+    }
 }

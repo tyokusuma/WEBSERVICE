@@ -39,12 +39,13 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'email'=> $faker->unique()->safeEmail,
         'password' => bcrypt('password'),
         'gender' => '0',
-        'phone' => $faker->phoneNumber,
+        'phone' => 81320561331,
         'profile_image' => 'pp.jpeg',
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
-        'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationEmail(),
+        'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
         'reset_password' => $verified == User::VERIFIED_USER ? null : User::generateResetPassword(),
         'admin' => User::REGULER_USER,
+        'invite_friends' => $faker->randomElement([2, 4, 6, 8, 10]),
     ];
 });
 
@@ -89,7 +90,8 @@ $factory->define(MessageDetail::class, function (Faker\Generator $faker) {
 
 $factory->define(Province::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->paragraph($nbSentences = 1),
+        'name_province' => $faker->paragraph($nbSentences = 1),
+        'name_city' => $faker->paragraph($nbSentences = 1),
     ];
 });
 
@@ -128,6 +130,7 @@ $increment = 0;
         'company_name' => 'Blue Bird',
         'id_driver' => 'BB'.$increment,
         'driver_name' => $faker->name,
+        'vehicle_platenumber' => 'B 1234 OK',        
     ];
 });
 
