@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Armada;
+namespace App\Http\Controllers\Province;
 
-use App\Armada;
+use App\City;
 use App\Http\Controllers\Controller;
+use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ArmadaWebController extends Controller
+class ProvinceWebController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,13 @@ class ArmadaWebController extends Controller
      */
     public function index()
     {
-    	$armadas = Armada::paginate(10);
+        $provinces = City::with('province')->get();
 
-        return view('layouts.web.armada.index')->with('armadas', $armadas);
+        $papat = $provinces->sortBy('province.name_province');
+        // return view('layouts.web.province.index')->with('provinces', $provinces);
+        return response()->json([
+                'data' => $papat,
+            ]);
     }
 
     /**
@@ -28,7 +33,7 @@ class ArmadaWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.armada.create');
+        return view('layouts.web.province.create');
     }
 
     /**
@@ -39,23 +44,7 @@ class ArmadaWebController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'company_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'id_driver' => 'required|string',
-            'driver_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'vehicle_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $data = $request->all();
-        $user = Armada::create($data);
-        flash('Your data user created successfully')->success()->important();
-        return redirect()->route('create-armadas');
+        //
     }
 
     /**
@@ -90,10 +79,7 @@ class ArmadaWebController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'id_driver' => 'required|string',
-            'driver_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'vehicle_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+            'name_province' => 'required|regex:/^[a-zA-Z ]+$/',
         ]);
 
         if ($validator->fails()) {
@@ -102,15 +88,12 @@ class ArmadaWebController extends Controller
                 ->withInput();
         }
 
-        $find = Armada::findOrFail($id);
-        $find['company_name'] = $request->company_name;
-        $find['id_driver'] = $request->id_driver;
-        $find['driver_name'] = $request->driver_name;
-        $find['vehicle_platenumber'] = $request->vehicle_platenumber;
+        $find = Province::findOrFail($id);
+        $find['name_province'] = $request->name_province;
         
         $find->save();
         flash('Your data user created successfully')->success()->important();
-        return redirect()->route('view-armadas');
+        return redirect()->route('view-provinces');
     }
 
     /**
@@ -121,11 +104,6 @@ class ArmadaWebController extends Controller
      */
     public function destroy($id)
     {
-        $armada = Armada::findOrFail($id);
-
-        $armada->delete();
-
-        flash('Your data successfully deleted')->success()->important();
-        return redirect()->route('view-armadas');
+        //
     }
 }

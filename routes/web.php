@@ -82,11 +82,11 @@ Route::prefix('adminpanel')->group(function () {
 		Route::patch('armadas/update/{id}', 'Armada\ArmadaWebController@update')->name('update-armadas');
 		Route::delete('armadas/delete/{id}', 'Armada\ArmadaWebController@destroy')->name('delete-armadas');
 		
-		Route::get('provinces', 'Province\ProvinceController@index')->name('view-provinces');
-		Route::get('provinces/add', 'Province\ProvinceController@create')->name('view-create-provinces');
-		Route::post('provinces/add', 'Province\ProvinceController@store')->name('create-provinces');
-		Route::patch('provinces/update/{id}', 'Province\ProvinceController@update')->name('update-provinces');
-		Route::delete('provinces/delete/{id}', 'Province\ProvinceController@destroy')->name('delete-provinces');
+		Route::get('provinces', 'Province\ProvinceWebController@index')->name('view-provinces');
+		Route::get('provinces/add', 'Province\ProvinceWebController@create')->name('view-create-provinces');
+		Route::post('provinces/add', 'Province\ProvinceWebController@store')->name('create-provinces');
+		Route::patch('provinces/update/{id}', 'Province\ProvinceWebController@update')->name('update-provinces');
+		Route::delete('provinces/delete/{id}', 'Province\ProvinceWebController@destroy')->name('delete-provinces');
 
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');

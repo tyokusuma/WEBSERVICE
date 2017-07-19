@@ -5,7 +5,7 @@
 <div class="contentpanel cs_df">
     @include ('flash::message')
 	<div class="row">
-   			<form action="{{ route('create-armadas') }}" method="post" role="form" enctype="multipart/form-data">
+   			<form action="{{ route('create-armadas') }}" method="post" role="form">
 	       	{{ csrf_field() }}
 	       	
 	       	<div class="form-group {{ $errors->has('company_name') ? ' has-error' : '' }}">

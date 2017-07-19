@@ -15,6 +15,7 @@ use App\MessageDetail;
 use App\Province;
 use App\Other;
 use App\Advertisement;
+use App\City;
 // use App\Role;
 
 /*
@@ -91,9 +92,16 @@ $factory->define(MessageDetail::class, function (Faker\Generator $faker) {
 $factory->define(Province::class, function (Faker\Generator $faker) {
     return [
         'name_province' => $faker->paragraph($nbSentences = 1),
-        'name_city' => $faker->paragraph($nbSentences = 1),
     ];
 });
+
+$factory->define(City::class, function (Faker\Generator $faker) {
+    return [
+        'name_city' => $faker->paragraph($nbSentences = 1),
+        'province_id' => $faker->randomElement([1,2,3]),
+    ];
+});
+
 
 $factory->define(Category::class, function (Faker\Generator $faker) {
     return [
