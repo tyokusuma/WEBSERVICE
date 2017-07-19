@@ -83,14 +83,16 @@
 
         <!-- Province menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-list-alt"></i> <span>Province</span>
+          <a href="#"><i class="fa fa-list-alt"></i> <span>Province & City</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li class="treeview"><a href="{{ route('view-create-provinces') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new province</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="fa fa-eye" aria-hidden="true"><span>View provinces</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="ionicons ion-earth" aria-hidden="true"><span>View provinces</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-cities') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new city</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-cities') }}"><i class="fa fa-university" aria-hidden="true"><span>View city</span></i></a></li>
           </ul>
         </li>
 

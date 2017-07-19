@@ -56,7 +56,7 @@
     			$("#edit-5").modal('show');
     		</script>
     	@endif
-		<div class="modal fade" id="edit{{ $servicedetail->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+		<div class="modal fade" id="edit{{ $servicedetail->id }}" role="dialog" aria-labelledby="edit" aria-hidden="true">
 		    <div class="modal-dialog">
 		    	<div class="modal-content">
 					<form action="{{ route('update-servicedetails', ['id' => $servicedetail->id]) }}" id="update{{ $servicedetail->id }}" method="post" role="form" enctype="multipart/form-data">	
