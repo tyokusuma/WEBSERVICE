@@ -17,13 +17,8 @@ class ProvinceWebController extends Controller
      */
     public function index()
     {
-        $provinces = City::with('province')->get();
-
-        $papat = $provinces->sortBy('province.name_province');
-        // return view('layouts.web.province.index')->with('provinces', $provinces);
-        return response()->json([
-                'data' => $papat,
-            ]);
+        $provinces = Province::paginate(10);
+        return view('layouts.web.province.index')->with('provinces', $provinces);
     }
 
     /**
@@ -44,7 +39,20 @@ class ProvinceWebController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $data = $request->all();
+        $province = Province::create($data);
+        flash('Your new province created successfully')->success()->important();
+        return redirect()->route('create-provinces');
     }
 
     /**
@@ -79,7 +87,7 @@ class ProvinceWebController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name_province' => 'required|regex:/^[a-zA-Z ]+$/',
+            'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
         ]);
 
         if ($validator->fails()) {
@@ -92,7 +100,7 @@ class ProvinceWebController extends Controller
         $find['name_province'] = $request->name_province;
         
         $find->save();
-        flash('Your data user created successfully')->success()->important();
+        flash('Your data province updated successfully')->success()->important();
         return redirect()->route('view-provinces');
     }
 
@@ -104,6 +112,10 @@ class ProvinceWebController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $find = Province::findOrFail($id);
+
+        $find->delete();
+        flash('The province data successfully deleted')->success()->important();
+        return redirect()->route('view-provinces');
     }
 }

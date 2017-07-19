@@ -17,7 +17,6 @@ class ServiceWebController extends Controller
 {
     public function generateServiceCode($cat, $sub) {
         $lastService = Service::whereNotNull('service_code')->get()->last();
-        // dd($lastService);
         if ( ! $lastService ) {
             $number = 0;
         } else  {
@@ -39,10 +38,6 @@ class ServiceWebController extends Controller
         $categories = Category::all();
 
         return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
-        // return response()->json([
-        //         'data' => $servicedetails,
-        //     ]);
-
     }
 
     /**
@@ -55,7 +50,6 @@ class ServiceWebController extends Controller
         $users = User::all()->sortBy('full_name');
         $categories = Category::all()->sortBy('subcategory_type');
         $lists = Category::all()->groupBy('category_type');
-        // $datas=array('users' => $users, 'categories' => $categories);
         return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists);
     }
 
@@ -67,7 +61,6 @@ class ServiceWebController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $valid = true;
         if ($request->has('main_service_id')) {
             $findMainService = Service::where('main_service_id', $request->main_service_id)->first();
@@ -392,7 +385,6 @@ class ServiceWebController extends Controller
      */
     public function destroy($id)
     {
-        // Before delete service delete categories first, release the relation, then del service
         $find = Service::findOrFail($id);   
         dd($find);
         $findCategory = Category::where('id', $find->category_id); 
@@ -404,7 +396,6 @@ class ServiceWebController extends Controller
     {
         
         $images = Input::all();
-        // var_dump($images);
         return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle']);
     }
 }
