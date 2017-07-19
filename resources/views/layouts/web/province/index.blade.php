@@ -7,14 +7,12 @@
 	    <thead>
            	<th>No</th>
            	<th>Province Name</th>
-            <th>City Name</th>
         </thead>
     	<tbody>	
     		@foreach($provinces as $province)
 				<tr>
 				    <td>{{ $province->id }}</td>
-				    <td>{{ $province->name_city }}</td>
-				    <td>{{ $province->province->name_province }}</td>
+				    <td>{{ $province->name_province }}</td>
 					<td>
 						<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $province->id }}"><span class="glyphicon glyphicon-pencil"></span></button></p>
 					</td>
@@ -40,20 +38,12 @@
 					      		</div>
 					        	<div class="modal-body">
 					          		<div class="form-group {{ $errors->has('name_province') ? ' has-error' : '' }}">
-						        		<label>Province Name</label>
+						        		<label class="spasi">Province Name</label>
 					        			<input class="form-control" type="text" name="name_province" value="{{ $province->name_province }}">
+
 				        				@if ($errors->has('name_province'))
 				        			 	<span class="help-block">
 				        			     	<strong>{{ $errors->first('name_province') }}</strong>
-				        			    	</span>
-				        				@endif	   
-					        		</div>
-					        		<div class="form-group {{ $errors->has('name_city') ? ' has-error' : '' }}">
-						        		<label>City Name</label>
-					        			<input class="form-control" type="text" name="name_city" value="{{ $province->name_city }}">
-				        				@if ($errors->has('name_city'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('name_city') }}</strong>
 				        			    	</span>
 				        				@endif	   
 					        		</div>
@@ -101,4 +91,10 @@
 	{{ $provinces->links() }}
 
 	@include('layouts.web.partials.footer')
+@endsection
+
+@section('script')
+<script type="text/javascript">
+
+</script>
 @endsection

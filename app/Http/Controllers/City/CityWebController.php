@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Armada;
+namespace App\Http\Controllers\City;
 
-use App\Armada;
+use App\City;
 use App\Http\Controllers\Controller;
+use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class ArmadaWebController extends Controller
+class CityWebController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +17,10 @@ class ArmadaWebController extends Controller
      */
     public function index()
     {
-    	$armadas = Armada::paginate(10);
+        $cities = City::with('province')->paginate(10);
 
-        return view('layouts.web.armada.index')->with('armadas', $armadas);
+        $provinces = Province::all()->sortBy('name_province');
+        return view('layouts.web.city.index')->with('cities', $cities)->with('provinces', $provinces);
     }
 
     /**
@@ -28,7 +30,7 @@ class ArmadaWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.armada.create');
+        return view('layouts.web.city.create');
     }
 
     /**
@@ -40,10 +42,8 @@ class ArmadaWebController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'id_driver' => 'required|string',
-            'driver_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'vehicle_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+            'name_city' => 'required|regex:/^[a-zA-Z. ]+$/',
+            'province_id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -53,9 +53,9 @@ class ArmadaWebController extends Controller
         }
 
         $data = $request->all();
-        $armada = Armada::create($data);
-        flash('Your data armada created successfully')->success()->important();
-        return redirect()->route('create-armadas');
+        $province = City::create($data);
+        flash('Your new city created successfully')->success()->important();
+        return redirect()->route('create-cities');
     }
 
     /**
@@ -90,10 +90,8 @@ class ArmadaWebController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'company_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'id_driver' => 'required|string',
-            'driver_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'vehicle_platenumber' => 'required|regex:/^[a-zA-Z]{1,2}\s[0-9]{1,4}\s[a-zA-Z]{1,3}$/',
+            'name_city' => 'required|regex:/^[a-zA-Z. ]+$/',
+            'province_id' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -102,15 +100,18 @@ class ArmadaWebController extends Controller
                 ->withInput();
         }
 
-        $find = Armada::findOrFail($id);
-        $find['company_name'] = $request->company_name;
-        $find['id_driver'] = $request->id_driver;
-        $find['driver_name'] = $request->driver_name;
-        $find['vehicle_platenumber'] = $request->vehicle_platenumber;
+        $find = City::findOrFail($id);
+        if ($request->has('name_city')) {
+            $find['name_city'] = $request->name_city;
+        }
+
+        if ($request->has('province_id')) {
+            $find['province_id'] = $request->province_id;
+        }
         
         $find->save();
-        flash('Your data armada updated successfully')->success()->important();
-        return redirect()->route('view-armadas');
+        flash('Your data city updated successfully')->success()->important();
+        return redirect()->route('view-cities');
     }
 
     /**
@@ -121,11 +122,6 @@ class ArmadaWebController extends Controller
      */
     public function destroy($id)
     {
-        $armada = Armada::findOrFail($id);
-
-        $armada->delete();
-
-        flash('Your data successfully deleted')->success()->important();
-        return redirect()->route('view-armadas');
+        //
     }
 }

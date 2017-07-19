@@ -88,6 +88,12 @@ Route::prefix('adminpanel')->group(function () {
 		Route::patch('provinces/update/{id}', 'Province\ProvinceWebController@update')->name('update-provinces');
 		Route::delete('provinces/delete/{id}', 'Province\ProvinceWebController@destroy')->name('delete-provinces');
 
+		Route::get('cities', 'City\CityWebController@index')->name('view-cities');
+		Route::get('cities/add', 'City\CityWebController@create')->name('view-create-cities');
+		Route::post('cities/add', 'City\CityWebController@store')->name('create-cities');
+		Route::patch('cities/update/{id}', 'City\CityWebController@update')->name('update-cities');
+		Route::delete('cities/delete/{id}', 'City\CityWebController@destroy')->name('delete-cities');
+
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');
 	});
