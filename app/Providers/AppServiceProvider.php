@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\Sms\SmsController;
 use App\Mail\UserCreated;
 use App\Mail\UserMailChanged;
 use App\Message;
@@ -10,6 +11,7 @@ use App\Notification;
 use App\Service;
 use App\Transaction;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -26,12 +28,17 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         User::created(function($user) {
-           // Mail::to($user->email)->send(new UserCreated($user));
-           $data['user_id'] = $user->id;
-           $data['title'] = 'New User';
-           $data['content'] = 'A new user with name '.$user->full_name.', and email '.$user->email.' successfully created';
-           $data['read'] = Notification::UNREAD_MESSAGE;
-           Notification::create($data);
+            $sms = new SmsController();
+            $phone = $user->phone;
+            $name = $user->full_name;
+            $verification_code = $user->verification_link;
+            $sms->sendVerificationPhone($phone, $name, $verification_code);
+            // Mail::to($user->email)->send(new UserCreated($user));
+            $data['user_id'] = $user->id;
+            $data['title'] = 'New User';
+            $data['content'] = 'A new user with name '.$user->full_name.', and email '.$user->email.' successfully created';
+            $data['read'] = Notification::UNREAD_MESSAGE;
+            Notification::create($data);
         });
 
         User::updated(function($user) {

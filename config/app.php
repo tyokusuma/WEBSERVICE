@@ -172,6 +172,7 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Laracasts\Flash\FlashServiceProvider::class, 
         Collective\Html\HtmlServiceProvider::class,
+        Vinkla\Pusher\PusherServiceProvider::class,
         
         /*
          * Application Service Providers...

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\NotificationEvent;
 use Illuminate\Http\Request;
 
 /*
@@ -66,6 +67,6 @@ Route::resource('messages-details', 'MessageDetail\MessageDetailController', ['o
 // Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
 Route::name('resend')->get('users/{id}/resend', 'User\UserController@resend');
 Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-
-
-
+Route::get('broadcast', function() {
+	event(new NotificationEvent('Broadcasting in Laravel using Pusher!'));
+});
