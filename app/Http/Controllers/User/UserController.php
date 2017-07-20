@@ -6,13 +6,13 @@ use App\Http\Controllers\ApiController;
 use App\Mail\UserCreated;
 use App\Service;
 use App\User;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
  * @resource User
@@ -25,7 +25,7 @@ class UserController extends ApiController
         // Parent::__construct();
         
         // $this->middleware('client.credentials')->only(['index', 'store', 'show', 'update', 'destroy']);
-        $this->middleware('auth:api')->only(['index', 'store', 'show', 'update', 'destroy']);
+        $this->middleware('auth:api')->only(['index', 'show', 'update', 'destroy']);
         
     }
     

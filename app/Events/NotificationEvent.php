@@ -18,11 +18,11 @@ class NotificationEvent implements ShouldBroadcast
 
     public function __construct($text)
     {
-        $this->text = $text;
+        // $this->text = $text;
     }
 
     public function broadcastOn()
     {
-        return ['test-channel'];
+        return new Channel('channelNotification');
     }
 }

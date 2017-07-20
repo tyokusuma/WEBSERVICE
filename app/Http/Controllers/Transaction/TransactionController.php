@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transaction;
 use App\Category;
 use App\Http\Controllers\ApiController;
 use App\MainService;
+use App\Notifications\UserNotification;
 use App\Service;
 use App\Transaction;
 use App\User;
@@ -106,7 +107,8 @@ class TransactionController extends ApiController
         // $data = array_add($data, ['order_code' => $transactionCode]);
         $data['order_code'] = $transactionCode;
         $transaction = Transaction::create($data);
-
+        auth()->user()->notify(new UserNotification);
+        
         return $this->showOne($transaction, 201);
     }
 

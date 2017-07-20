@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\NotificationEvent;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -100,3 +102,11 @@ Route::prefix('adminpanel')->group(function () {
 });
 		// Route::get('favorites', 'Favorite\FavoriteWebController@index')->name('view-favorites');
 		// Route::get('services', 'MainService\MainServiceWebController@index')->name('services-only');
+
+Route::get('/alertBox', function() {
+	return view('eventListener');
+});
+
+Route::get('/broadcast', function() {
+	event(new NotificationEvent('Broadcasting in Laravel using Pusher!'));
+});
