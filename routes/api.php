@@ -29,7 +29,7 @@ use Illuminate\Http\Request;
   // Route::resource('categories', 'Category\CategoryController', ['except' => ['edit', 'create']]);
 
 
-Route::resource('users', 'User\UserController', ['only' => ['store', 'show', 'update']]);
+Route::resource('users', 'User\UserController', ['only' => ['store', 'show', 'update', 'index']]);
 Route::post('users/password/reset/{token}', 'User\UserController@reset');
 
 Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['show', 'index']]);

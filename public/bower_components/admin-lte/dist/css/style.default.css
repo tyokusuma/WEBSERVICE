@@ -3196,7 +3196,6 @@ div.error label.error:before {
 
 
 /* DROPDOWN */
-
 .dropdown-menu-head {
    background: #fff
 }
@@ -4500,4 +4499,9 @@ table#datatable tr.error td.table-action-hide a {
 
 .tarea {
    padding-left: 10px;
+}
+
+/*For dropdown menu notification, doesn't work with firefox*/
+.notif {
+   min-width: 420px !important;
 }

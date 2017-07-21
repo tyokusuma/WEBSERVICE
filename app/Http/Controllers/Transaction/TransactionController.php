@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transaction;
 use App\Category;
 use App\Http\Controllers\ApiController;
 use App\MainService;
+use App\Notifications\AdminNotification;
 use App\Notifications\UserNotification;
 use App\Service;
 use App\Transaction;
@@ -20,7 +21,7 @@ class TransactionController extends ApiController
 {
     public function __construct() {
         Parent::__construct();
-        
+        $this->admin = User::where('admin', User::ADMIN_USER)->get();
         // $this->middleware('client.credentials')->only(['index', 'show', 'update', 'destroy']);
     }
 
@@ -107,8 +108,22 @@ class TransactionController extends ApiController
         // $data = array_add($data, ['order_code' => $transactionCode]);
         $data['order_code'] = $transactionCode;
         $transaction = Transaction::create($data);
-        auth()->user()->notify(new UserNotification);
+
+        // Create notification for service about new order
+        $service = User::where('id', $request->main_service_id)->first();
+        $msgService = 'You have a new order, please confirm it';
+        $service->notify(new UserNotification($msgService));
+
+        // Create notification for buyer about new order
+        $buyer = User::where('id', $request->buyer_id)->first();
+        $msgBuyer = 'Your order is waiting confirmation from service';
+        $buyer->notify(new UserNotification($msgBuyer));
         
+        // Create notification for admin
+        $msgAdmin = 'New transaction created with code '.$data['order_code'];
+        foreach($this->admin as $admin) {
+            $admin->notify(new AdminNotification($msgAdmin));
+        }
         return $this->showOne($transaction, 201);
     }
 

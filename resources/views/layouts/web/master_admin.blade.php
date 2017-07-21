@@ -29,7 +29,7 @@
             <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
         </div>
         <div class="wrapper">
-            
+            <p>{{ $user }}</p>
             @include('layouts.web.partials.header')
             
             <div class="content-wrapper">

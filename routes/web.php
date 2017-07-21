@@ -35,7 +35,8 @@ Route::prefix('adminpanel')->group(function () {
 	});
 	Route::get('login', function() {
 		if (Auth::check()) {
-			return redirect()->route('dashboard');
+			$user = auth()->user();
+			return redirect()->route('dashboard')->with('user', $user);
 		}
 		return view('layouts.web.login');
 	})->name('login');

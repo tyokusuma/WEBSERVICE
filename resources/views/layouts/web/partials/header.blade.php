@@ -11,9 +11,9 @@
               <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="">
                       <i class="fa fa-bell-o"></i>
-                      <span class="label label-warning">12</span>
+                      <span class="label label-warning">{{ count(user()->notifications) }}</span>
                   </a>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu notif">
                       <li class="divider menu"></li>
                       <li><a href="#">User stats</a></li>
                       <li class="divider menu"></li>
