@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\MessageDetail;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageDetailWebController extends Controller
 {
@@ -37,26 +38,14 @@ class MessageDetailWebController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-       
-    }
-
     public function getDetail($id, $user_id, $full_name) {
         $messages = MessageDetail::where('message_id', $id)->get();
 
         // return response()->json([
         //         'data' => $messages,
         // ]);
-
-        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id)->with('user_id', $user_id)->with('full_name', $full_name);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id)->with('user_id', $user_id)->with('full_name', $full_name)->with('notifs', $notifs);
 
     }
 }

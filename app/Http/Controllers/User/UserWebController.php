@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -44,10 +45,9 @@ class UserWebController extends Controller
      */
     public function index()
     {
-        // $users = User::all();
         $users = User::paginate(10);
-
-        return view('layouts.web.user.index')->with('users', $users);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.user.index', ['notifs' => $notifs])->with('users', $users);
     }
 
     /**
@@ -57,7 +57,8 @@ class UserWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.user.create');
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.user.create', ['notifs' => $notifs]);
     }
 
     /**
@@ -102,7 +103,9 @@ class UserWebController extends Controller
         $data['profile_image'] = $request->profile_image->store('');
         $user = User::create($data);
         flash('Your data user created successfully')->success()->important();
-        return redirect()->route('create-users');
+
+        $notifs = Auth::user()->unreadNotifications;
+        return redirect()->route('create-users')->with('notifs', $notifs);
     }
 
     /**
@@ -137,16 +140,13 @@ class UserWebController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        // dd($request->profile_image);
 
         if ($request->has('user_code')) {
             flash('Sorry, you can\'t edit the user code')->error()->important();
-            // return redirect()->route('create-users');
         }
 
         if ($request->has('admin_code')) {
             flash('Sorry, you can\'t edit the admin code')->error()->important();
-            // return redirect()->route('create-users');
         }
 
         if ($request->hasFile('profile_image')) {
@@ -194,7 +194,6 @@ class UserWebController extends Controller
         ]);
 
         if ($validator->fails()) {
-            // var_dump($validator->getMessageBag());
             return redirect()->back()
                 ->withErrors($validator)
                 ->with('error_code', $id)
@@ -203,8 +202,9 @@ class UserWebController extends Controller
 
         $user->save();
 
+        $notifs = Auth::user()->unreadNotifications;
         flash('Success updated your user')->success()->important();
-        return redirect()->route('view-users');
+        return redirect()->route('view-users')->with('notifs', $notifs);
 
     }
 

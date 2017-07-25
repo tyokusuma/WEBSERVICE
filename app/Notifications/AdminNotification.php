@@ -3,13 +3,16 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class AdminNotification extends Notification
 {
     use Queueable;
+
+    public $msg;
 
     /**
      * Create a new notification instance.
@@ -29,7 +32,7 @@ class AdminNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -46,7 +49,7 @@ class AdminNotification extends Notification
     }
 
     /**
-     * Get the array representation of the notification.
+     * To database
      *
      * @param  mixed  $notifiable
      * @return array
@@ -56,5 +59,18 @@ class AdminNotification extends Notification
         return [
             'message' => $this->message,
         ];
+    }
+
+    /**
+     * For broadcast with pusher
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'message' => $this->message,
+        ]);
     }
 }

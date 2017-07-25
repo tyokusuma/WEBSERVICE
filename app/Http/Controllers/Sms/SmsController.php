@@ -25,6 +25,6 @@ class SmsController extends Controller
     	$res = $client->post($urlParams);
     	$bodyResponse = json_decode($res->getBody());
     	
-    	dd($bodyResponse); // Response dari post request
+    	// dd($bodyResponse); // Response dari post request
     }
 }

@@ -8,6 +8,7 @@ use App\MainService;
 use App\Service;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -37,7 +38,8 @@ class ServiceWebController extends Controller
         $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
         $categories = Category::all();
 
-        return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories, 'notifs' => $notifs]);
     }
 
     /**
@@ -50,7 +52,8 @@ class ServiceWebController extends Controller
         $users = User::all()->sortBy('full_name');
         $categories = Category::all()->sortBy('subcategory_type');
         $lists = Category::all()->groupBy('category_type');
-        return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists)->with('notifs', $notifs);
     }
 
     /**
@@ -196,9 +199,10 @@ class ServiceWebController extends Controller
         }
 
         $service = Service::create($data);
+        $notifs = Auth::user()->unreadNotifications;
 
         flash('Your data service detail created successfully')->success()->important();
-        return redirect()->route('view-create-servicedetails');
+        return redirect()->route('view-create-servicedetails')->with('notifs', $notifs);
     }
 
     /**
@@ -373,7 +377,6 @@ class ServiceWebController extends Controller
 
         $mainservice->save();
         flash('Your main service data updated successfully')->success()->important();
-
         return redirect()->route('view-servicedetails');
     }
 
@@ -386,9 +389,9 @@ class ServiceWebController extends Controller
     public function destroy($id)
     {
         $find = Service::findOrFail($id);   
-        dd($find);
+        // dd($find);
         $findCategory = Category::where('id', $find->category_id); 
-        dd($findCategory);
+        // dd($findCategory);
         $find->delete();
     }
 

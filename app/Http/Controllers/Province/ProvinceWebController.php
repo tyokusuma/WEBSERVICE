@@ -6,6 +6,7 @@ use App\City;
 use App\Http\Controllers\Controller;
 use App\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ProvinceWebController extends Controller
@@ -18,7 +19,8 @@ class ProvinceWebController extends Controller
     public function index()
     {
         $provinces = Province::paginate(10);
-        return view('layouts.web.province.index')->with('provinces', $provinces);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.province.index')->with('provinces', $provinces)->with('notifs', $notifs);
     }
 
     /**
@@ -28,7 +30,8 @@ class ProvinceWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.province.create');
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.province.create')->with('notifs', $notifs);
     }
 
     /**

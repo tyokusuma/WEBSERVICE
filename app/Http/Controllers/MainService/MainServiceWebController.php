@@ -17,8 +17,8 @@ class MainServiceWebController extends Controller
     public function index()
     {
         $mainservices = MainService::with(['service.category'])->paginate(10);
-
-        return view('layouts.web.mainservice.index')->with('mainservices', $mainservices);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.mainservice.index')->with('mainservices', $mainservices)->with('notifs', $notifs);
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Message;
 use App\MessageDetail;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class MessageWebController extends Controller
@@ -24,7 +25,8 @@ class MessageWebController extends Controller
             $message['count'] = $count;
         }
 
-        return view('layouts.web.message.index')->with('messages', $messages)->with('count', $count);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.message.index')->with('messages', $messages)->with('count', $count)->with('notifs', $notifs);
     }
 
     /**
@@ -35,8 +37,8 @@ class MessageWebController extends Controller
     public function create()
     {
         $users = User::all()->sortBy('full_name');
-
-        return view('layouts.web.message.create')->with('users', $users);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.message.create')->with('users', $users)->with('notifs', $notifs);
     }
 
     /**

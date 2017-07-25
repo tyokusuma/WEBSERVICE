@@ -7,6 +7,7 @@ use App\Favorite;
 use App\Http\Controllers\Controller;
 use App\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -22,7 +23,8 @@ class CategoryWebController extends Controller
     {
         $categories = Category::paginate(10);
 
-        return view('layouts.web.category.index')->with('categories', $categories);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.category.index')->with('categories', $categories)->with('notifs', $notifs);
     }
 
     /**
@@ -32,7 +34,8 @@ class CategoryWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.category.create');
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.category.create')->with('notifs', $notifs);
     }
 
     /**
@@ -358,6 +361,6 @@ class CategoryWebController extends Controller
 
         $categories->delete();
         flash('The category success deleted')->success()->important();
-        return $this->showOne($user);
+        return redirect()->back();
     }
 }

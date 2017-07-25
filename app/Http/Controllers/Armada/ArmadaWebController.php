@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Armada;
 use App\Armada;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ArmadaWebController extends Controller
@@ -17,8 +18,8 @@ class ArmadaWebController extends Controller
     public function index()
     {
     	$armadas = Armada::paginate(10);
-
-        return view('layouts.web.armada.index')->with('armadas', $armadas);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.armada.index')->with('armadas', $armadas)->with('notifs', $notifs);
     }
 
     /**
@@ -28,7 +29,8 @@ class ArmadaWebController extends Controller
      */
     public function create()
     {
-        return view('layouts.web.armada.create');
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.armada.create')->with('notifs', $notifs);
     }
 
     /**

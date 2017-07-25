@@ -50,6 +50,6 @@ window.Pusher = require('pusher-js');
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '4e239bf925392357321c',
-    'cluster' => 'ap1',
-    'encrypted' => true,
+    cluster: 'ap1',
+    encrypted: true,
 });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\MainService;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuyerWebController extends Controller
 {
@@ -19,7 +20,8 @@ class BuyerWebController extends Controller
     {
         $mainservices = MainService::has('service')->get()->pluck('id');
         $buyers = User::whereNotIn('id', $mainservices)->paginate(10);
-        return view('layouts.web.buyer.index')->with('buyers', $buyers);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.buyer.index')->with('buyers', $buyers)->with('notifs', $notifs);
     }
 
     /**

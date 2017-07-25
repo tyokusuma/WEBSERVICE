@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Transaction;
 use App\Http\Controllers\Controller;
 use App\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionWebController extends Controller
 {
@@ -24,7 +25,8 @@ class TransactionWebController extends Controller
             // $categories = $transaction->mainservices()->has('services')->get();
         }
         // dd($transactions);
-        return view('layouts.web.transaction.index')->with('transactions', $transactions);
+        $notifs = Auth::user()->unreadNotifications;
+        return view('layouts.web.transaction.index')->with('transactions', $transactions)->with('notifs', $notifs);
 
         // return response()->json([
         //         'data' => $transactions,

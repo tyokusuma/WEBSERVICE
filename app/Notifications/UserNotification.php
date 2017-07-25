@@ -5,6 +5,7 @@ namespace App\Notifications;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -30,7 +31,7 @@ class UserNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database']; //Ada 3 pilihan di RoutesNotifications.php -> database, mail, nexmo(phone number)
+        return ['database', 'broadcast']; //Ada 3 pilihan di RoutesNotifications.php -> database, mail, nexmo(phone number)
     }
 
     /**
@@ -47,7 +48,7 @@ class UserNotification extends Notification
     }
 
     /**
-     * Get the array representation of the notification.
+     * To database
      *
      * @param  mixed  $notifiable
      * @return array
@@ -57,5 +58,18 @@ class UserNotification extends Notification
         return [
             'message' => $this->message,
         ];
+    }
+
+    /**
+     * For broadcast with pusher
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'message' => $this->message,
+        ]);
     }
 }

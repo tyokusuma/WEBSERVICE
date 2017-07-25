@@ -35,20 +35,21 @@ Route::prefix('adminpanel')->group(function () {
 	});
 	Route::get('login', function() {
 		if (Auth::check()) {
-			$user = auth()->user();
-			return redirect()->route('dashboard')->with('user', $user);
+			return redirect()->route('dashboard');
 		}
 		return view('layouts.web.login');
 	})->name('login');
 	Route::post('login', 'Auth\LoginController@login');
 
-	Route::middleware('auth')->group(function () {
+	Route::group(['middleware' => ['auth']],function () {
+		$idUser = Auth::user();
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 		Route::get('dashboard', function() {
-			return view('layouts.web.dashboard');
+			$notifs = Auth::user()->unreadNotifications;
+			return view('layouts.web.dashboard', ['notifs' => $notifs]);
 		})->name('dashboard');
 
-		Route::get('users', 'User\UserWebController@index')->name('view-users');
+		Route::get('users', 'User\UserWebController@index', ['idUser', $idUser])->name('view-users');
 		Route::get('users/add', 'User\UserWebController@create')->name('view-create-users');
 		Route::post('users/add', 'User\UserWebController@store')->name('create-users');
 		Route::patch('users/update/{id}', 'User\UserWebController@update')->name('update-users');
@@ -99,6 +100,16 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');
+		Route::get('markasread', function() {
+			Auth::user()->unreadNotifications->markAsRead();
+		});
+
+		Route::get('unread', function() {
+			dd(Auth::user()->unreadNotifications);
+			return response()->json([
+					'data' => Auth::user()->unreadNotifications,
+				]);
+		});
 	});
 });
 		// Route::get('favorites', 'Favorite\FavoriteWebController@index')->name('view-favorites');

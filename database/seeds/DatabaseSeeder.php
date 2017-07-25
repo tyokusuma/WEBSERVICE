@@ -7,7 +7,6 @@ use App\City;
 use App\Favorite;
 use App\Message;
 use App\MessageDetail;
-use App\Notification;
 use App\Other;
 use App\Province;
 use App\Service;
@@ -32,7 +31,6 @@ class DatabaseSeeder extends Seeder
         Service::truncate();
         Message::truncate();
         MessageDetail::truncate();
-        Notification::truncate();
         Favorite::truncate();
         Category::truncate();
         Province::truncate();
@@ -48,7 +46,6 @@ class DatabaseSeeder extends Seeder
         Service::flushEventListeners();
         Message::flushEventListeners();
         MessageDetail::flushEventListeners();
-        Notification::flushEventListeners();
         Province::flushEventListeners();
         Armada::flushEventListeners();
         Other::flushEventListeners();
@@ -62,7 +59,6 @@ class DatabaseSeeder extends Seeder
     	$categoryQty = 20;
         $messageQty = 10;
         $messageDetailQty = 15;
-        $notificationQty =10;
         $provinceQty = 30;
         $armadaQty = 22;
         $otherQty = 1;
@@ -75,7 +71,6 @@ class DatabaseSeeder extends Seeder
     	factory(Favorite::class, $favoriteQty)->create();
         factory(Message::class, $messageQty)->create();
         factory(MessageDetail::class, $messageDetailQty)->create();
-        factory(Notification::class, $notificationQty)->create();
         factory(Province::class, $provinceQty)->create();
         factory(City::class, $cityQty)->create();
         factory(Armada::class, $armadaQty)->create();

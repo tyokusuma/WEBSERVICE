@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <title>{{ config('app.name') }} | @yield('pageTitle')</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        <meta http-equiv="X-UA-Compatible" content="ie-edge">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <style>
             /* Prevents slides from flashing */
             #slides {
@@ -22,30 +24,39 @@
         <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/slideshow.css') }}">
 
         <link href="{{ asset('/bower_components/admin-lte/dist/css/style.default.css') }}" rel="stylesheet" type="text/css" />
+
+        <script>
+            window.Laravel = {!! json_encode([
+                    'csrfToken' => csrf_token(),
+                ]) !!};
+        </script>
         
     </head>
     <body class="skin-blue">
-        <div id="preloader">
-            <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
-        </div>
-        <div class="wrapper">
-            <p>{{ $user }}</p>
-            @include('layouts.web.partials.header')
-            
-            <div class="content-wrapper">
-            @include('layouts.web.partials.content')
+        <div id="app">
+            <div id="preloader">
+                <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
             </div>
+            <div class="wrapper">
+                @include('layouts.web.partials.header', ['notifs' => $notifs])
+                
+                <div class="content-wrapper">
+                @include('layouts.web.partials.content')
+                </div>
 
-            @include('layouts.web.partials.sidebar')
+                @include('layouts.web.partials.sidebar')
 
+            </div>
         </div>
 
     <!-- REQUIRED JS SCRIPTS -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- ada tambahan script di app.js buat markasread di header.blade.php -->
+    <script src="{{ asset('js/app.js') }}"></script> 
     <script src="{{ asset ('/bower_components/admin-lte/dist/js/jquery.slides.min.js') }}"></script>
     <script src="{{ asset ('/bower_components/admin-lte/plugins/jQuery/jQuery-2.1.3.min.js') }}"></script>
     <script src="{{ asset ('/bower_components/admin-lte/dist/js/app.min.js') }}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
     @yield('script')
     <script type="text/javascript">
     jQuery('body').css({'overflow':'hidden'});
@@ -54,6 +65,13 @@
        jQuery('#preloader').delay(350).fadeOut(function(){
           jQuery('body').delay(550).css({'overflow':'visible'});
        });
+        $.ajax({
+            type: "GET", 
+            url: "bangsinibang.com/adminpanel/unread",
+            success: function(data){
+                console.log(data); 
+            }
+        });
     });  
 
     </script>
@@ -64,6 +82,24 @@
                 height: 420,
             });
         });
+
+        function fetchNotif() {
+            $.ajax({
+                type: "GET", 
+                url: "bangsinibang.com/adminpanel/unread",
+                success: function(data){
+                    alert(data); 
+                }
+            });
+        };
+
+        function markAsReadNotification() {
+            $.get('/adminpanel/markasread');
+        }
+
+        function unreadNotification() {
+            $.get('/adminpanel/unread');
+        }
     </script>
     <!-- <script src="{{ asset ('/bower_components/admin-lte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script> -->
     </body>
