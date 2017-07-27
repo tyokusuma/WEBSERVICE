@@ -17,7 +17,7 @@ class MainServiceWebController extends Controller
     public function index()
     {
         $mainservices = MainService::with(['service.category'])->paginate(10);
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.mainservice.index')->with('mainservices', $mainservices)->with('notifs', $notifs);
     }
 
@@ -123,7 +123,8 @@ class MainServiceWebController extends Controller
         // dd($mainservice);
         $mainservice->save();
         flash('Your main service data updated successfully')->success()->important();
-        return redirect()->route('view-servicedetails');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-servicedetails')->with('notifs', $notifs);
     }
 
     /**

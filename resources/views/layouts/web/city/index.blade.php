@@ -10,9 +10,10 @@
             <th>City Name</th>
         </thead>
     	<tbody>	
+    		<?php $i = 1; $skipped = ($cities->currentPage() * $cities->perPage()) - $cities->perPage();?>
     		@foreach($cities as $city)
 				<tr>
-				    <td>{{ $city->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $city->name_city }}</td>
 				    <td>{{ $city->province->name_province }}</td>
 					<td>
@@ -100,6 +101,7 @@
 							</div>
 						</div>
 	    		</form>
+	    		<?php $i++; ?>
     		@endforeach
 	    </tbody>	        
 	</table>

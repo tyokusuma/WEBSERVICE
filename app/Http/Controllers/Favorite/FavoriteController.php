@@ -108,6 +108,7 @@ class FavoriteController extends ApiController
      */
     public function update(Request $request, $id)
     {
+        // dd($request->main_service_id);
         $favorite = Favorite::findOrFail($id);
         $service = DB::table('services')->where('main_service_id', $request->main_service_id)->get()->first()->id;
         $services = Service::findOrFail($service);

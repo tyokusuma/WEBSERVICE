@@ -6,7 +6,6 @@ use App\City;
 use App\Http\Controllers\Controller;
 use App\Province;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class CityWebController extends Controller
@@ -20,7 +19,7 @@ class CityWebController extends Controller
     {
         $cities = City::with('province')->paginate(10);
         $provinces = Province::all()->sortBy('name_province');
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.city.index')->with('cities', $cities)->with('provinces', $provinces)->with('notifs', $notifs);
     }
 
@@ -31,7 +30,7 @@ class CityWebController extends Controller
      */
     public function create()
     {
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.city.create')->with('notifs', $notifs);
     }
 
@@ -57,7 +56,8 @@ class CityWebController extends Controller
         $data = $request->all();
         $province = City::create($data);
         flash('Your new city created successfully')->success()->important();
-        return redirect()->route('create-cities');
+        $notifs = request()->get('notifs');
+        return redirect()->route('create-cities')->with('notifs', $notifs);
     }
 
     /**
@@ -113,7 +113,8 @@ class CityWebController extends Controller
         
         $find->save();
         flash('Your data city updated successfully')->success()->important();
-        return redirect()->route('view-cities');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-cities')->with('notifs', $notifs);
     }
 
     /**

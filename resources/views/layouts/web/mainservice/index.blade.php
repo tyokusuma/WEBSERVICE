@@ -12,10 +12,11 @@
             <th>Phone</th>
             <th>Gender</th>
         </thead>
-    	<tbody>	
+    	<tbody>
+    		<?php $i =1; $skipped = ($mainservices->currentPage() * $mainservices->perPage()) - $mainservices->perPage(); ?>
     		@foreach($mainservices as $mainservice)
 		    	<tr>
-				    <td>{{ $mainservice->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td><img src="{{ URL::asset('img/'.$mainservice->profile_image) }}" alt="{{ $mainservice->profile_image }}" style="width:64px; height:64px" /></td>
 				    <td>{{ $mainservice->full_name }}</td>
 				    <td>{{ $mainservice->email }}</td>
@@ -28,6 +29,7 @@
 			    		<td><img src="{{ URL::asset('logo/male.png') }}"/></td>
 			    	@endif
 				</tr>
+				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        
 	</table>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
 use App\Mail\UserCreated;
+use App\Notifications\AdminNotification;
 use App\Service;
 use App\User;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -26,7 +27,7 @@ class UserController extends ApiController
         
         // $this->middleware('client.credentials')->only(['index', 'store', 'show', 'update', 'destroy']);
         $this->middleware('auth:api')->only(['index', 'show', 'update', 'destroy']);
-        
+        $this->admin = User::where('admin', User::ADMIN_USER)->get();
     }
     
     // Generate user code from the latest user code
@@ -106,6 +107,12 @@ class UserController extends ApiController
         $data['profile_image'] = $request->profile_image->store('');
         $data['reset_password'] = User::generateResetPassword();
         $user = User::create($data);
+
+        // Create notification for admin
+        $msgAdmin = 'New User created with ID User '.$data['user_code'];
+        foreach($this->admin as $admin) {
+            $admin->notify(new AdminNotification($msgAdmin));
+        }
 
         return $this->showOne($user, 201);
     }
@@ -234,11 +241,11 @@ class UserController extends ApiController
         if ($user->isVerified()) {
             return $this->errorResponse('This user is already verified', 409);
         }
-        $user->verification_link = User::generateVerificationEmail();
+        $user->verification_link = User::generateResetPassword();
         $user->save();
 
         // retry(5, function() use ($user) {
-                Mail::to($user->email)->send(new UserCreated($user));
+                // Mail::to($user->email)->send(new UserCreated($user));
             // }, 100);
 
         return $this->showMessage('The verification email has been resend');

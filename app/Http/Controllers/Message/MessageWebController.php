@@ -7,7 +7,6 @@ use App\Message;
 use App\MessageDetail;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class MessageWebController extends Controller
@@ -24,8 +23,7 @@ class MessageWebController extends Controller
             $count = MessageDetail::where('message_id', $message->id)->where('sender_id', $message->user_id)->where('read_admin', '0')->count();
             $message['count'] = $count;
         }
-
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.message.index')->with('messages', $messages)->with('count', $count)->with('notifs', $notifs);
     }
 
@@ -36,8 +34,8 @@ class MessageWebController extends Controller
      */
     public function create()
     {
+        $notifs = request()->get('notifs');
         $users = User::all()->sortBy('full_name');
-        $notifs = Auth::user()->unreadNotifications;
         return view('layouts.web.message.create')->with('users', $users)->with('notifs', $notifs);
     }
 
@@ -77,8 +75,8 @@ class MessageWebController extends Controller
 
         $find = Message::all()->last();
         $user = User::where('id', $find->user_id)->first();
-
-        return redirect()->route('view-inbox-details', ['id' => $find->id, 'user_id' => $find->user_id, 'full_name' => $user->full_name]);
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-inbox-details', ['id' => $find->id, 'user_id' => $find->user_id, 'full_name' => $user->full_name])->with('notifs', $notifs);
     }
 
     /**
@@ -101,7 +99,8 @@ class MessageWebController extends Controller
         $message->save();
 
         $user = User::where('id', $message->user_id)->first();
-        return redirect()->route('view-inbox-details', ['id' => $id, 'user_id' => $user->id, 'full_name' => $user->full_name]);
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-inbox-details', ['id' => $id, 'user_id' => $user->id, 'full_name' => $user->full_name, 'notifs' => $notifs]);
     }
 
     /**
@@ -118,7 +117,7 @@ class MessageWebController extends Controller
         }
         $message = Message::findOrFail($id);
         $message->delete();
-
-        return redirect()->route('view-inbox');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-inbox')->with('notifs', $notifs);
     }
 }

@@ -13,6 +13,9 @@ class UserNotification extends Notification
 {
     use Queueable;
 
+    public $msg;
+    
+
     /**
      * Create a new notification instance.
      *
@@ -31,7 +34,7 @@ class UserNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast']; //Ada 3 pilihan di RoutesNotifications.php -> database, mail, nexmo(phone number)
+        return ['database']; //Ada 3 pilihan di RoutesNotifications.php -> database, mail, nexmo(phone number)
     }
 
     /**
@@ -66,10 +69,10 @@ class UserNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage([
-            'message' => $this->message,
-        ]);
-    }
+    // public function toBroadcast($notifiable)
+    // {
+    //     return new BroadcastMessage([
+    //         'message' => $this->message,
+    //     ]);
+    // }
 }

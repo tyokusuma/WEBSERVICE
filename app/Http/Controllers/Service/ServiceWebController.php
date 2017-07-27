@@ -8,7 +8,6 @@ use App\MainService;
 use App\Service;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +23,10 @@ class ServiceWebController extends Controller
             $number = substr($lastService->service_code, 1);  
         }
         $cat = strtoupper(substr($cat, 0, 2));
-        $sub = strtoupper(substr($sub, 0, 3));
+        
+        $subFull = str_replace('.', '', $sub);
+        $subNoSpace = str_replace(' ', '', $subFull);
+        $sub = strtoupper(substr($subNoSpace, 0, 3));
         return $cat.$sub.sprintf('%06d', intval($number) + 1);    
     }
 
@@ -37,8 +39,7 @@ class ServiceWebController extends Controller
     {
         $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
         $categories = Category::all();
-
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories, 'notifs' => $notifs]);
     }
 
@@ -52,7 +53,7 @@ class ServiceWebController extends Controller
         $users = User::all()->sortBy('full_name');
         $categories = Category::all()->sortBy('subcategory_type');
         $lists = Category::all()->groupBy('category_type');
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists)->with('notifs', $notifs);
     }
 
@@ -199,8 +200,7 @@ class ServiceWebController extends Controller
         }
 
         $service = Service::create($data);
-        $notifs = Auth::user()->unreadNotifications;
-
+        $notifs = request()->get('notifs');
         flash('Your data service detail created successfully')->success()->important();
         return redirect()->route('view-create-servicedetails')->with('notifs', $notifs);
     }
@@ -377,7 +377,8 @@ class ServiceWebController extends Controller
 
         $mainservice->save();
         flash('Your main service data updated successfully')->success()->important();
-        return redirect()->route('view-servicedetails');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-servicedetails')->with('notifs', $notifs);
     }
 
     /**
@@ -399,6 +400,7 @@ class ServiceWebController extends Controller
     {
         
         $images = Input::all();
-        return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle']);
+        $notifs = request()->get('notifs');
+        return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
     }
 }

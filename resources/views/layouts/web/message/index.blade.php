@@ -6,14 +6,17 @@
       <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-inbox') }}"><span>  Add</span></a></div>
       <table id="message" class="table table-bordred table-striped">
           <thead>
+                <th>No</th>
                 <th>From</th>
                 <th>Content</th>
                 <th></th>
                 <th></th>
           </thead>
-          <tbody> 
+          <tbody>
+            <?php $i = 1; $skipped = ($messages->currentPage() * $messages->perPage()) - $messages->perPage(); ?>
             @foreach($messages as $message)
               <tr>
+                  <td class="{{ $message->read_admin == '0' ? 'primary-font' : '' }}">{{ $skipped + $i }}</td>
                   <td class="{{ $message->read_admin == '0' ? 'primary-font' : '' }}">{{ $message->users->full_name }}</td>
                   <td class="{{ $message->read_admin == '0' ? 'primary-font' : '' }}">{{ $message->title }}</td>
                   <td class="{{ $message->count > 0 ? 'primary-font' : '' }}"><span class="badge label-info">{{ $message->count == 0 ? '' : $message->count }}</span></td>
@@ -59,6 +62,7 @@
                     </div>
                 </div>
             </div>
+            <?php $i++; ?>
             @endforeach
           </tbody>          
       </table>

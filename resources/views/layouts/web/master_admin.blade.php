@@ -51,11 +51,13 @@
 
     <!-- REQUIRED JS SCRIPTS -->
     <!-- ada tambahan script di app.js buat markasread di header.blade.php -->
-    <script src="{{ asset('js/app.js') }}"></script> 
+    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- <script src="{{ asset('js/bootstrap.js') }}"></script>  -->
     <script src="{{ asset ('/bower_components/admin-lte/dist/js/jquery.slides.min.js') }}"></script>
     <script src="{{ asset ('/bower_components/admin-lte/plugins/jQuery/jQuery-2.1.3.min.js') }}"></script>
     <script src="{{ asset ('/bower_components/admin-lte/dist/js/app.min.js') }}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 
     @yield('script')
     <script type="text/javascript">
@@ -65,13 +67,6 @@
        jQuery('#preloader').delay(350).fadeOut(function(){
           jQuery('body').delay(550).css({'overflow':'visible'});
        });
-        $.ajax({
-            type: "GET", 
-            url: "bangsinibang.com/adminpanel/unread",
-            success: function(data){
-                console.log(data); 
-            }
-        });
     });  
 
     </script>
@@ -83,23 +78,38 @@
             });
         });
 
-        function fetchNotif() {
-            $.ajax({
-                type: "GET", 
-                url: "bangsinibang.com/adminpanel/unread",
-                success: function(data){
-                    alert(data); 
-                }
-            });
-        };
+        // function fetchNotif() {
+        //     $.ajax({
+        //         type: "GET", 
+        //         url: "bangsinibang.com/adminpanel/unread",
+        //         success: function(data){
+        //             alert(data); 
+        //         }
+        //     });
+        // };
 
         function markAsReadNotification() {
             $.get('/adminpanel/markasread');
         }
 
-        function unreadNotification() {
-            $.get('/adminpanel/unread');
-        }
+        // function unreadNotification() {
+        //     $.get('/adminpanel/unread');
+        // }
+
+        // $(document).ready(function() {
+        //     refreshHeader();
+        // });
+
+        // function refreshHeader() {
+        //     $('#notifs').load("{{ route('unread-notifs') }}", function(data) {
+        //         // console.log(data);
+        //         setTimeout(refreshHeader, 15000);
+        //     });
+            
+        //     // $.get("{{ route('unread-notifs') }}", function(data){
+        //     //     console.log(data);
+        //     // });
+        // };
     </script>
     <!-- <script src="{{ asset ('/bower_components/admin-lte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script> -->
     </body>

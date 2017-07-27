@@ -22,9 +22,9 @@ class SmsController extends Controller
     	$smsPass = config('smsgateway.password');
     	$client = new Client();
     	$urlParams = 'http://smsgateway.me/api/v3/messages/send?email='.$smsEmail.'&password='.$smsPass.'&device='.$smsDevice.'&message='.$message.'&number='.$phone;
-    	$res = $client->post($urlParams);
+        $res = $client->request('POST', $urlParams);
+        // dd($res);
     	$bodyResponse = json_decode($res->getBody());
-    	
-    	// dd($bodyResponse); // Response dari post request
+        // dd($bodyResponse);
     }
 }

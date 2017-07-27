@@ -13,9 +13,10 @@
             <th>Gender</th>
         </thead>
     	<tbody>	
+            <?php $i = 1; $skipped = ($buyers->currentPage() * $buyers->perPage()) - $buyers->perPage(); ?>
     		@foreach($buyers as $buyer)
 		    	<tr>
-				    <td>{{ $buyer->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td><img src="{{ URL::asset('img/'.$buyer->profile_image) }}" alt="{{ $buyer->profile_image }}" style="width:64px; height:64px" /></td>
 				    <td>{{ $buyer->full_name }}</td>
 				    <td>{{ $buyer->email }}</td>
@@ -28,6 +29,7 @@
 			    		<td><img src="{{ URL::asset('logo/male.png') }}"/></td>
 			    	@endif
 				</tr>
+				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        
 	</table>

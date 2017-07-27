@@ -3283,9 +3283,9 @@ table#datatable tr.error td.table-action-hide a {
    margin-left: 10px;
 }
 */
-.gender {
+img.gender {
    width: 16px;
-   height: 16px;
+   height: auto;
 }
 
 .rTable {
@@ -3647,4 +3647,19 @@ table#datatable tr.error td.table-action-hide a {
 
 .menu {
    border-bottom-color: white !important; 
+}
+
+img.image-ads {
+   width: 100px;
+   height: auto;
+}
+
+img.image-ads-modal {
+   width: 50%;
+   height: auto;
+}
+
+div.image-modal {
+   text-align: center;
+   margin: 2% 5%;
 }

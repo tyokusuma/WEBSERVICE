@@ -9,10 +9,14 @@ class Advertisement extends Model
 {
     use SoftDeletes;
 
+    const ADS_CHOOSEN = '1';
+    const ADS_UNCHOOSEN = '0';
+
     protected $fillable = [
         'ads_image',
         'click_count',
     	'showing_count',
+        'choosen',
     ];
 
     protected $hidden = [

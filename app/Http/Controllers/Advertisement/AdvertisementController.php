@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Buyer;
+namespace App\Http\Controllers\Advertisement;
 
-use App\Buyer;
-use App\Http\Controllers\Controller;
-use App\MainService;
-use App\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class BuyerWebController extends Controller
+class AdvertisementController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +14,7 @@ class BuyerWebController extends Controller
      */
     public function index()
     {
-        $mainservices = MainService::has('service')->get()->pluck('id');
-        $buyers = User::whereNotIn('id', $mainservices)->paginate(10);
-        $notifs = request()->get('notifs');        
-        return view('layouts.web.buyer.index')->with('buyers', $buyers)->with('notifs', $notifs);
+        //
     }
 
     /**

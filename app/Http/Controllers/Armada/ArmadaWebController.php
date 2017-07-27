@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Armada;
 use App\Armada;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ArmadaWebController extends Controller
@@ -18,7 +17,7 @@ class ArmadaWebController extends Controller
     public function index()
     {
     	$armadas = Armada::paginate(10);
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.armada.index')->with('armadas', $armadas)->with('notifs', $notifs);
     }
 
@@ -29,7 +28,7 @@ class ArmadaWebController extends Controller
      */
     public function create()
     {
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.armada.create')->with('notifs', $notifs);
     }
 
@@ -57,7 +56,8 @@ class ArmadaWebController extends Controller
         $data = $request->all();
         $armada = Armada::create($data);
         flash('Your data armada created successfully')->success()->important();
-        return redirect()->route('create-armadas');
+        $notifs = request()->get('notifs');
+        return redirect()->route('create-armadas')->with('notifs', $notifs);
     }
 
     /**
@@ -112,7 +112,8 @@ class ArmadaWebController extends Controller
         
         $find->save();
         flash('Your data armada updated successfully')->success()->important();
-        return redirect()->route('view-armadas');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-armadas')->with('notifs', $notifs);
     }
 
     /**
@@ -128,6 +129,7 @@ class ArmadaWebController extends Controller
         $armada->delete();
 
         flash('Your data successfully deleted')->success()->important();
-        return redirect()->route('view-armadas');
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-armadas')->with('notifs', $notifs);
     }
 }

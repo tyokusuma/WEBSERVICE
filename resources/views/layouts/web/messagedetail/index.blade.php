@@ -6,7 +6,6 @@
   <div class="panel ">                
       <div class="panel-body">
           <ul class="chat">
-
               @foreach($messages as $message)
                   @if($message->sender_id == null) 
                   <li class="left clearfix">
@@ -15,7 +14,7 @@
                       </span>
                       <div class="chat-body clearfix">
                           <div class="header">
-                              <bold class="primary-font">Admin</bold> <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>12 mins ago</small>
+                              <bold class="primary-font">Admin</bold> <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>{{ $message->created_at->diffForHumans() }}</small>
                           </div>
                           <p>{{ $message->content }}</p>
                       </div>
@@ -23,12 +22,12 @@
                   @else
                   <li class="right clearfix">
                       <span class="chat-img pull-right">
-                          <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                          <img src="{{ URL::asset('img/'.$profile_image)}}" alt="User Avatar" class="img-circle" />
                       </span>
                       <div class="chat-body clearfix">
                           <div class="header">
                               <bold class="primary-font">{{ $full_name }}</bold>
-                              <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
+                              <small class="pull-right text-muted"><span class="glyphicon glyphicon-time"></span>{{ $message->created_at->diffForHumans() }}</small>
                           </div>
                           <p>{{ $message->content }}</p>
                       </div>

@@ -18,21 +18,18 @@
             <th>Delete</th>
         </thead>
     	<tbody>	
+    		<?php $i = 1; $skipped = ($users->currentPage() * $users->perPage()) - $users->perPage(); ?>
     		@foreach($users as $user)
 		    	<tr>
 				    <!-- <td><input type="checkbox" class="checkthis" /></td> -->
-				    <td>{{ $user->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $user->full_name }}</td>
 				    <td>{{ $user->email }}</td>
 				    <td>{{ $user->phone }}</td>
 				    
 				    <!-- Gender -->
-			    	@if ($user->gender == '0')
-			    		<td><img src="{{ URL::asset('logo/female.png') }}" style="width: 32; height: 32;"/></td>
-			    	@else 
-			    		<td><img src="{{ URL::asset('logo/male.png') }}" style="width: 32; height: 32;"/></td>
-			    	@endif
-				    
+		    		<td><img src="{{ $user->gender == '0' ? URL::asset('logo/female.png') : URL::asset('logo/male.png') }}" class="gender"/></td>
+			    	
 					<!-- Verified user or not -->
 				    @if ($user->verified == '1')
 				    	<td><input type="checkbox" disabled checked/></td>
@@ -101,7 +98,7 @@
 					        		<div class="form-group {{ $errors->has('profile_image') ? ' has-error' : '' }}">
 						        		<label>Profile Image</label>
 					        			<div>
-		        				            <input type="text" class="btn-up form-control" id="profile_image_show{{ $user->id }}" name="profile_image_show" disabled>
+		        				            <input type="text" class="btn-up form-control" id="profile_image_show{{ $user->id }}" name="profile_image_show" placeholder="{{ $user->profile_image }}" disabled>
 		        			            	<label for="profile_image{{ $user->id }}" class="btn-upload">Choose File</label>
 	        			                </div>
 	        			                @if ($errors->has('profile_image'))
@@ -115,11 +112,11 @@
 						        		<label>Gender</label>
 						        		<span class="funkyradio">
 						        			<div class="funkyradio-info radio-inline">
-				        			            <input type="radio" name="gender" id="female{{ $user->id }}" value="0" <?php echo $user->gender == '0' ? 'checked' : '' ?>/>
+				        			            <input type="radio" name="gender" id="female{{ $user->id }}" value="0" {{ $user->gender == '0' ? 'checked' : ''}}/>
 				        			            <label for="female{{ $user->id }}">Female</label>
 				        			        </div>
 				        			        <div class="funkyradio-info radio-inline"> 
-				        			            <input type="radio" name="gender" id="male{{ $user->id }}" value="1" <?php echo $user->gender == '1' ? 'checked' : '' ?>/>
+				        			            <input type="radio" name="gender" id="male{{ $user->id }}" value="1" {{ $user->gender == '1' ? 'checked' : ''}}/>
 				        			            <label for="male{{ $user->id }}">Male</label>
 				        			        </div>
 				        			    </span>
@@ -194,6 +191,7 @@
 				    	</div>
 					</div>
 				</div>
+				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        
 	</table>

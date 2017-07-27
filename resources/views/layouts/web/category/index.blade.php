@@ -11,9 +11,10 @@
             <th>Subcategory Type</th>
         </thead>
     	<tbody>	
+    		<?php $i = 1; $skipped = ($categories->currentPage() * $categories->perPage()) - $categories->perPage(); ?>
     		@foreach($categories as $category)
 		    	<tr>
-				    <td>{{ $category->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $category->category_type }}</td>
 				    <td>{{ $category->subcategory_type }}</td>
 				    
@@ -86,6 +87,7 @@
 						</div>
 					</div>
 				</form>
+				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        
 	</table>

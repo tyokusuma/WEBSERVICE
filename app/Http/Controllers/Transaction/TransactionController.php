@@ -32,9 +32,16 @@ class TransactionController extends ApiController
         } else  {
             $number = substr($lastTransaction->order_code, 9);  
         }
+        //Category
         $cat = strtoupper(substr($cat, 0, 3));
-        $sub = strtoupper(substr($sub, 0, 3));
-        $name = strtoupper(substr($name, 0, 3));
+        // Subcategory
+        $subFull = str_replace('.', '', $sub);
+        $subNoSpace = str_replace(' ', '', $subFull);
+        $sub = strtoupper(substr($subNoSpace, 0, 3));
+        //Name
+        $nameFull = str_replace('.', '', $name);
+        $nameNoSpace = str_replace(' ', '', $nameFull);
+        $name = strtoupper(substr($nameNoSpace, 0, 3));
         return $cat.$sub.$name.sprintf('%09d', intval($number) + 1);    
     }
     /**

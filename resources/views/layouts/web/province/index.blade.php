@@ -8,10 +8,11 @@
            	<th>No</th>
            	<th>Province Name</th>
         </thead>
-    	<tbody>	
+    	<tbody>
+    		<?php $i = 1; $skipped = ($provinces->currentPage() * $provinces->perPage()) - $provinces->perPage(); ?>
     		@foreach($provinces as $province)
 				<tr>
-				    <td>{{ $province->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $province->name_province }}</td>
 					<td>
 						<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $province->id }}"><span class="glyphicon glyphicon-pencil"></span></button></p>
@@ -84,6 +85,7 @@
 							</div>
 						</div>
 	    		</form>
+	    		<?php $i++; ?>
     		@endforeach
 	    </tbody>	        
 	</table>

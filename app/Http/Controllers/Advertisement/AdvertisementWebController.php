@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Province;
+namespace App\Http\Controllers\Advertisement;
 
-use App\City;
+use App\Advertisement;
 use App\Http\Controllers\Controller;
-use App\Province;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class ProvinceWebController extends Controller
+class AdvertisementWebController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +17,9 @@ class ProvinceWebController extends Controller
      */
     public function index()
     {
-        $provinces = Province::paginate(10);
+        $ads = Advertisement::paginate(10);
         $notifs = request()->get('notifs');
-        return view('layouts.web.province.index')->with('provinces', $provinces)->with('notifs', $notifs);
+        return view('layouts.web.etc.ads.index')->with('notifs', $notifs)->with('ads', $ads);
     }
 
     /**
@@ -30,7 +30,7 @@ class ProvinceWebController extends Controller
     public function create()
     {
         $notifs = request()->get('notifs');
-        return view('layouts.web.province.create')->with('notifs', $notifs);
+        return view('layouts.web.etc.ads.create')->with('notifs', $notifs);
     }
 
     /**
@@ -42,7 +42,7 @@ class ProvinceWebController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
+            'ads_image' => 'required|image',
         ]);
 
         if ($validator->fails()) {
@@ -50,12 +50,16 @@ class ProvinceWebController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
         $data = $request->all();
-        $province = Province::create($data);
-        flash('Your new province created successfully')->success()->important();
+        $data['click_count'] = 0;
+        $data['showing_count'] = 0;
+        $data['choosen'] = 0;
+        $data['ads_image'] = $request->ads_image->store('');
+
+        $user = Advertisement::create($data);
+        flash('Your ads created successfully')->success()->important();
         $notifs = request()->get('notifs');
-        return redirect()->route('create-provinces')->with('notifs', $notifs);
+        return redirect()->route('view-create-ads')->with('notifs', $notifs);
     }
 
     /**
@@ -90,23 +94,10 @@ class ProvinceWebController extends Controller
     public function update(Request $request, $id)
     {
         dd($request);
-        $validator = Validator::make($request->all(), [
-            'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        $find = Province::findOrFail($id);
-        $find['name_province'] = $request->name_province;
-        
-        $find->save();
-        flash('Your data province updated successfully')->success()->important();
+        $ads = Advertisement::findOrFail($id);
+        $data = Request::all();
         $notifs = request()->get('notifs');
-        return redirect()->route('view-provinces')->with('notifs', $notifs);
+        return redirect()->route('view-ads')->with('notifs', $notifs);
     }
 
     /**
@@ -117,11 +108,6 @@ class ProvinceWebController extends Controller
      */
     public function destroy($id)
     {
-        $find = Province::findOrFail($id);
-
-        $find->delete();
-        flash('The province data successfully deleted')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-provinces')->with('notifs', $notifs);
+        //
     }
 }

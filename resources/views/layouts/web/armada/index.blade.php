@@ -12,9 +12,10 @@
             <th>Driver Vehicle Platenumber</th>
         </thead>
     	<tbody>	
+            <?php $i = 1; $skipped = ($armadas->currentPage() * $armadas->perPage()) - $armadas->perPage(); ?>
     		@foreach($armadas as $armada)
 				<tr>
-				    <td>{{ $armada->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $armada->company_name }}</td>
 				    <td>{{ $armada->id_driver }}</td>
 				    <td>{{ $armada->driver_name }}</td>
@@ -125,6 +126,7 @@
 							</div>
 						</div>
 	    		</form>
+	    		<?php $i++; ?>
     		@endforeach
 	    </tbody>	        
 	</table>

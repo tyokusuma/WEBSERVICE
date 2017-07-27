@@ -1,5 +1,6 @@
 <?php
 
+use App\Advertisement;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +19,7 @@ class CreateAdvertisementsTable extends Migration
             $table->string('ads_image', 255);
             $table->integer('click_count')->unsigned()->nullable();
             $table->integer('showing_count')->unsigned()->nullable();
+            $table->string('choosen', 1)->default(Advertisement::ADS_UNCHOOSEN);
             $table->timestamps();
             $table->softDeletes();
         });

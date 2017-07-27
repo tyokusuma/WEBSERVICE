@@ -7,7 +7,6 @@ use App\Favorite;
 use App\Http\Controllers\Controller;
 use App\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -22,8 +21,7 @@ class CategoryWebController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
-
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.category.index')->with('categories', $categories)->with('notifs', $notifs);
     }
 
@@ -34,7 +32,7 @@ class CategoryWebController extends Controller
      */
     public function create()
     {
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         return view('layouts.web.category.create')->with('notifs', $notifs);
     }
 
@@ -165,9 +163,9 @@ class CategoryWebController extends Controller
         }
         $data = $request->all();
         Category::create($data);            
-
+        $notifs = request()->get('notifs');
         flash('Your data category created successfully')->success()->important();
-        return redirect()->route('create-categories');
+        return redirect()->route('create-categories')->with('notifs', $notifs);
     }
 
     /**
@@ -326,10 +324,9 @@ class CategoryWebController extends Controller
                 $findById->save();            
             }
         }
-
+        $notifs = request()->get('notifs');
         flash('Success updated your category')->success()->important();
-        return redirect()->route('view-categories');
-
+        return redirect()->route('view-categories')->with('notifs', $notifs);
     }
 
     /**
@@ -361,6 +358,7 @@ class CategoryWebController extends Controller
 
         $categories->delete();
         flash('The category success deleted')->success()->important();
-        return redirect()->back();
+        $notifs = request()->get('notifs');
+        return redirect()->back()->with('notifs', $notifs);
     }
 }

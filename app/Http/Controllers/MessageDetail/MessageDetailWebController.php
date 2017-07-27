@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\MessageDetail;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class MessageDetailWebController extends Controller
 {
@@ -32,20 +31,17 @@ class MessageDetailWebController extends Controller
 
         $data = $request->all();
         $messageDetail = MessageDetail::create($data);
-
+        $notifs = request()->get('notifs');
         // return redirect()->route('view-inbox-details', ['id', $request->message_id]);
-        return redirect()->back();
+        return redirect()->back()->with('notifs', $notifs);
 
     }
 
     public function getDetail($id, $user_id, $full_name) {
         $messages = MessageDetail::where('message_id', $id)->get();
-
-        // return response()->json([
-        //         'data' => $messages,
-        // ]);
-        $notifs = Auth::user()->unreadNotifications;
-        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id)->with('user_id', $user_id)->with('full_name', $full_name)->with('notifs', $notifs);
+        $pp = User::where('id', $user_id)->first()->profile_image;
+        $notifs = request()->get('notifs');
+        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id)->with('user_id', $user_id)->with('full_name', $full_name)->with('notifs', $notifs)->with('profile_image', $pp);
 
     }
 }

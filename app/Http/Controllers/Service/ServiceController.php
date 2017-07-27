@@ -30,7 +30,10 @@ class ServiceController extends ApiController
             $number = substr($lastService->service_code, 1);  
         }
         $cat = strtoupper(substr($cat, 0, 2));
-        $sub = strtoupper(substr($sub, 0, 3));
+
+        $subFull = str_replace('.', '', $sub);
+        $subNoSpace = str_replace(' ', '', $subFull);
+        $sub = strtoupper(substr($subNoSpace, 0, 3));
         return $cat.$sub.sprintf('%06d', intval($number) + 1);    
     }
 

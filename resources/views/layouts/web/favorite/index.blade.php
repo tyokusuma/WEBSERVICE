@@ -12,9 +12,10 @@
             <th>Subcategory Type</th>
         </thead>
     	<tbody>	
+    		<?php $i = 1; $skipped = ($favorites->currentPage() * $favorites->perPage()) - $favorites->perPage(); ?>
     		@foreach($favorites as $favorite)
 				<tr>
-				    <td>{{ $favorite->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $favorite->buyers->full_name }}</td>
 				    <td>{{ $favorite->mainservices->full_name }}</td>
 				    <td>{{ $favorite->category->category_type }}</td>
@@ -27,11 +28,7 @@
 				    </td>
 				    <td>
 				</tr>
-		  
-				<!-- <button class="accordion">Section 1</button> -->
-				<!-- <div class="panel">
-				  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-				</div> -->
+				<?php $i++; ?>		  
 		    @endforeach
 	    </tbody>	        
 	</table>

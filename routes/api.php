@@ -57,6 +57,7 @@ Route::resource('messages-details', 'MessageDetail\MessageDetailController', ['o
 
 // Route::get('messages', 'Message\MessageController@index');
 // Route::post('messages', 'Message\MessageController@store');
-// Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
+Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
 Route::name('resend')->get('users/{id}/resend', 'User\UserController@resend');
 Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+// Route::get('ads', 'Advertisement\AdvertisementController', ['only' => 'index']);

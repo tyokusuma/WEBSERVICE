@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -32,7 +33,7 @@ class AdminNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['database'];
     }
 
     /**
@@ -67,10 +68,10 @@ class AdminNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage([
-            'message' => $this->message,
-        ]);
-    }
+    // public function toBroadcast($notifiable)
+    // {
+    //     return new BroadcastMessage([
+    //         'message' => $this->message,
+    //     ]);
+    // }
 }

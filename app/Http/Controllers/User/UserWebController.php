@@ -5,7 +5,6 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -45,9 +44,9 @@ class UserWebController extends Controller
      */
     public function index()
     {
+        $notifs = request()->get('notifs');
         $users = User::paginate(10);
-        $notifs = Auth::user()->unreadNotifications;
-        return view('layouts.web.user.index', ['notifs' => $notifs])->with('users', $users);
+        return view('layouts.web.user.index')->with('users', $users)->with('notifs', $notifs);
     }
 
     /**
@@ -57,8 +56,8 @@ class UserWebController extends Controller
      */
     public function create()
     {
-        $notifs = Auth::user()->unreadNotifications;
-        return view('layouts.web.user.create', ['notifs' => $notifs]);
+        $notifs = request()->get('notifs');
+        return view('layouts.web.user.create')->with('notifs', $notifs);
     }
 
     /**
@@ -99,13 +98,12 @@ class UserWebController extends Controller
         if (!isset($data['gender'])) {
             $data['gender'] = null;
         }
-        $data['verification_link'] = User::generateVerificationEmail();
+        $data['verification_link'] = User::generateVerificationPhone();
         $data['profile_image'] = $request->profile_image->store('');
         $user = User::create($data);
         flash('Your data user created successfully')->success()->important();
-
-        $notifs = Auth::user()->unreadNotifications;
-        return redirect()->route('create-users')->with('notifs', $notifs);
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-create-users')->with('notifs', $notifs);
     }
 
     /**
@@ -201,8 +199,7 @@ class UserWebController extends Controller
         }
 
         $user->save();
-
-        $notifs = Auth::user()->unreadNotifications;
+        $notifs = request()->get('notifs');
         flash('Success updated your user')->success()->important();
         return redirect()->route('view-users')->with('notifs', $notifs);
 

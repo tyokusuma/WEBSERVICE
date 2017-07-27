@@ -10,19 +10,30 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NotificationEvent implements ShouldBroadcast
+class NotificationTriggerEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $text;
-
-    public function __construct($text)
+    public $data;
+    /**
+     * Create a new event instance.
+     *
+     * @return void
+     */
+    public function __construct()
     {
-        // $this->text = $text;
+         $this->data = array(
+            'power'=> '10'
+        );
     }
 
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return Channel|array
+     */
     public function broadcastOn()
     {
-        return new Channel('channelNotification');
+        return ['test-channel'];
     }
 }

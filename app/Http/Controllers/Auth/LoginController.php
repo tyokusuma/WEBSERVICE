@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -64,5 +65,13 @@ class LoginController extends Controller
             flash('Sorry you\'re not authorize to login')->error()->important();
             return redirect()->route('login');
         }
+    }
+
+    public function redirectLogin()
+    {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+        return view('layouts.web.login');
     }
 }

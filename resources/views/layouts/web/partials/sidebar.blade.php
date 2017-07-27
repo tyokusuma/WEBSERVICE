@@ -98,7 +98,15 @@
 
         <!-- Misc menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-cogs"></i> <span>Miscellaneous</span></a>
+          <a href="#"><i class="fa fa-cogs"></i> <span>Miscellaneous</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="treeview"><a href="{{ route('view-create-ads') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new ads</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-ads') }}"><i class="fa fa-picture-o" aria-hidden="true"><span>Choose ads</span></i></a></li>
+          </ul>
         </li>
 
         <!-- Logout -->

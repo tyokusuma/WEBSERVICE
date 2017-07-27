@@ -12,9 +12,10 @@
             <th>Subcategory Type</th>
         </thead>
     	<tbody>
+    		<?php $i = 1; $skipped = ($transactions->currentPage() * $transactions->perPage()) - $transactions->perPage(); ?>
     		@foreach($transactions as $transaction)
 				<tr>
-				    <td>{{ $transaction->id }}</td>
+				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $transaction->mainservices->full_name }}</td>
 				    <td>{{ $transaction->buyers->full_name }}</td>
 					<td>
@@ -25,6 +26,7 @@
 				    </td>
 				    <td>
 				</tr>
+				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        
 	</table>
