@@ -51,7 +51,6 @@
 					      		</div>
 					          	<div class="modal-footer ">
 					        		<button type="submit" form="update{{ $province->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      			<input type="hidden" name="action" value="update{{ $province->id }}" />
 					      		</div>
 					        </div>
 					  	</div>    

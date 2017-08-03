@@ -9,6 +9,7 @@ use App\MainService;
 use App\Service;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -42,12 +43,14 @@ class FavoriteController extends ApiController
      */
     public function store(Request $request)
     {
-        $service = DB::table('services')->where('main_service_id', $request->main_service_id)->get()->first()->id;
-        $services = Service::findOrFail($service);
+        $user = Auth::user();
+        if($user->id != $request->buyer_id) {
+            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        }
+        $buyer = Service::where('main_service_id', $request->buyer_id)->first();
+        $service = Service::where('main_service_id', $request->main_service_id)->first();
         $mainServices = MainService::findOrFail($request->main_service_id);
-        
-
-        $favoriteOwn = DB::table('favorites')->where('buyer_id', $request->buyer_id)->where('main_service_id', $request->main_service_id)->get()->first();
+        $favoriteOwn = Favorite::where('buyer_id', $request->buyer_id)->where('main_service_id', $request->main_service_id)->first();
 
         if ($request->has('main_service_id') && $request->has('buyer_id')) {
             if ($favoriteOwn != null) {
@@ -55,33 +58,21 @@ class FavoriteController extends ApiController
             }
         }
 
-        // If service full name, service plate number, category, and subcategory didn't match with service database show error
-        // if ($request->full_name != ($mainServices->full_name)) {
-        //     return $this->errorResponse('Sorry your service full name didn\'t match with our data please check it again', 422);            
-        // }
-
-        // if ($request->license_platenumber != ($services->license_platenumber)) {
-        //     return $this->errorResponse('Sorry your service license plate number didn\'t match with our data please check it again', 422);
-        // }
-
-        if ($request->category_id != ($services->category_id)) {
+        if ($request->category_id != ($service->category_id)) {
             return $this->errorResponse('Sorry your service category didn\'t match with our data please check it again', 422);
         }
 
-        //create simple validation or rules for field
-        $rules = [
-            'buyer_id' => 'required',
-            'main_service_id' => 'required',
-            // 'full_name' => 'required',
-            // 'license_platenumber' => 'nullable',
-            'category_id' => 'required',
-        ];
+        if ($buyer == null && $service !=null) {
+            $rules = [
+                'buyer_id' => 'required|numeric',
+                'main_service_id' => 'required|numeric',
+                'category_id' => 'required|numeric',
+            ];
+            $this->validate($request, $rules);
 
-        $this->validate($request, $rules);
-
-        $data = $request->all();
-
-        $favorite = Favorite::create($data);
+            $data = $request->all();
+            $favorite = Favorite::create($data);
+        }
 
         return $this->showOne($favorite, 201);
     }
@@ -94,9 +85,12 @@ class FavoriteController extends ApiController
      */
     public function show($id)
     {
-        $favorite = Favorite::findOrFail($id);
+        $favorites = Favorite::find($id);
+        if($favorite == null) {
+            return $this->errorResponse('Sorry you don\'t have any favorite service', 404);
+        }
 
-        return $this->showOne($favorite);
+        return $this->showAll($favorites);
     }
 
     /**
@@ -108,6 +102,10 @@ class FavoriteController extends ApiController
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
+        if($user->id != $request->buyer_id) {
+            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        }
         // dd($request->main_service_id);
         $favorite = Favorite::findOrFail($id);
         $service = DB::table('services')->where('main_service_id', $request->main_service_id)->get()->first()->id;
@@ -176,5 +174,13 @@ class FavoriteController extends ApiController
         $favorite->delete();
 
         return $this->showOne($favorite);
+    }
+
+    public function getFavoriteById() {
+        $user = Auth::user()->id;
+        $faves = Favorite::where('buyer_id', $user)->with('mainservices')->with('mainservices.service.category')->paginate(10);
+        return response()->json([
+                'data' => $faves,
+            ], 200);
     }
 }

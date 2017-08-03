@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class AdvertisementWebController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $ads = Advertisement::paginate(10);
@@ -22,23 +17,12 @@ class AdvertisementWebController extends Controller
         return view('layouts.web.etc.ads.index')->with('notifs', $notifs)->with('ads', $ads);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $notifs = request()->get('notifs');
         return view('layouts.web.etc.ads.create')->with('notifs', $notifs);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -56,58 +40,48 @@ class AdvertisementWebController extends Controller
         $data['choosen'] = 0;
         $data['ads_image'] = $request->ads_image->store('');
 
-        $user = Advertisement::create($data);
+        $ads = Advertisement::create($data);
+        // dd($data);
         flash('Your ads created successfully')->success()->important();
         $notifs = request()->get('notifs');
         return redirect()->route('view-create-ads')->with('notifs', $notifs);
+        // return response()->json([
+        //         'data'=> $ads,
+        //     ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $notifs = request()->get('notifs');
+        $ads = Advertisement::findOrFail($id);
+        return view('layouts.web.etc.ads.update', ['id' => $id])->with('notifs', $notifs)->with('ads', $ads);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
         $ads = Advertisement::findOrFail($id);
-        $data = Request::all();
+        $ads['choosen'] = $request->choosen;
+        $update = $ads->save();
         $notifs = request()->get('notifs');
+        flash('Success choose those image as ads')->success()->important();
         return redirect()->route('view-ads')->with('notifs', $notifs);
+        // return response()->json([
+        //         'data' => $data,
+        //     ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        dd($id);
+        $ads = Advertisement::findOrFail($id);
+        $ads->delete();
+        $notifs = request()->get('notifs');
+        return redirect()->route('view-ads')->with('notifs', $notifs);
     }
 }

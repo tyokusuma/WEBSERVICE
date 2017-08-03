@@ -57,6 +57,8 @@
     <script src="{{ asset ('/bower_components/admin-lte/plugins/jQuery/jQuery-2.1.3.min.js') }}"></script>
     <script src="{{ asset ('/bower_components/admin-lte/dist/js/app.min.js') }}" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script src="{{ asset ('/bower_components/admin-lte/plugins/chartjs/Chart.min.js') }}"></script>
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 
     @yield('script')

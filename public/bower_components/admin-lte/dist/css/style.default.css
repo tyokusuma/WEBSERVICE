@@ -3649,17 +3649,33 @@ img.gender {
    border-bottom-color: white !important; 
 }
 
-img.image-ads {
+img.image-ads-modal {
    width: 100px;
    height: auto;
 }
 
-img.image-ads-modal {
-   width: 50%;
+img.image-ads {
+   width: 100%;
    height: auto;
 }
 
-div.image-modal {
+div.ads-div {
    text-align: center;
    margin: 2% 5%;
+}
+
+span.underLine {
+   text-decoration: underline;
+}
+
+div.textNone {
+   font-size: 30px;
+   text-align: center;
+   padding-bottom: 20px;
+}
+
+div.boxNone {
+   position: absolute;
+   bottom: 30%;
+   right: 15%;
 }

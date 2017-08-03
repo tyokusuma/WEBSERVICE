@@ -15,6 +15,7 @@ class Category extends Model
     protected $fillable = [
     	'category_type',
     	'subcategory_type',
+        'type',
     ];
 
     protected $hidden = [
@@ -22,6 +23,14 @@ class Category extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function setTypeAttribute($type) {
+        $this->attributes['type'] = strtolower($type);
+    }
+
+    public function getTypeAttribute($type) {
+        return ucwords($type);
+    }
 
     public function setCategoryTypeAttribute($category_type) {
         $this->attributes['category_type'] = strtolower($category_type);

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Graphic;
 use App\Message;
 use App\MessageDetail;
 use App\Notification;
@@ -47,6 +48,8 @@ class User extends Authenticatable
         'admin',
         'verified',
         'invite_friends',
+        'gps_latitude',
+        'gps_longitude',
     ];
 
     /**
@@ -105,5 +108,9 @@ class User extends Authenticatable
     }
     public function notification() {
         return $this->hasOne(Notification::class);
+    }
+
+    public function graph() {
+        return $this->hasMany(Graphic::class);
     }
 }

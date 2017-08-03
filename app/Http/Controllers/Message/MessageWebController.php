@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class MessageWebController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $messages = Message::with('users')->paginate(10);
@@ -27,11 +22,6 @@ class MessageWebController extends Controller
         return view('layouts.web.message.index')->with('messages', $messages)->with('count', $count)->with('notifs', $notifs);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $notifs = request()->get('notifs');
@@ -39,12 +29,6 @@ class MessageWebController extends Controller
         return view('layouts.web.message.create')->with('users', $users)->with('notifs', $notifs);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // dd($request);
@@ -79,13 +63,6 @@ class MessageWebController extends Controller
         return redirect()->route('view-inbox-details', ['id' => $find->id, 'user_id' => $find->user_id, 'full_name' => $user->full_name])->with('notifs', $notifs);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $details = MessageDetail::where('message_id', $id)->get();
@@ -103,12 +80,6 @@ class MessageWebController extends Controller
         return redirect()->route('view-inbox-details', ['id' => $id, 'user_id' => $user->id, 'full_name' => $user->full_name, 'notifs' => $notifs]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $details = MessageDetail::where('message_id', $id)->get();

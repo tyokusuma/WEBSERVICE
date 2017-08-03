@@ -25,14 +25,14 @@ $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail'
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('error-401', 'Other\OtherController@error401')->name('error-401');
+Route::get('error-401', 'Other\OtherWebController@error401')->name('error-401');
 
 Route::prefix('adminpanel')->group(function () {
-	Route::get('/', 'Other\OtherController@slash');
+	Route::get('/', 'Other\OtherWebController@slash');
 	Route::get('login', 'Auth\LoginController@redirectLogin')->name('login');
 	Route::post('login', 'Auth\LoginController@login');
 
-	Route::group(['middleware' => ['auth']],function () {
+	Route::group(['middleware' => ['auth', 'notif']],function () {
 		$idUser = Auth::user();
 		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -140,19 +140,31 @@ Route::prefix('adminpanel')->group(function () {
 		Route::get('ads', 'Advertisement\AdvertisementWebController@index')->name('view-ads'); 
 		Route::get('ads/create', 'Advertisement\AdvertisementWebController@create')->name('view-create-ads');
 		Route::post('ads/create', 'Advertisement\AdvertisementWebController@store')->name('create-ads');
+		Route::get('ads/update/{id}', 'Advertisement\AdvertisementWebController@edit')->name('view-update-ads');
 		Route::patch('ads/update/{id}', 'Advertisement\AdvertisementWebController@update')->name('update-ads');
 		Route::delete('ads/delete/{id}', 'Advertisement\AdvertisementWebController@destroy')->name('delete-ads');
 
+		Route::get('graphics', 'Graph\GraphController@index')->name('view-graphs');
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');
 		
-		Route::get('dashboard', 'Other\OtherController@dashboard')->name('dashboard');
-		Route::get('misc/{id}', 'Other\OtherController@create')->name('view-edit-others');
-		Route::post('misc/{id}', 'Other\OtherController@store')->name('edit-others');
+		Route::get('others', 'Other\OtherWebController@index')->name('view-others');
+		Route::get('others/none', 'Other\OtherWebController@edit')->name('view-none');
+		Route::get('others/create', 'Other\OtherWebController@show')->name('view-create-others');
+		Route::post('others/create', 'Other\OtherWebController@store')->name('create-others');
+		Route::get('others/update', 'Other\OtherWebController@viewUpdate')->name('view-update-others');
+		Route::patch('others/update/{id}', 'Other\OtherWebController@update')->name('update-others');
 
-		Route::get('markasread', 'Other\OtherController@markasread');
-		Route::get('unread', 'Other\OtherController@unread')->name('unread-notifs');
-		Route::get('/notifications', 'Other\OtherController@notifications')->name('all-notifications');
+		Route::get('dashboard', 'Other\OtherWebController@dashboard')->name('dashboard');
+		Route::get('misc/{id}', 'Other\OtherWebController@create')->name('view-edit-others');
+		Route::post('misc/{id}', 'Other\OtherWebController@store')->name('edit-others');
+
+		Route::get('markasread', 'Other\OtherWebController@markasread');
+		Route::get('unread', 'Other\OtherWebController@unread')->name('unread-notifs');
+		Route::get('/notifications', 'Other\OtherWebController@notifications')->name('all-notifications');
+
+		Route::get('tracking-map/{current_lat},{current_lng},{last_lat},{last_lng}', 'Other\OtherWebController@map')->name('tracking-map');
+
 	});
 });
 

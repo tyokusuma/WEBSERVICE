@@ -16,7 +16,7 @@ class CreateAdvertisementsTable extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ads_image', 255);
+            $table->string('ads_image');
             $table->integer('click_count')->unsigned()->nullable();
             $table->integer('showing_count')->unsigned()->nullable();
             $table->string('choosen', 1)->default(Advertisement::ADS_UNCHOOSEN);

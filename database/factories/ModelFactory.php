@@ -40,13 +40,15 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'email'=> $faker->unique()->safeEmail,
         'password' => bcrypt('password'),
         'gender' => '0',
-        'phone' => 81320561331,
+        'phone' => '085721024770',
         'profile_image' => 'pp.jpeg',
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
         'reset_password' => $verified == User::VERIFIED_USER ? null : User::generateResetPassword(),
         'admin' => User::REGULER_USER,
         'invite_friends' => $faker->randomElement([2, 4, 6, 8, 10]),
+        'gps_latitude' => -6.9053654,
+        'gps_longitude' => 107.6157788,
     ];
 });
 
@@ -105,6 +107,7 @@ $factory->define(City::class, function (Faker\Generator $faker) {
 
 $factory->define(Category::class, function (Faker\Generator $faker) {
     return [
+        'type' => 'kendaraan',
         'category_type' => $driver = $faker->randomElement(['taksi', 'abang']),
         'subcategory_type' => $driver == 'taxi' ? $faker->randomElement(['bluebird', 'gemah ripah']) : $faker->randomElement(['kolek', 'es buah', 'nasi goreng']),
     ];
@@ -145,7 +148,7 @@ $increment = 0;
 $factory->define(Other::class, function (Faker\Generator $faker) {
     return [
         'invite_friends' => 10,
-        'yearly_price' => 225000,
+        'annual_price' => 225000,
         'selling_price' => 675000,
     ];
 });
@@ -169,7 +172,7 @@ $factory->define(Transaction::class, function (Faker\Generator $faker) {
         'order_date' => '2017-06-15',
         'order_time' => '18:22:30',
         'status_order' => $faker->randomElement([Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3]), 
-        'satisfaction_level' => $faker->randomElement([Transaction::SATISFACTION_LEVEL_1, Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3]),
+        'satisfaction_level' => $faker->randomElement([Transaction::SATISFACTION_LEVEL_1, Transaction::SATISFACTION_LEVEL_2, Transaction::SATISFACTION_LEVEL_3]),
         'comment' => null,
         'current_destination' => $faker->streetAddress,
         'final_destination' => $faker->streetAddress,

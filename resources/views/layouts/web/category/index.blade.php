@@ -7,6 +7,7 @@
 	<table id="category" class="table table-bordred table-striped">
 	    <thead>
            	<th>ID</th>
+           	<th>Type</th>
             <th>Category Type</th>
             <th>Subcategory Type</th>
         </thead>
@@ -15,6 +16,7 @@
     		@foreach($categories as $category)
 		    	<tr>
 				    <td>{{ $skipped + $i }}</td>
+				    <td>{{ $category->type }}</td>
 				    <td>{{ $category->category_type }}</td>
 				    <td>{{ $category->subcategory_type }}</td>
 				    
@@ -42,6 +44,10 @@
 					        		<h4 class="modal-title custom_align" id="Heading">Edit Category</h4>
 					      		</div>
 					        	<div class="modal-body">
+					        		<div class="form-group">
+						        		<label>Type</label>
+					        			<input class="form-control" type="text" name="type" value="{{ $category->type }}">					        		
+					        		</div>
 					          		<div class="form-group">
 						        		<label>Category Type</label>
 					        			<input class="form-control" type="text" name="category_type" value="{{ $category->category_type }}">					        		
@@ -52,8 +58,8 @@
 					        		</div>						        	
 					      		</div>
 					          	<div class="modal-footer ">
-					        		<button type="submit" form="update{{ $category->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      			<input type="hidden" name="action" value="update{{ $category->id }}" />
+					        		<button onclick="edit_form()" type="submit" form="update{{ $category->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+					      			<!-- <input type="hidden" name="action" value="update{{ $category->id }}" /> -->
 					      		</div>
 					        </div>
 					  	</div>    
@@ -99,6 +105,8 @@
 
 @section('script')
 <script type="text/javascript">
-	
-</script>
+  function edit_submit() {
+    document.getElementById("update{{ $category->id }}").submit();
+   }    
+  </script>
 @endsection

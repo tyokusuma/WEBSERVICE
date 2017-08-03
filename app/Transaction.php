@@ -15,11 +15,13 @@ class Transaction extends Model
     const BOOKING = '1';
     const NOT_BOOKING = '0';
 
+    // Untuk kendaraan
     const TRANSACTION_STATUS_1 = 'menunggu konfirmasi';
-    const TRANSACTION_STATUS_2 = 'pesanan dibatalkan';
-    const TRANSACTION_STATUS_3 = 'pesanan berhasil';
-    const TRANSACTION_STATUS_4 = 'pesanan ditolak';
+    const TRANSACTION_STATUS_3 = 'pesanan berhasil'; //sampai di tujuan
     const TRANSACTION_STATUS_5 = 'perjalanan ke tempatmu';
+    const TRANSACTION_STATUS_8 = 'perjalanan ke tujuan bersama anda';
+    const TRANSACTION_STATUS_2 = 'pesanan dibatalkan'; //oleh buyer
+    const TRANSACTION_STATUS_4 = 'pesanan ditolak'; //oleh service
     const TRANSACTION_STATUS_6 = 'pesanan diterima';
     const TRANSACTION_STATUS_7 = 'pesanan diproses selama 30 menit ke depan';
 
@@ -56,6 +58,14 @@ class Transaction extends Model
         'deleted_at',
     ];
     
+    public function setStatusOrderAttribute($status_order) {
+        $this->attributes['status_order'] = strtolower($status_order);
+    }
+
+    public function setSatisfactionLevelAttribute($satisfaction_level) {
+        $this->attributes['satisfaction_level'] = strtolower($satisfaction_level);
+    }
+
     public function isBooking() {
         return $this->booking == Transaction::BOOKING;
     }

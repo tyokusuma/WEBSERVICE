@@ -125,6 +125,7 @@ class Handler extends ExceptionHandler
      */
     protected function convertValidationExceptionToResponse(ValidationException $e, $request)
     {
+
         $errors = $e->validator->errors()->getMessages();
 
         if ($this->isFrontend($request)) {

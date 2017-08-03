@@ -23,6 +23,14 @@ class Message extends Model
         'updated_at',
     ];
 
+    public function setTitleAttribute($title) {
+        $this->attributes['title'] = strtolower($title);
+    }
+
+    public function getTitleAttribute($title) {
+        return ucwords($title);
+    }
+
     public function messageDetail() {
         return $this->hasMany(MessageDetail::class);
     }

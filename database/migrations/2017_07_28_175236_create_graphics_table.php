@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOthersTable extends Migration
+class CreateGraphicsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateOthersTable extends Migration
      */
     public function up()
     {
-        Schema::create('others', function (Blueprint $table) {
+        Schema::create('graphics', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('invite_friends');
-            $table->integer('annual_price');
-            $table->integer('selling_price');
-            $table->softDeletes();
+            $table->integer('user_id')->unsigned();
+            $table->string('date');
+            $table->integer('count');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateOthersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('others');
+        Schema::dropIfExists('graphics');
     }
 }

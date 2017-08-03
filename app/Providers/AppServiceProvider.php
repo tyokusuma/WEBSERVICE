@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Graphic;
 use App\Http\Controllers\Sms\SmsController;
 use App\Mail\UserCreated;
 use App\Mail\UserMailChanged;
@@ -42,10 +43,15 @@ class AppServiceProvider extends ServiceProvider
         });
 
         User::updated(function($user) {
-            if($user->isDirty('email')) {
-                retry(5, function() use ($user) {
-                    // Mail::to($user)->send(new UserMailChanged($user));
-                }, 100);
+            if($user->isDirty('phone')) {
+                // retry(5, function() use ($user) {
+                //     Mail::to($user)->send(new UserMailChanged($user));
+                // }, 100);
+                $sms = new SmsController();
+                $phone = $user->phone;
+                $name = $user->full_name;
+                $verification_code = $user->verification_link;
+                $sms->sendVerificationPhone($phone, $name, $verification_code);
             }
         });
 
@@ -57,6 +63,25 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Transaction::created(function($transaction) {
+            // dd($transaction);
+
+            // $created = $transaction->created_at->toDateString();
+
+            // $findService = Graphic::where('date', $created)->first();
+            // if ($findService == null) {
+            //     $data['user_id'] = $transaction->main_service_id;
+            //     $data['date'] = $transaction->created_at->toDateString();
+            //     dd($data['date']);
+            //     $date['count'] = 1;
+            // }
+            // $findBuyer = Graphic::where('date', $created)->first();
+            // if ($findBuyer == null) {
+            //     $data['user_id'] = $transaction->buyer_id;
+            //     $data['date'] = $transaction->created_at->toDateString();
+            //     dd($data['date']);
+            //     $date['count'] = 1;
+            // }
+            // dd($find);
             // $data['user_id'] = $transaction->buyer_id;
             // $data['title'] = 'New Transaction';
             // $data['content'] = 'A new transaction with id '.$transaction->id.', and status order '.$transaction->status_order.' successfully created';

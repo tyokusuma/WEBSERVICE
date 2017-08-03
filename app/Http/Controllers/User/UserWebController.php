@@ -73,7 +73,7 @@ class UserWebController extends Controller
             'email' => 'required|email|unique:users', //email-> follow format valid email, unique:users -> must be unique in users table
             'password' => 'required|min:6|confirmed',
             'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
-            'phone' => 'required|regex:/^[0-9- \s]+$/',
+            'phone' => 'required|regex:/[0-9]{10,13}/',
             'profile_image' => 'required|image',
         ]);
 
@@ -187,7 +187,7 @@ class UserWebController extends Controller
             'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => 'min:6|confirmed',
             'gender' => 'in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
-            'phone' => 'regex:/^[0-9- \s]+$/',
+            'phone' => 'regex:/[0-9]{10,13}/',
             'profile_image' => 'image',
         ]);
 

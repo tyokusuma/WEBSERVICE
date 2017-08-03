@@ -1,6 +1,6 @@
 <section class="content-header">
     <h1>
-        @yield('content-subheader')
+        <span class="underLine">@yield('content-subheader')</span>
     </h1>
 </section>
 

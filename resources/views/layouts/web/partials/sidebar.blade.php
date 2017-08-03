@@ -27,8 +27,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-users') }}"><i class="fa fa-plus" aria-hidden="true"> <span class="dropdown">Add new user</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-users') }}"><i class="fa fa-eye" aria-hidden="true"><span class="dropdown">View all users data</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-users') }}"><i class="fa fa-plus" aria-hidden="true"></i><span class="dropdown">Add new user</span></a></li>
+            <li class="treeview"><a href="{{ route('view-users') }}"><i class="fa fa-eye" aria-hidden="true"></i><span class="dropdown">View all users data</span></a></li>
           </ul>
         </li>
 
@@ -40,8 +40,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-categories') }}"><i class="fa fa-plus" aria-hidden="true"> <span class="dropdown">Add new category</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-categories') }}"><i class="fa fa-eye" aria-hidden="true"><span class="dropdown">View all categories data</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-categories') }}"><i class="fa fa-plus" aria-hidden="true"></i><span class="dropdown">Add new category</span></a></li>
+            <li class="treeview"><a href="{{ route('view-categories') }}"><i class="fa fa-eye" aria-hidden="true"></i><span class="dropdown">View all categories data</span></a></li>
           </ul>
         </li>
 
@@ -63,8 +63,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-servicedetails') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new service detail</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-servicedetails') }}"><i class="fa fa-eye" aria-hidden="true"><span>View all services and details</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-servicedetails') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new service detail</span></a></li>
+            <li class="treeview"><a href="{{ route('view-servicedetails') }}"><i class="fa fa-eye" aria-hidden="true"></i><span>View all services and details</span></a></li>
           </ul>
         </li>
 
@@ -76,8 +76,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-armadas') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new armada</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-armadas') }}"><i class="fa fa-eye" aria-hidden="true"><span>View all armada</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-armadas') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new armada</span></a></li>
+            <li class="treeview"><a href="{{ route('view-armadas') }}"><i class="fa fa-eye" aria-hidden="true"></i><span>View all armada</span></a></li>
           </ul>
         </li>
 
@@ -89,10 +89,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-provinces') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new province</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="ionicons ion-earth" aria-hidden="true"><span>View provinces</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-create-cities') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new city</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-cities') }}"><i class="fa fa-university" aria-hidden="true"><span>View city</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-provinces') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new province</span></a></li>
+            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="fa fa-globe" aria-hidden="true"></i><span>View provinces</span></a></li>
+            <li class="treeview"><a href="{{ route('view-create-cities') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new city</span></a></li>
+            <li class="treeview"><a href="{{ route('view-cities') }}"><i class="fa fa-university" aria-hidden="true"></i><span>View city</span></a></li>
           </ul>
         </li>
 
@@ -104,9 +104,19 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-ads') }}"><i class="fa fa-plus" aria-hidden="true"> <span>Add new ads</span></i></a></li>
-            <li class="treeview"><a href="{{ route('view-ads') }}"><i class="fa fa-picture-o" aria-hidden="true"><span>Choose ads</span></i></a></li>
+            <li class="treeview"><a href="{{ route('view-create-ads') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new ads</span></a></li>
+            <li class="treeview"><a href="{{ route('view-ads') }}"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Choose ads</span></a></li>
+            <li class="treeview"><a href="{{ route('view-others') }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i><span>Setting Invite Friends, and Price</span></a></li>
           </ul>
+        </li>
+
+        <!-- Chart menu -->
+        <li class="treeview">
+          <a href="{{ route('view-graphs') }}"><i class="fa fa-line-chart"></i> <span>Statistics</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
         </li>
 
         <!-- Logout -->

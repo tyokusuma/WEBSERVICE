@@ -21,8 +21,9 @@ class TransactionWebController extends Controller
         {
             $mainservices = $transaction->mainservices;
             $buyers = $transaction->buyers;
-            // $categories = $transaction->mainservices()->has('services')->get();
+            $categories = $transaction->mainservices->service->category;
         }
+
         $notifs = request()->get('notifs');
         return view('layouts.web.transaction.index')->with('transactions', $transactions)->with('notifs', $notifs);
     }

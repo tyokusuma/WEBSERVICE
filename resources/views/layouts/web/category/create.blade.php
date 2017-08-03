@@ -8,6 +8,17 @@
    			<form action="{{ route('create-categories') }}" method="post" role="form">
 	       	{{ csrf_field() }}
 	       	
+	       	<div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
+                <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
+                <div class="col-sm-6 col-sm-offset-1 form-style">
+	        		<input type="text" name="type" class="form-control" placeholder="Type"/>
+	                @if ($errors->has('type'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('type') }}</strong>
+		               	</span>
+		           	@endif
+                </div>
+            </div>
 	       	<div class="form-group {{ $errors->has('category_type') ? ' has-error' : '' }}">
               	<label class="col-sm-3 control-label">Category Type <span class="asterisk">*</span></label>
               	<div class="col-sm-7 col-sm-offset-1 form-style">

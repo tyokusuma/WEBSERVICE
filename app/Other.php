@@ -12,7 +12,7 @@ class Other extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'invite_friends',
-        'yearly_price',
+        'annual_price',
         'selling_price',
     ];
 

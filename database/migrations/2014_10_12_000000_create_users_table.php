@@ -24,6 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('gender', 1); 
             $table->string('phone');
             // $table->bigInteger('phone')->unsigned();
+            $table->double('gps_latitude', 11,6)->nullable(); 
+            $table->double('gps_longitude', 11,6)->nullable();
             $table->string('profile_image', 255);
             $table->integer('verification_link')->unsigned()->nullable(); 
             $table->string('reset_password', 255)->nullable(); 

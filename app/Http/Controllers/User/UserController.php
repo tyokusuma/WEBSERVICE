@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Sms\SmsController;
 use App\Mail\UserCreated;
 use App\Notifications\AdminNotification;
 use App\Service;
@@ -10,6 +11,7 @@ use App\User;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
@@ -78,14 +80,15 @@ class UserController extends ApiController
      */
     public function store(Request $request)
     {
-        // dd($request->full_name);
         $rules = [
-            'full_name' => 'required',
-            'email' => 'required|email|unique:users', //email-> follow format valid email, unique:users -> must be unique in users table
+            'full_name' => 'required|regex:/^[a-zA-Z. ]+$/',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6|confirmed',
             'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
-            'phone' => 'required',
+            'phone' => 'required|regex:/[0-9]{10,13}/',
             'profile_image' => 'required|image',
+            'gps_latitude' => 'required',
+            'gps_longitude' => 'required',
         ];
 
         $this->validate($request, $rules);
@@ -125,7 +128,11 @@ class UserController extends ApiController
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();
+        if($id != $user->id) {
+            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        }
+        // $user = User::findOrFail($id);
 
         return $this->showOne($user);
     }
@@ -139,8 +146,23 @@ class UserController extends ApiController
      */
     public function update(Request $request, $id)
     {
-        // dd($request->full_name);
-        $user = User::findOrFail($id);
+        $user = Auth::user();
+        if($id != $user->id) {
+            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        }
+        $rules = [
+            'full_name' => 'regex:/^[a-zA-Z. ]+$/',
+            'email' => 'email|unique: users,email',
+            'password' => 'min:6|confirmed',
+            'gender' => 'in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
+            'phone' => 'regex:/[0-9]{10,13}/',
+            'profile_image' => 'nullable|image',
+            'gps_latitude' => 'required',
+            'gps_longitude' => 'required',
+        ];
+
+        $this->validate($request, $rules);
+        // $user = User::findOrFail($id);
 
         if ($request->has('user_code')) {
             return $this->errorResponse('Sorry, you can\'t edit the user code', 409);
@@ -150,66 +172,50 @@ class UserController extends ApiController
             return $this->errorResponse('Sorry, you can\'t edit the admin code', 409);
         }
 
-        // if ($request->has('admin')) {
-        //     return $this->errorResponse('Sorry, you can\'t edit the admin status', 409);
-        // }
+        if ($request->has('admin')) {
+            return $this->errorResponse('Sorry, you can\'t edit the admin status', 409);
+        }
 
         if ($request->hasFile('profile_image')) {
             Storage::delete($user->profile_image);
 
-            $user->profile_image = $request->profile_image->store('');
+            $user['profile_image'] = $request->profile_image->store('');
         }
-        // if ($request->has('full_name')) {
-        //     return $this->errorResponse('Sorry, you can\'t edit your name', 409);
-        // }
-
+        
         if ($request->has('email') && $user->email != $request->email) {
             $user['verified'] = User::UNVERIFIED_USER;
             $user['verification_link'] = User::generateVerificationEmail();
-            $user->email = $request->email;
+            $user['email'] = $request->email;
         }
 
         if ($request->has('phone')) {
-            $user->phone = $request->phone;
+            $user['phone'] = $request->phone;
         }
 
         if ($request->has('password')) {
-            $user->password = bcrypt($request->password);
+            return $this->errorResponse('Sorry, you need token to change your password', 409);
         }
 
         if ($request->has('full_name')) {
-            $user->full_name = $request->full_name;            
+            $user['full_name'] = $request->full_name; 
         }
 
         if ($request->has('verified')) {
-            $user->verified = $request->verified;            
+            $user['verified'] = $request->verified;            
         }
 
         if ($request->has('gender')) {
-            $user->gender = $request->gender;            
-        }
-
-        if ($request->has('profile_image')) {
-            $user->profile_image = $request->profile_image;
+            $user['gender'] = $request->gender;            
         }      
+
+        $user['gps_latitude'] = $request->gps_latitude;
+        $user['gps_longitude'] = $request->gps_longitude;
 
         // if ($user->isClean()) {
         //     return $this->errorResponse('Sorry, you need to change some field', 409);
         // }
 
-        $rules = [
-            'full_name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user->id, //email-> follow format valid email, unique:users -> must be unique in users table
-            'password' => 'required|min:6|confirmed',
-            'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
-            'phone' => 'required',
-            'profile_image' => 'nullable|image',
-        ];
-
-        $this->validate($request, $rules);
-
         $user->save();
-
         return $this->showOne($user);
     }
 
@@ -222,7 +228,7 @@ class UserController extends ApiController
     public function destroy($id)
     {
         // When delete user, we need to delete the service too
-        $user = User::findOrFail($id);
+        $user = Auth::user($id);
         $service = Service::where('main_service_id', $id)->get()->first();
 
         $user->delete();
@@ -235,33 +241,39 @@ class UserController extends ApiController
 
     }
 
-    public function resend($id)
+    // resend verification link for phone
+    public function resend($id) 
     {   
         $user = User::findOrFail($id);
         if ($user->isVerified()) {
             return $this->errorResponse('This user is already verified', 409);
         }
-        $user->verification_link = User::generateResetPassword();
+        $user->verification_link = User::generateVerificationPhone();
         $user->save();
 
+        $sms = new SmsController();
+        $phone = $user->phone;
+        $name = $user->full_name;
+        $verification_code = $user->verification_link;
+        $sms->sendVerificationPhone($phone, $name, $verification_code);
         // retry(5, function() use ($user) {
                 // Mail::to($user->email)->send(new UserCreated($user));
             // }, 100);
 
-        return $this->showMessage('The verification email has been resend');
+        return $this->showMessage('The verification number has been resend to your phone');
     }
 
-    public function verify($token)
+    public function verify($id, $token)
     {
-        $user = User::where('verification_link', $token)->firstOrFail();
-
+        $user = User::findOrFail($id);
+        if ($user->verification_link != $token) {
+            return $this->errorResponse('Sorry, your token doesn\'t match with our data', 409);
+        }
         $user->verified = User::VERIFIED_USER;
         $user->verification_link = null;
-
         $user->save();
 
         return $this->showMessage('The account has been verified succesfully');
-        // return view('layouts.http_response.verify');
     }
 
     /**
@@ -272,7 +284,8 @@ class UserController extends ApiController
      */
     public function createToken(CanResetPasswordContract $user)
     {
-        return $this->tokens->create($user);
+        $resetPassword_token = $this->tokens->create($user);
+        return $this->showOne($resetPassword_token, 200);
     }
 
     /**

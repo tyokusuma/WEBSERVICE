@@ -8,11 +8,6 @@ use App\Http\Controllers\Controller;
 
 class FavoriteWebController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     // public function index()
     // {
     //     $favorites = Favorite::paginate(10);

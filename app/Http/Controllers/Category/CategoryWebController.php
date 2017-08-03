@@ -13,11 +13,6 @@ use Illuminate\Support\Str;
 
 class CategoryWebController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $categories = Category::paginate(10);
@@ -25,23 +20,12 @@ class CategoryWebController extends Controller
         return view('layouts.web.category.index')->with('categories', $categories)->with('notifs', $notifs);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $notifs = request()->get('notifs');
         return view('layouts.web.category.create')->with('notifs', $notifs);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         if($request->subcategory_type != null) {
@@ -147,11 +131,13 @@ class CategoryWebController extends Controller
         if ($request->subcategory_type == null ) {
             $validator = Validator::make($request->all(), [
                 'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
+                'type' => 'required|regex:/^[a-zA-Z ]+$/',
             ]);            
         } else {
             $validator = Validator::make($request->all(), [
                 'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
                 'subcategory_type' => 'regex:/^[a-zA-Z ]+$/',
+                'type' => 'required|regex:/^[a-zA-Z ]+$/',
             ]);
         }
 
@@ -168,35 +154,16 @@ class CategoryWebController extends Controller
         return redirect()->route('create-categories')->with('notifs', $notifs);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $findById = Category::findOrFail($id);
@@ -316,9 +283,11 @@ class CategoryWebController extends Controller
 
         if ($valid == true) {
             if ($request->subcategory_type == null ) {
+                $findById['type'] = $request['type'];
                 $findById['category_type'] = $request['category_type'];
                 $findById->save();            
             } else {
+                $findById['type'] = $request['type'];
                 $findById['category_type'] = $request['category_type'];
                 $findById['subcategory_type'] = $request['subcategory_type'];
                 $findById->save();            
@@ -329,12 +298,6 @@ class CategoryWebController extends Controller
         return redirect()->route('view-categories')->with('notifs', $notifs);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         // When delete category, we need to delete the category_id from service, favorite first

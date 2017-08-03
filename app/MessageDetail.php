@@ -24,6 +24,14 @@ class MessageDetail extends Model
         'updated_at',
     ];
 
+    public function setContentAttribute($content) {
+        $this->attributes['content'] = strtolower($content);
+    }
+
+    public function getContentAttribute($content) {
+        return ucfirst($content);
+    }
+
     public function message() {
         return $this->belongsTo(Message::class, 'message_id');
     }

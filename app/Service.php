@@ -39,10 +39,10 @@ class Service extends Model
     	'license_platenumber',
     	'vehicle_type',
         'category_id',
-        'verified_service',
-        'setting_mode',
-        'status',
-        'available',
+        'verified_service', //verified, unverified
+        'setting_mode', //online, offline
+        'status', //active, suspend
+        'available', //available, unavailable khusus service kendaraan, seperti bemo, taksi, becak, bajaj, bentor, ojek
         'armada',  //khusus taksi
         'id_driver',  //khusus taksi
     ];
@@ -57,7 +57,7 @@ class Service extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function mainservices() {
+    public function mainservice() {
         return $this->belongsTo(MainService::class);
     }
 }

@@ -8,8 +8,9 @@
            	<th>ID</th>
            	<th>Buyer Name</th>
             <th>Service Name</th>
-            <th>Category Type</th>
-            <th>Subcategory Type</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Tracking</th>
         </thead>
     	<tbody>
     		<?php $i = 1; $skipped = ($transactions->currentPage() * $transactions->perPage()) - $transactions->perPage(); ?>
@@ -23,6 +24,15 @@
 				    </td>
 				    <td>
 				    	<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p>
+				    </td>
+				    <td>
+				    	@if(strtolower($transaction->mainservices->service->category->type) == 'kendaraan' && ($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu'))
+				    		@if($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu')
+						    	<a href="{{ route('tracking-map', ['current_lat' => $transaction->mainservices->gps_latitude, 'current_lng' => $transaction->mainservices->gps_longitude, 'last_lat' => $transaction->buyers->gps_latitude, 'last_lng' => $transaction->buyers->gps_longitude]) }}"><p><button class="btn btn-warning btn-xs"><span class="fa fa-map-marker" aria-hidden="true"></span></button></p></a>
+					    	@elseif($transaction->status_order == 'perjalanan ke tujuan bersama anda')
+						    	<a href="{{ route('tracking-map', ['current_lat' => $transaction->mainservices->gps_latitude, 'current_lng' => $transaction->mainservices->gps_longitude, 'last_lat' => $transaction->latitude_destination, 'last_lng' => $transaction->longitude_destination]) }}"><p><button class="btn btn-warning btn-xs"><span class="fa fa-map-marker" aria-hidden="true"></span></button></p></a>
+					    	@endif
+				    	@endif
 				    </td>
 				    <td>
 				</tr>

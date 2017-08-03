@@ -12,52 +12,45 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+	Route::get('users/password/{id}/forgot', 'User\UserController@createToken');
+	Route::post('users/password/reset/{token}', 'User\UserController@reset');
+
+	Route::get('users/{id}/verify/{token}', 'User\UserController@verify')->name('verify');
+	Route::get('users/{id}/resend', 'User\UserController@resend')->name('resend');
+	Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+	Route::resource('users', 'User\UserController', ['only' => ['store', 'show', 'update', 'index']]);
+
+	Route::resource('buyers', 'Buyer\BuyerController@show');
+	Route::get('buyers/transactions', 'Transaction\TransactionController@getByIdBuyers');
+	Route::get('buyers/transactions/booking', 'Transaction\TransactionController@getByIdBookingBuyers');
+	Route::get('buyers/transactions/non-booking', 'Transaction\TransactionController@getByIdNonBookingBuyers');
+	Route::get('buyers/messages', 'Message\MessageController@getBuyerMessageById');
+	Route::get('buyers/messages-details/{id}', 'MessageDetail\MessageDetailController@getBuyerMessageDetailById');
+	Route::get('buyers/favorites', 'Favorite\FavoriteController@getFavoriteById');
+	Route::get('buyers/services/available/{category}', 'MainService\MainServiceController@index');
+
+	Route::get('mainservices', 'MainService\MainServiceController@show');
+	Route::get('mainservices/transactions', 'Transaction\TransactionController@getByIdServices');
+	Route::get('mainservices/transactions/booking', 'Transaction\TransactionController@getByIdBookingServices');
+	Route::get('mainservices/transactions/non-booking', 'Transaction\TransactionController@getByIdNonBookingServices');
+	Route::get('mainservices/transactions/today', 'Transaction\TransactionController@getByIdandDateForService');
+	Route::get('mainservices/messages', 'Message\MessageController@getServiceMessageById');
+	Route::get('mainservices/messages-details/{id}', 'MessageDetail\MessageDetailController@getServiceMessageDetailById');
 
 
-// Rekomendasi:
-// Buat url path dalam bentuk jamak/plural
+	Route::resource('services', 'Service\ServiceController', ['only' => ['store', 'update']]);
+
+	Route::resource('transactions', 'Transaction\TransactionController', ['only' => ['store', 'update']]);
 
 
-  // Route::resource('users', 'User\UserController', ['except' => ['create', 'edit']]);
+	Route::resource('favorites', 'Favorite\FavoriteController', ['only' => ['store', 'destroy']]);
 
-  // Route::resource('services', 'Service\ServiceController', ['except' => ['create', 'edit']]);
+	Route::resource('categories', 'Category\CategoryController', ['only' => ['index']]);
 
-  // // Route::resource('transactions', 'Transaction\TransactionController', ['only' => ['update']]);
+	Route::resource('messages', 'Message\MessageController', ['only' => ['store', 'show', 'destroy']]);
+	Route::resource('messages-details', 'MessageDetail\MessageDetailController', ['only' => ['store']]);
 
-  // Route::resource('favorites', 'Favorite\FavoriteController', ['except' => ['create', 'edit']]);
-
-  // Route::resource('categories', 'Category\CategoryController', ['except' => ['edit', 'create']]);
-
-
-Route::resource('users', 'User\UserController', ['only' => ['store', 'show', 'update', 'index']]);
-Route::post('users/password/reset/{token}', 'User\UserController@reset');
-
-Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['show', 'index']]);
-Route::get('buyers/transactions/{id}', 'Transaction\TransactionController@getByIdBuyers')->name('get-transactions-buyer');
-Route::get('buyers/transactions/booking/{id}', 'Transaction\TransactionController@getByIdBookingBuyers')->name('get-transactions-buyer-type-booking');
-Route::get('buyers/transactions/non-booking/{id}', 'Transaction\TransactionController@getByIdNonBookingBuyers')->name('get-transactions-buyer-type-now');
-
-
-Route::resource('mainservices', 'MainService\MainServiceController', ['only' => ['show', 'index']]);
-Route::get('mainservices/transactions/{id}', 'Transaction\TransactionController@getByIdServices')->name('get-transactions-service');
-Route::get('mainservices/transactions/booking/{id}', 'Transaction\TransactionController@getByIdBookingServices')->name('get-transactions-service-type-booking');
-Route::get('mainservices/transactions/non-booking/{id}', 'Transaction\TransactionController@getByIdNonBookingServices')->name('get-transactions-service-type-now');
-
-Route::resource('services', 'Service\ServiceController', ['only' => ['show', 'store', 'update', 'index']]);
-
-Route::resource('transactions', 'Transaction\TransactionController', ['except' => ['edit', 'create', 'update', 'destroy']]);
-
-
-Route::resource('favorites', 'Favorite\FavoriteController', ['only' => ['show', 'store', 'destroy', 'index', 'update']]);
-
-Route::resource('categories', 'Category\CategoryController', ['only' => ['show', 'index']]);
-
-Route::resource('messages', 'Message\MessageController', ['only' => ['store', 'show', 'destroy', 'index']]);
-Route::resource('messages-details', 'MessageDetail\MessageDetailController', ['only' => ['store', 'show', 'destroy', 'index']]);
-
-// Route::get('messages', 'Message\MessageController@index');
-// Route::post('messages', 'Message\MessageController@store');
-Route::name('verify')->get('users/verify/{token}', 'User\UserController@verify');
-Route::name('resend')->get('users/{id}/resend', 'User\UserController@resend');
-Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-// Route::get('ads', 'Advertisement\AdvertisementController', ['only' => 'index']);
+	Route::resource('ads', 'Advertisement\AdvertisementController', ['only' => 'update']);
+	// Route::get('messages', 'Message\MessageController@index');
+	// Route::post('messages', 'Message\MessageController@store');
+	// Route::get('ads', 'Advertisement\AdvertisementController', ['only' => 'index']);

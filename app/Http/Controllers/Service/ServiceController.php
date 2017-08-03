@@ -9,6 +9,8 @@ use App\MainService;
 use App\Service;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 /**
@@ -51,9 +53,13 @@ class ServiceController extends ApiController
             if ($findMainService != null) {
                 return $this->errorResponse('Sorry main service id already in the database it must unique', 409);
             }
+            $user = Auth::user()->id;
+            if($user != $request->main_service_id) {
+                return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+            }
         }
 
-        $find = Category::where('id', $request->category_id)->first();
+        $find = Category::findOrFail($request->category_id);
         switch (strtolower($find->category_type)) {
             case 'becak':
                 $rules = [
@@ -190,8 +196,12 @@ class ServiceController extends ApiController
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user()->id;
+        if($user != $request->main_service_id) {
+            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        }
+        
         $service = Service::findOrFail($id);
-
         if ($request->has('service_code')) {
             $this->errorResponse('Sorry you can\'t edit the service code', 409);
         }
@@ -201,60 +211,84 @@ class ServiceController extends ApiController
             $servicesWithoutOwn = Service::where('main_service_id', $mainServiceDB)->first()->id;
             if ($id != $servicesWithoutOwn) {
                 return $this->errorResponse('Sorry main service id already in the database it must unique', 409);
-            }        
+            }       
             $service->main_service_id = $request->main_service_id; 
         }
 
-        $find = Category::where('id', $request->category_id)->first();
+        if ($service->category_id !== $request->category_id) {
+            $service->verified_service = Service::UNVERIFIED_SERVICE;
+            $service->category_id = $request->category_id;
+        }
+
+        $find = Category::findOrFail($request->category_id);
         switch (strtolower($find->category_type)) {
             case 'becak':
                 $rules = [
-                    'main_service_id' => 'required|unique:services',
+                    'main_service_id' => 'required|numeric',
                     'ktp_image' => 'required|image',
                     'vehicle_image' => 'required|image',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $data = $request->all();
                 $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
 
-                $data['service_code'] = $serviceCode;
-                $data['sim_image'] = null;
-                $data['stnk_image'] = null; 
-                $data['license_platenumber'] = null; 
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-                $data['vehicle_type'] = null;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
-                $data['armada'] = Service::NOT_IN_ARMADA;
-                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+                if ($request->hasFile('ktp_image')) {
+                    Storage::delete($service->ktp_image);
+                    $service->ktp_image = $request->ktp_image->store('');
+                }
+
+                if ($request->hasFile('vehicle_image')) {
+                    Storage::delete($service->vehicle_image);
+                    $service['vehicle_image'] = $request->vehicle_image->store('');
+                }
+
+                $service->service_code = $serviceCode;
+                $service->sim_image = null;
+                $service->stnk_image = null; 
+                $service->license_platenumber = null; 
+                $service->verified_service = Service::UNVERIFIED_SERVICE;
+                $service->vehicle_type = null;
+                $service->status = Service::ACTIVE_SERVICE;
+                $service->available = Service::UNAVAILABLE_SERVICE;
+                $service->armada = Service::NOT_IN_ARMADA;
+                $service->id_driver = Service::NOT_HAVE_ID_DRIVER;
                 break;
             case 'abang':
                 $rules = [
-                    'main_service_id' => 'required|unique:services',
+                    'main_service_id' => 'required',
                     'ktp_image' => 'required|image',
                     'vehicle_image' => 'required|image',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $data = $request->all();
                 $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
-                $data['service_code'] = $serviceCode;
-                $data['sim_image'] = null;
-                $data['stnk_image'] = null; 
-                $data['license_platenumber'] = null; 
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-                $data['vehicle_type'] = null;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
-                $data['armada'] = Service::NOT_IN_ARMADA;
-                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
+
+                if ($request->hasFile('ktp_image')) {
+                    Storage::delete($service->ktp_image);
+                    $service->ktp_image = $request->ktp_image->store('');
+                }
+
+                if ($request->hasFile('vehicle_image')) {
+                    Storage::delete($service->vehicle_image);
+                    $service->vehicle_image = $request->vehicle_image->store('');
+                }
+
+                $service->service_code = $serviceCode;
+                $service->sim_image = null;
+                $service->stnk_image = null; 
+                $service->license_platenumber = null; 
+                $service->verified_service = Service::UNVERIFIED_SERVICE;
+                $service->vehicle_type = null;
+                $service->status = Service::ACTIVE_SERVICE;
+                $service->available = Service::UNAVAILABLE_SERVICE;
+                $service->armada = Service::NOT_IN_ARMADA;
+                $service->id_driver = Service::NOT_HAVE_ID_DRIVER;
                 break;
             case 'taksi':
                 $rules = [
-                    'main_service_id' => 'required|unique:services',
+                    'main_service_id' => 'required',
                     'ktp_image' => 'required|image',
                     'vehicle_image' => 'required|image',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
@@ -267,25 +301,45 @@ class ServiceController extends ApiController
                 ];
                 $armada = Armada::where('id_driver', $request->id_driver)->first();
                 if($armada == null) {
-                    $request['armada'] = '0';
+                    $request->armada = '0';
                 } else {
-                    $request['armada'] = '1';
+                    $request->armada = '1';
                 }
                 $this->validate($request, $rules);
-                $data = $request->all();
                 $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
-                $data['sim_image'] = $request->sim_image->store('');
-                $data['stnk_image'] = $request->stnk_image->store('');
-                $data['service_code'] = $serviceCode;
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
-                $data['armada'] = Service::IN_ARMADA;
+
+                if ($request->hasFile('ktp_image')) {
+                    Storage::delete($service->ktp_image);
+                    $service->ktp_image = $request->ktp_image->store('');
+                }
+
+                if ($request->hasFile('vehicle_image')) {
+                    Storage::delete($service->vehicle_image);
+                    $service->vehicle_image = $request->vehicle_image->store('');
+                }
+
+                if ($request->hasFile('sim_image')) {
+                    Storage::delete($service->sim_image);
+                    $service->sim_image = $request->sim_image->store('');
+                }
+
+                if ($request->hasFile('stnk_image')) {
+                    Storage::delete($service->stnk_image);
+                    $service->stnk_image = $request->stnk_image->store('');
+                }
+
+                $service->sim_image = $request->sim_image->store('');
+                $service->stnk_image = $request->stnk_image->store('');
+                $service->service_code = $serviceCode;
+                $service->verified_service = Service::UNVERIFIED_SERVICE;
+                $service->status = Service::ACTIVE_SERVICE;
+                $service->available = Service::UNAVAILABLE_SERVICE;
+                $service->armada = Service::IN_ARMADA;
 
                 break;
             default:
                 $rules = [
-                    'main_service_id' => 'required|unique:services',
+                    'main_service_id' => 'required',
                     'ktp_image' => 'required|image',
                     'sim_image' => 'required|image',
                     'stnk_image' => 'required|image',
@@ -296,18 +350,37 @@ class ServiceController extends ApiController
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $data = $request->all();
                 $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
-                $data['service_code'] = $serviceCode;
-                $data['sim_image'] = $request->sim_image->store('');
-                $data['stnk_image'] = $request->stnk_image->store('');
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
-                $data['armada'] = Service::NOT_IN_ARMADA;
-                $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-        }
 
+                if ($request->hasFile('ktp_image')) {
+                    Storage::delete($service->ktp_image);
+                    $service->ktp_image = $request->ktp_image->store('');
+                }
+
+                if ($request->hasFile('vehicle_image')) {
+                    Storage::delete($service->vehicle_image);
+                    $service->vehicle_image = $request->vehicle_image->store('');
+                }
+
+                if ($request->hasFile('sim_image')) {
+                    Storage::delete($service->sim_image);
+                    $service->sim_image = $request->sim_image->store('');
+                }
+
+                if ($request->hasFile('stnk_image')) {
+                    Storage::delete($service->stnk_image);
+                    $service->stnk_image = $request->stnk_image->store('');
+                }
+
+                $service->service_code = $serviceCode;
+                $service->sim_image = $request->sim_image->store('');
+                $service->stnk_image = $request->stnk_image->store('');
+                $service->status = Service::ACTIVE_SERVICE;
+                $service->available = Service::UNAVAILABLE_SERVICE;
+                $service->armada = Service::NOT_IN_ARMADA;
+                $service->id_driver = Service::NOT_HAVE_ID_DRIVER;
+                $service->verified_service = Service::UNVERIFIED_SERVICE;
+        }
         $service->save();
 
         return $this->showOne($service);
