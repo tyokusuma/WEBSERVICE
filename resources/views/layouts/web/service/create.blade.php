@@ -11,7 +11,7 @@
             <div class="form-group {{ $errors->has('main_service_id') ? ' has-error' : '' }}">
 	            <input type="text" class="hidden" id="setting_mode" name="setting_mode" value="1">	
                 <label class="col-sm-3 control-label">Service Name <span class="asterisk">*</span></label>
-                <div class="col-sm-6 col-sm-offset-1 form-style">
+                <div class="col-sm-8 col-sm-offset-1 form-style">
                   	<select id="main_service_id" name="main_service_id" class="form-control chosen-select mySelect" required>
                   		
                 	@foreach($users as $user)
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
 	    		<label class="col-sm-3 control-label">Choose category service <span class="asterisk">*</span></label>
-	    		<div class="col-sm-7 col-sm-offset-1 form-style funkyradio">
+	    		<div class="col-sm-8 col-sm-offset-1 form-style funkyradio">
 	    			@foreach($lists as $list)
 	    			<div class="funkyradio-info radio-inline">
 			            <input type="radio" name="category_type" id="category_type{{ $list[0]->category_type }}" value="{{ $list[0]->category_type }}"/>
@@ -134,7 +134,7 @@
 
 			<div class="form-group {{ $errors->has('category_id') ? ' has-error' : '' }}">
                 <label class="col-sm-3 control-label">Category Type <span class="asterisk">*</span></label>
-                <div class="col-sm-6 col-sm-offset-1 form-style">
+                <div class="col-sm-8 col-sm-offset-1 form-style">
                   	<select id="category_id" name="category_id" class="form-control chosen-select mySelect1" required>
 
                 	@foreach($categories as $category)
@@ -152,8 +152,8 @@
                 </div>	           	
             </div>
 
-            <div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block">
+            <div class="col-sm-8 col-sm-offset-3">
+		       	<button class="btn btn-success btn-block custom-btn">
 		           Register
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />

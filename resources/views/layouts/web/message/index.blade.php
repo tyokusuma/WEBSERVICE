@@ -38,10 +38,9 @@
             <div class="modal fade" id="delete-{{ $message->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="{{ route('delete-inbox', ['id' => $message->id]) }}" id="delete{{ $message->id }}" method="post" role="form">
+                        <form action="{{ route('delete-inbox', ['id' => $message->id, '_method' => 'DELETE']) }}" id="delete{{ $message->id }}" method="post" role="form">
                             {{ csrf_field() }}
-                            {{ method_field('DELETE') }}
-                            <input type="text" class="hidden" name="id" value="{{ $message->id }}"/>
+                            <!-- {{ method_field('DELETE') }} -->
                         </form>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span   class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>

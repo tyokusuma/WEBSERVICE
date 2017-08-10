@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -227,4 +228,6 @@ class UserWebController extends Controller
 
     //     return view('layouts.http_response.verify');
     // }
+
+    
 }

@@ -58,6 +58,6 @@ class Service extends Model
     }
 
     public function mainservice() {
-        return $this->belongsTo(MainService::class);
+        return $this->belongsTo(MainService::class, 'id');
     }
 }

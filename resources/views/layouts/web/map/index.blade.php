@@ -49,7 +49,7 @@
 
 		var options = //options default setting map, zoom buat level map zoom nya, center buat lokasi center dr map nya
 		{
-			zoom: 14,
+			zoom: 11,
 			center: myCenter,
 		}
 

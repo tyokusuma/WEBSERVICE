@@ -33,7 +33,7 @@ class AdminNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -68,10 +68,10 @@ class AdminNotification extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    // public function toBroadcast($notifiable)
-    // {
-    //     return new BroadcastMessage([
-    //         'message' => $this->message,
-    //     ]);
-    // }
+    public function toBroadcast($notifiable)
+    {
+        return new BroadcastMessage([
+            'message' => $this->message,
+        ]);
+    }
 }

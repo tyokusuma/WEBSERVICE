@@ -8,8 +8,7 @@
            	<th>ID</th>
            	<th>Buyer Name</th>
             <th>Service Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Order Date</th>
             <th>Tracking</th>
         </thead>
     	<tbody>
@@ -19,12 +18,7 @@
 				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $transaction->mainservices->full_name }}</td>
 				    <td>{{ $transaction->buyers->full_name }}</td>
-					<td>
-				    	<p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-pencil"></span></button></p>
-				    </td>
-				    <td>
-				    	<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" ><span class="glyphicon glyphicon-trash"></span></button></p>
-				    </td>
+				    <td>{{ $transaction->order_date }}</td>
 				    <td>
 				    	@if(strtolower($transaction->mainservices->service->category->type) == 'kendaraan' && ($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu'))
 				    		@if($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu')

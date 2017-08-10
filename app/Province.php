@@ -3,6 +3,7 @@
 namespace App;
 
 use App\City;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,5 +29,9 @@ class Province extends Model
 
     public function city() {
         return $this->hasOne(City::class);
+    }
+
+    public function user() {
+        return $this->hasMany(User::class);
     }
 }

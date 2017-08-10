@@ -39,16 +39,19 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'full_name'=> $faker->name,
         'email'=> $faker->unique()->safeEmail,
         'password' => bcrypt('password'),
-        'gender' => '0',
+        'gender' => $faker->randomElement([User::FEMALE_GENDER, User::MALE_GENDER]),
         'phone' => '085721024770',
+        'city_id' => $faker->randomElement([1,2,3,4]),
+        'province_id' => $faker->randomElement([1,2,3,4,5]),
         'profile_image' => 'pp.jpeg',
         'verified' => $verified = $faker->randomElement([User::VERIFIED_USER, User::UNVERIFIED_USER]),
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
-        'reset_password' => $verified == User::VERIFIED_USER ? null : User::generateResetPassword(),
+        'reset_password' => null,
         'admin' => User::REGULER_USER,
         'invite_friends' => $faker->randomElement([2, 4, 6, 8, 10]),
         'gps_latitude' => -6.9053654,
         'gps_longitude' => 107.6157788,
+        'expired_at' => null,
     ];
 });
 
@@ -61,12 +64,12 @@ $factory->define(Service::class, function (Faker\Generator $faker) {
         'stnk_image' => '3.jpg',
         'vehicle_image' => '4.jpg',
         'license_platenumber' => str_random(8),
-        'verified_service' => $verified = $faker->randomElement([Service::VERIFIED_SERVICE, Service::UNVERIFIED_SERVICE]),
+        'verified_service' => '1',
         'vehicle_type' => $faker->word,
         'category_id' => $idCategory = Category::inRandomOrder()->first()->id,
-        'setting_mode' => $faker->randomElement([Service::ONLINE_STATUS, Service::OFFLINE_STATUS]),
-        'status' => $faker->randomElement([Service::ACTIVE_SERVICE, Service::SUSPEND_SERVICE]), 
-        'available' => $faker->randomElement([Service::AVAILABLE_SERVICE, Service::UNAVAILABLE_SERVICE]),
+        'setting_mode' => '1',
+        'status' => '1', 
+        'available' => '1',
     ];
 });
 
@@ -76,6 +79,8 @@ $factory->define(Message::class, function (Faker\Generator $faker) {
         'user_id' => $faker->randomElement([1,2,3,4]),
         'read_admin' => Message::UNREAD_MESSAGE,
         'read_user' => Message::UNREAD_MESSAGE,
+        'deleted_by_user' => null,
+        'deleted_by_admin' => null,
     ];
 });
 
@@ -88,21 +93,11 @@ $factory->define(MessageDetail::class, function (Faker\Generator $faker) {
         'content' => $faker->paragraph($nbSentences = 3),
         'read_admin' => MessageDetail::UNREAD_MESSAGEDETAILS,
         'read_user' => MessageDetail::UNREAD_MESSAGEDETAILS,
+        'deleted_by_user' => null,
+        'deleted_by_admin' => null,
     ];
 });
 
-$factory->define(Province::class, function (Faker\Generator $faker) {
-    return [
-        'name_province' => $faker->paragraph($nbSentences = 1),
-    ];
-});
-
-$factory->define(City::class, function (Faker\Generator $faker) {
-    return [
-        'name_city' => $faker->paragraph($nbSentences = 1),
-        'province_id' => $faker->randomElement([1,2,3]),
-    ];
-});
 
 
 $factory->define(Category::class, function (Faker\Generator $faker) {
@@ -142,6 +137,19 @@ $increment = 0;
         'id_driver' => 'BB'.$increment,
         'driver_name' => $faker->name,
         'vehicle_platenumber' => 'B 1234 OK',        
+    ];
+});
+
+$factory->define(Province::class, function (Faker\Generator $faker) {
+    return [
+        'name_province' => $faker->paragraph($nbSentences = 1),
+    ];
+});
+
+$factory->define(City::class, function (Faker\Generator $faker) {
+    return [
+        'name_city' => $faker->paragraph($nbSentences = 1),
+        'province_id' => $faker->randomElement([1,2,3]),
     ];
 });
 

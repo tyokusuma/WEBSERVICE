@@ -54,9 +54,9 @@ Route::prefix('adminpanel')->group(function () {
 		// 		'store' => 'create-servicedetails',
 		// 		'update' => 'update-servicedetails'
 		// 	]]);
-		Route::get('servicedetails/{id}', 'Service\ServiceWebController@getImages')->name('get-images');
 		Route::get('servicedetails', 'Service\ServiceWebController@index')->name('view-servicedetails');
 		Route::get('servicedetails/add', 'Service\ServiceWebController@create')->name('view-create-servicedetails');
+		Route::get('servicedetails/{id}', 'Service\ServiceWebController@getImages')->name('get-images');
 		Route::post('servicedetails/add', 'Service\ServiceWebController@store')->name('create-servicedetails');
 		Route::patch('servicedetails/update/{id}', 'Service\ServiceWebController@update')->name('update-servicedetails');
 
@@ -144,7 +144,8 @@ Route::prefix('adminpanel')->group(function () {
 		Route::patch('ads/update/{id}', 'Advertisement\AdvertisementWebController@update')->name('update-ads');
 		Route::delete('ads/delete/{id}', 'Advertisement\AdvertisementWebController@destroy')->name('delete-ads');
 
-		Route::get('graphics', 'Graph\GraphController@index')->name('view-graphs');
+		Route::get('graphics', 'Graph\GraphController@create')->name('view-create-graphs');
+		Route::get('graphics_create', 'Graph\GraphController@show')->name('create-graphs');
 		Route::get('transactions', 'Transaction\TransactionWebController@index')->name('view-transactions');
 		Route::get('buyers', 'Buyer\BuyerWebController@index')->name('view-buyers');
 		
@@ -163,7 +164,9 @@ Route::prefix('adminpanel')->group(function () {
 		Route::get('unread', 'Other\OtherWebController@unread')->name('unread-notifs');
 		Route::get('/notifications', 'Other\OtherWebController@notifications')->name('all-notifications');
 
-		Route::get('tracking-map/{current_lat},{current_lng},{last_lat},{last_lng}', 'Other\OtherWebController@map')->name('tracking-map');
+		Route::get('tracking-map/currentLat={current_lat}&currentLng={current_lng}&lastLat={last_lat}&lastLng={last_lng}', 'Other\OtherWebController@map')->name('tracking-map');
+
+		Route::get('event', 'Other\OtherWebController@event');
 
 	});
 });

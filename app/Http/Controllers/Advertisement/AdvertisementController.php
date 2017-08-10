@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class AdvertisementController extends ApiController
 {
     public function __construct() {
-        $this->middleware('auth:api')->only(['update']);
+        
     }
     /**
      * Update the specified resource in storage.
@@ -36,5 +36,19 @@ class AdvertisementController extends ApiController
 
         $ads->save();
         return $this->showOne($ads);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $ads = Advertisement::where('choosen', '1')->get();
+        if ($ads == null) {
+            return $this->errorResponse('You don\'t have any ads', 404);
+        }
+        return $this->showAll($ads);
     }
 }

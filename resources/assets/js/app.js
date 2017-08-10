@@ -15,8 +15,17 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+// Vue.component('example', require('./components/Example.vue'));
+Vue.component('notification', require('./components/Notification.vue'));
 
 const app = new Vue({
     el: '#app',
+    created(){
+    	Echo.channel('admin')
+    	    .listen('AdminNotificationEvent', (e) => {
+    	    	console.log('listening channel public admin');
+    	        console.log(e);
+    	    });
+    }
+    
 });

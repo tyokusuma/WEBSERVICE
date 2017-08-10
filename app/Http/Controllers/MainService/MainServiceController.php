@@ -25,7 +25,7 @@ class MainServiceController extends ApiController
      */
     public function index($category)
     {
-        // filter available service by category_type, availabel, setting_mode
+        // filter available service by category_type, available, setting_mode
         // $mainservices = MainService::has('service')->with(['service.category'])->get();
         $data = [];
         $cats = Category::where('category_type', strtolower($category))->get();
@@ -62,5 +62,23 @@ class MainServiceController extends ApiController
         return response()->json([
                 'data' => $mainservice,
         ], 200);
+    }
+
+    public function available($category_id) {
+        $buyer = Auth::user();
+        $mainsA = MainService::where('city_id', $buyer->city_id)->whereHas('service')->get();
+        
+        $services = Service::where('available', '1')->where('category_id', $category_id)->get();
+        foreach($services as $index => $service) {
+            $data_service[$index] = $service->main_service_id;
+        }
+
+        $mainsB = MainService::whereIn('id', $data_service)->with('service')->get();
+        $users = MainService::all();
+        $intersect = $mainsA->intersect($mainsB);
+        $intersect->all();
+        return response()->json([
+                'data' => $intersect,
+            ], 200);
     }
 }

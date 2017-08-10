@@ -55,7 +55,7 @@
             </div>
 
             <div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block">
+		       	<button class="btn btn-success btn-block custom-btn">
 		           Register
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />

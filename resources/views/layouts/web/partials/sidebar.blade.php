@@ -112,10 +112,7 @@
 
         <!-- Chart menu -->
         <li class="treeview">
-          <a href="{{ route('view-graphs') }}"><i class="fa fa-line-chart"></i> <span>Statistics</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+          <a href="{{ route('view-create-graphs') }}"><i class="fa fa-line-chart"></i> <span>Statistics</span>
           </a>
         </li>
 

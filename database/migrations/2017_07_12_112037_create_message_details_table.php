@@ -21,6 +21,8 @@ class CreateMessageDetailsTable extends Migration
             $table->longText('content');
             $table->string('read_admin', 1);
             $table->string('read_user', 1);
+            $table->timestamp('deleted_by_user')->nullable();
+            $table->timestamp('deleted_by_admin')->nullable();
             $table->timestamps();
             
             $table->foreign('message_id')->references('id')->on('messages');

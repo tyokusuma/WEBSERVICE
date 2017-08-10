@@ -2909,6 +2909,9 @@ table#datatable tr.error td.table-action-hide a {
    
    .signup-footer .pull-left,
    .signup-footer .pull-right {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
       float: none !important;
       text-align: center;
       padding-bottom: 2% !important;
@@ -3678,4 +3681,8 @@ div.boxNone {
    position: absolute;
    bottom: 30%;
    right: 15%;
+}
+
+.custom-btn {
+   margin-top: 12% !important;
 }

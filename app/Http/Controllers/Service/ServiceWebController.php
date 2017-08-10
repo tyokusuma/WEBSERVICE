@@ -399,8 +399,8 @@ class ServiceWebController extends Controller
     public function getImages($images)
     {
         
-        $images = Input::all();
-        $notifs = request()->get('notifs');
-        return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
+        // $images = Input::all();
+        // $notifs = request()->get('notifs');
+        // return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
     }
 }

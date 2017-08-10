@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Other;
 
+use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Other;
 use Illuminate\Http\Request;
@@ -107,11 +108,12 @@ class OtherWebController extends Controller
 
     public function markasread() 
     {
-        Auth::user()->unreadNotifications->markAsRead();
+        auth()->user()->unreadNotifications->markAsRead();
     }
 
     public function dashboard()
     {
+        event(new AdminNotificationEvent('-----------------------------------------------------'));
         $notifs = Request()->get('notifs');
         return view('layouts.web.dashboard')->with('notifs', $notifs);
     }
@@ -131,5 +133,10 @@ class OtherWebController extends Controller
     {
         $notifs = Request()->get('notifs');
         return view('layouts.web.map.index')->with('notifs', $notifs)->with('current_lat', $current_lat)->with('current_lng', $current_lng)->with('last_lat', $last_lat)->with('last_lng', $last_lng);
+    }
+
+    public function event() {
+        $user = auth()->user();
+        return event(new AdminNotificationEvent('First attempt'));
     }
 }

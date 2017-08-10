@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Category;
+use App\Events\AdminNotificationEvent;
 use App\Graphic;
 use App\Http\Controllers\ApiController;
 use App\MainService;
@@ -70,6 +71,11 @@ class TransactionController extends ApiController
     public function store(Request $request)
     {
         $user = Auth::user()->id;
+        $findService = Service::where('main_service_id', $user)->first();
+        if ($findService != null) {
+            return $this->errorResponse('Sorry you\'re not a buyer, you can\'t create transaction', 409);
+        }
+
         if ($user != $request->buyer_id) {
             return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
         }
@@ -131,22 +137,48 @@ class TransactionController extends ApiController
         
         // Create notification for admin
         $msgAdmin = 'New transaction created with code '.$data['order_code'];
+        event(new AdminNotificationEvent($msgAdmin));
         foreach($this->admin as $admin) {
             $admin->notify(new AdminNotification($msgAdmin));
         }
 
-        // Find and create data for graphics
-        dd($transaction->created_at->toDateString());
-        $findGraphic = Graphic::where('user_id', $user)->where('date', $transaction->created_at);
+        // Find and create data for graphics for buyer
+        $graphicdate = $transaction->created_at->toDateString();
+        $findGraphic = Graphic::where('user_id', $user)->where('date', $graphicdate)->first();
+        if($findGraphic == null) {
+            $graphic = new Graphic([
+                    'user_id' => $user, 
+                    'date' => $graphicdate,
+                    'count' => 1,
+                ]);
+            $graphic->save();
+        } else {
+            $count = $findGraphic->count;
+            $count = $count + 1;
+            $findGraphic->count = $count;
+            $findGraphic->save();
+        }
+
+        // Find and create data for graphics for service
+        $graphicdate = $transaction->created_at->toDateString();
+        $findGraphic = Graphic::where('user_id', $transaction->main_service_id)->where('date', $graphicdate)->first();
+        if($findGraphic == null) {
+            $graphic = new Graphic([
+                    'user_id' => $transaction->main_service_id, 
+                    'date' => $graphicdate,
+                    'count' => 1,
+                ]);
+            $graphic->save();
+        } else {
+            $count = $findGraphic->count;
+            $count = $count + 1;
+            $findGraphic->count = $count;
+            $findGraphic->save();
+        }
+
         return $this->showOne($transaction, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -163,7 +195,12 @@ class TransactionController extends ApiController
      */
     public function update(Request $request, $id) //only can update status_order
     {   
+        $user = Auth::user()->id;
         $transaction = Transaction::findOrFail($id);
+
+        if ($user != $request->buyer_id) {
+
+        }
 
         if ($request->has('main_service_id')||$request->has('buyer_id')||$request->has('current_destination')||$request->has('final_destination')||$request->has('distance')||$request->has('traveling_time')) {
             return $this->errorResponse('Sorry, you can\'t edit these field, please check the allowed request update', 409);
@@ -211,6 +248,7 @@ class TransactionController extends ApiController
         
         // Create notification for admin
         $msgAdmin = 'New transaction created with code '.$data['order_code'];
+        event(new AdminNotificationEvent($msgAdmin));
         foreach($this->admin as $admin) {
             $admin->notify(new AdminNotification($msgAdmin));
         }   
@@ -218,12 +256,20 @@ class TransactionController extends ApiController
         return $this->showOne($transaction);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function updatePriority(Request $request) {
+        foreach($request->transactions as $transaction) {
+            $find = Transaction::findOrFail($transaction->id);
+            $find['priority'] = $transaction->priority;
+            $find->save();
+        }
+        $today = Carbon::now()->toDateString();
+        $user = Auth::user()->id;
+        $transactions = Transaction::where('main_service_id', $user)->where('order_date', $today)->sortBy('priority');
+        return response()->json([
+                'data' => $priority,
+            ], 200);
+    }
+
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -269,7 +315,7 @@ class TransactionController extends ApiController
 
     public function getByIdBuyers() {
         $id = Auth::user()->id;
-        $transactions = Transaction::where('buyer_id', $id)->with('mainservices')->with('buyers')->paginate(10);
+        $transactions = Transaction::where('buyer_id', $id)->whereIn('status_order', ['pesanan berhasil', 'pesanan dibatalkan', 'pesanan ditolak'])->with('mainservices')->with('buyers')->paginate(10);
 
         return response()->json([
             'data' => $transactions,
@@ -278,7 +324,7 @@ class TransactionController extends ApiController
 
     public function getByIdServices() {
         $id = Auth::user()->id;
-        $transactions = Transaction::where('main_service_id', $id)->with('mainservices')->with('buyers')->paginate(10);
+        $transactions = Transaction::where('main_service_id', $id)->whereIn('status_order', ['pesanan berhasil', 'pesanan dibatalkan', 'pesanan ditolak'])->with('mainservices')->with('buyers')->paginate(10);
 
         return response()->json([
             'data' => $transactions,
@@ -292,5 +338,9 @@ class TransactionController extends ApiController
         return response()->json([
                 'data' => $transactions,
             ], 200);
+    }
+
+    public function cancel($id) {
+
     }
 }

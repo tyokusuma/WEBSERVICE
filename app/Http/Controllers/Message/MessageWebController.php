@@ -13,7 +13,7 @@ class MessageWebController extends Controller
 {
     public function index()
     {
-        $messages = Message::with('users')->paginate(10);
+        $messages = Message::where('deleted_by_admin', null)->with('users')->paginate(10);
         foreach($messages as $message) {
             $count = MessageDetail::where('message_id', $message->id)->where('sender_id', $message->user_id)->where('read_admin', '0')->count();
             $message['count'] = $count;
@@ -82,12 +82,21 @@ class MessageWebController extends Controller
 
     public function destroy($id)
     {
-        $details = MessageDetail::where('message_id', $id)->get();
-        foreach($details as $detail) {
-            $detail->delete();            
+        dd('HERE');
+        $msg = Message::findOrFail($id);
+
+        $msgDetails = MessageDetail::where('message_id', $id)->get();
+        if($msgDetails != null) {
+            foreach($msgDetails as $msgDetail) {
+                $msgDetail['deleted_by_user'] = Carbon::now();
+                $msgDetail->save();
+            }
         }
-        $message = Message::findOrFail($id);
-        $message->delete();
+        
+        $msg['deleted_by_user'] = Carbon::now();
+        $msg->save();
+
+        flash('Your message successfully deleted')->success();
         $notifs = request()->get('notifs');
         return redirect()->route('view-inbox')->with('notifs', $notifs);
     }

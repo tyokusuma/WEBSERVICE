@@ -10,11 +10,10 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NotificationTriggerEvent implements ShouldBroadcast
+class Event
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
     /**
      * Create a new event instance.
      *
@@ -22,9 +21,7 @@ class NotificationTriggerEvent implements ShouldBroadcast
      */
     public function __construct()
     {
-         $this->data = array(
-            'power'=> '10'
-        );
+        //
     }
 
     /**
@@ -34,6 +31,6 @@ class NotificationTriggerEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['test-channel'];
+        return new PrivateChannel('channel-name');
     }
 }

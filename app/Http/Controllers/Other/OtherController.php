@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Other;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
+use App\Other;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class OtherController extends Controller
+class OtherController extends ApiController
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function termsApp()
     {
         //
     }
@@ -45,9 +46,11 @@ class OtherController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        $other = Other::all()->last();
+
+        return $this->showOne($other);
     }
 
     /**

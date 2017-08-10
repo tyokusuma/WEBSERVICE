@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Controller;
 use App\Message;
 use App\MessageDetail;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class MessageController extends ApiController
     public function index()
     {
         $id = Auth::user()->id;
-        $messages = Message::where('user_id', $id)->with('users')->with('messageDetail')->paginate(10);
+        $messages = Message::where('user_id', $id)->where('deleted_by_user', null)->with('users')->with('messageDetail')->paginate(10);
 
         // return response()->json(['data' => $messages, 'total' => $messages->count()], 200);
         return $this->showAllNew($messages);
@@ -60,16 +61,22 @@ class MessageController extends ApiController
      */
     public function destroy($id) //id message
     {
+        $user = Auth::user()->id;
+        $msg = Message::findOrFail($id);
+        if ($msg->user_id != $user) {
+            return $this->errorResponse('Sorry you don\'t have authorization to delete these message', 401);
+        }
+
         $msgDetails = MessageDetail::where('message_id', $id)->get();
         if($msgDetails != null) {
-            // dd('empty message');
             foreach($msgDetails as $msgDetail) {
-                $msgDetail->delete();
+                $msgDetail['deleted_by_user'] = Carbon::now();
+                $msgDetail->save();
             }
         }
         
-        $msg = Message::findOrFail($id);
-        $msg->delete();
+        $msg['deleted_by_user'] = Carbon::now();
+        $msg->save();
 
         return $this->showMessage('The message successfully deleted', 200);
     }

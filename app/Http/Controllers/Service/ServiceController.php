@@ -381,6 +381,10 @@ class ServiceController extends ApiController
                 $service->id_driver = Service::NOT_HAVE_ID_DRIVER;
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
         }
+
+        if ($service['status'] == '1' && $service['setting_mode'] == '1' && $service['verified_service'] == '1') {
+            $service['available'] = '1';
+        }
         $service->save();
 
         return $this->showOne($service);

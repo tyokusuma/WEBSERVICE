@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\City;
 use App\Graphic;
 use App\Message;
 use App\MessageDetail;
@@ -28,13 +29,17 @@ class User extends Authenticatable
     const ADMIN_USER = '1';
     const REGULER_USER = '0';
 
+    const PAYMENT_MONTHLY = '1';
+    const PAYMENT_YEARLY = '2';
+    const PAYMENT_BUY_FULL = '3';
+
     /**
      * The attributes that are mass assignable.
      * @SWG\Property(format="array")
      * @var array
      */
     protected $table = 'users';
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'expired_at'];
     protected $fillable = [
         'user_code',
         'admin_code',
@@ -50,6 +55,9 @@ class User extends Authenticatable
         'invite_friends',
         'gps_latitude',
         'gps_longitude',
+        'expired_at',
+        'city_id',
+        'province_id'
     ];
 
     /**
@@ -88,7 +96,7 @@ class User extends Authenticatable
     }
 
     public static function generateResetPassword() {
-        return str_random(40);
+        return rand(1111111, 9999999);
     }
 
     public function isAdmin() {
@@ -100,17 +108,25 @@ class User extends Authenticatable
     }
 
     public function messageDetail() {
-        return $this->hasOne(MessageDetail::class);
+        return $this->hasMany(MessageDetail::class);
     }
 
     public function messages() {
         return $this->hasMany(Message::class);
     }
     public function notification() {
-        return $this->hasOne(Notification::class);
+        return $this->hasMany(Notification::class);
     }
 
     public function graph() {
         return $this->hasMany(Graphic::class);
+    }
+
+    public function city() {
+        return $this->belongsTo(City::class);
+    }
+
+    public function province() {
+        return $this->belongsTo(Province::class);
     }
 }

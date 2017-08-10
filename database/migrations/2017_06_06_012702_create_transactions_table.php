@@ -31,6 +31,7 @@ class CreateTransactionsTable extends Migration
             $table->double('longitude_current', 11,6);
             $table->double('latitude_destination', 11,6);
             $table->double('longitude_destination', 11,6);
+            $table->integer('priority')->nullable();
             $table->decimal('distance', 5, 2);
             $table->unsignedInteger('traveling_time');
             $table->timestamps();

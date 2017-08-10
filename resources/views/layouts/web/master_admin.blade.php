@@ -25,11 +25,6 @@
 
         <link href="{{ asset('/bower_components/admin-lte/dist/css/style.default.css') }}" rel="stylesheet" type="text/css" />
 
-        <script>
-            window.Laravel = {!! json_encode([
-                    'csrfToken' => csrf_token(),
-                ]) !!};
-        </script>
         
     </head>
     <body class="skin-blue">
@@ -39,7 +34,6 @@
             </div>
             <div class="wrapper">
                 @include('layouts.web.partials.header', ['notifs' => $notifs])
-                
                 <div class="content-wrapper">
                 @include('layouts.web.partials.content')
                 </div>
@@ -59,9 +53,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script src="{{ asset ('/bower_components/admin-lte/plugins/chartjs/Chart.min.js') }}"></script>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 
     @yield('script')
+    
     <script type="text/javascript">
     jQuery('body').css({'overflow':'hidden'});
     jQuery(window).ready(function() {       
@@ -115,4 +109,12 @@
     </script>
     <!-- <script src="{{ asset ('/bower_components/admin-lte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script> -->
     </body>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.content-wrapper').css({
+                "min-height" : $('.sidebar').outerHeight(true) + "px"
+            });
+            // alert($('.sidebar').height());
+        });
+    </script>
 </html>

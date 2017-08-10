@@ -4,7 +4,7 @@
 @section('main-content')
     <div>
         <div class="box-header with-border">
-          <h3 class="box-title">Area Chart</h3>
+          <h3 class="box-title">Statistik transaksi dari {{ $full_name }} pada {{ $date }}</h3>
         </div>
         <div class="box-body">
           <div class="chart">
@@ -33,17 +33,17 @@
         var areaChart = new Chart(areaChartCanvas);
 
         var areaChartData = {
-          labels: ["Jan", "Feb", "March", "April", "May", "June", "July", "August", "Sept", "Oct", "Nov", "Dec"],
+          labels: {{ json_encode($days) }},
           datasets: [
             {
-              label: "Digital Goods",
+              label: "Statistik jumlah transaksi",
               fillColor: "rgba(60,141,188,0.9)",
               strokeColor: "rgba(60,141,188,0.8)",
               pointColor: "#3b8bba",
               pointStrokeColor: "rgba(60,141,188,1)",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(60,141,188,1)",
-              data: [28, 48, 40, 19, 86, 27, 90, 67, 58, 21, 7, 38]
+              data: {{ json_encode($data) }}
             }
           ]
         };
