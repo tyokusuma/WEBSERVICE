@@ -50,6 +50,7 @@ class Transaction extends Model
     	'longitude_destination',
     	'distance',
     	'traveling_time',
+        'priority',
     ];
 
     protected $hidden = [

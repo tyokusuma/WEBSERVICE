@@ -29,9 +29,10 @@ class User extends Authenticatable
     const ADMIN_USER = '1';
     const REGULER_USER = '0';
 
-    const PAYMENT_MONTHLY = '1';
-    const PAYMENT_YEARLY = '2';
-    const PAYMENT_BUY_FULL = '3';
+    const FREE_PAYMENT_A_MONTH = '0'; //free 1 bln
+    const PAYMENT_MONTHLY = '1'; // monthly
+    const PAYMENT_YEARLY = '2'; // yearly
+    const PAYMENT_BUY_FULL = '3'; //buying
 
     /**
      * The attributes that are mass assignable.
@@ -57,7 +58,8 @@ class User extends Authenticatable
         'gps_longitude',
         'expired_at',
         'city_id',
-        'province_id'
+        'province_id',
+        'payment',
     ];
 
     /**

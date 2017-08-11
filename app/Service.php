@@ -11,6 +11,9 @@ class Service extends Model
 { 	
     use SoftDeletes;
 
+    const STAYED_SHOP = '0';
+    const MOVEABLE_SHOP = '1';
+
     const ONLINE_STATUS = '1';
     const OFFLINE_STATUS = '0';
 
@@ -45,12 +48,17 @@ class Service extends Model
         'available', //available, unavailable khusus service kendaraan, seperti bemo, taksi, becak, bajaj, bentor, ojek
         'armada',  //khusus taksi
         'id_driver',  //khusus taksi
+        'rating',
+        'rating_total',
+        'rating_transactions_total',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
         'deleted_at',
+        'rating_total',
+        'rating_transactions_total',
     ];
 
     public function category() {

@@ -92,6 +92,7 @@ class ServiceController extends ApiController
                     'vehicle_image' => 'required|image',
                     'setting_mode' => 'required|in:'.Service::OFFLINE_STATUS.','.Service::ONLINE_STATUS,
                     'category_id' => 'required|numeric',    
+                    'location_abang' => 'required|in:'.Service::STAYED_SHOP.','.Service::MOVEABLE_SHOP,
                 ];
                 $this->validate($request, $rules);
                 $data = $request->all();
@@ -231,7 +232,6 @@ class ServiceController extends ApiController
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
 
                 if ($request->hasFile('ktp_image')) {
                     Storage::delete($service->ktp_image);
@@ -243,14 +243,13 @@ class ServiceController extends ApiController
                     $service['vehicle_image'] = $request->vehicle_image->store('');
                 }
 
-                $service->service_code = $serviceCode;
+                $service->available = Service::UNAVAILABLE_SERVICE;
                 $service->sim_image = null;
                 $service->stnk_image = null; 
                 $service->license_platenumber = null; 
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
                 $service->vehicle_type = null;
                 $service->status = Service::ACTIVE_SERVICE;
-                $service->available = Service::UNAVAILABLE_SERVICE;
                 $service->armada = Service::NOT_IN_ARMADA;
                 $service->id_driver = Service::NOT_HAVE_ID_DRIVER;
                 break;
@@ -263,7 +262,6 @@ class ServiceController extends ApiController
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
 
                 if ($request->hasFile('ktp_image')) {
                     Storage::delete($service->ktp_image);
@@ -275,7 +273,6 @@ class ServiceController extends ApiController
                     $service->vehicle_image = $request->vehicle_image->store('');
                 }
 
-                $service->service_code = $serviceCode;
                 $service->sim_image = null;
                 $service->stnk_image = null; 
                 $service->license_platenumber = null; 
@@ -306,7 +303,6 @@ class ServiceController extends ApiController
                     $request->armada = '1';
                 }
                 $this->validate($request, $rules);
-                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
 
                 if ($request->hasFile('ktp_image')) {
                     Storage::delete($service->ktp_image);
@@ -330,7 +326,6 @@ class ServiceController extends ApiController
 
                 $service->sim_image = $request->sim_image->store('');
                 $service->stnk_image = $request->stnk_image->store('');
-                $service->service_code = $serviceCode;
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
                 $service->status = Service::ACTIVE_SERVICE;
                 $service->available = Service::UNAVAILABLE_SERVICE;
@@ -350,7 +345,6 @@ class ServiceController extends ApiController
                     'category_id' => 'required|numeric',    
                 ];
                 $this->validate($request, $rules);
-                $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
 
                 if ($request->hasFile('ktp_image')) {
                     Storage::delete($service->ktp_image);
@@ -372,7 +366,6 @@ class ServiceController extends ApiController
                     $service->stnk_image = $request->stnk_image->store('');
                 }
 
-                $service->service_code = $serviceCode;
                 $service->sim_image = $request->sim_image->store('');
                 $service->stnk_image = $request->stnk_image->store('');
                 $service->status = Service::ACTIVE_SERVICE;
@@ -402,5 +395,63 @@ class ServiceController extends ApiController
                 'count' => $servicedetails->count(),
             ]);
 
+    }
+
+    public function findTaksi(Request $request)
+    {
+        $user = Auth::user();
+        $findArmadas = Armada::where('company_name', strtolower($request->company_name))->get();
+        if($findArmadas == null) {
+            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
+        }
+
+        foreach($findArmadas as $index => $findArmada) {
+            $data_armada[$index] = $findArmada->id_driver;
+        }
+        $services = Service::whereIn('id_driver', $data_armada)->where('available', '1')->get();
+        if($services == null) {
+            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
+        }
+
+        foreach($services as $key => $service) {
+            $data_service[$key] = $service->main_service_id;
+        }
+        $mainservices = MainService::whereIn('id', $data_service)->where('city_id', $user->city_id)->with('service')->paginate(10);
+        if($mainservices == null) {
+            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
+        }
+
+        return response()->json([
+                'data' => $mainservices,
+            ], 200);
+    }
+
+    public function findAbang(Request $request)
+    {
+        $user = Auth::user();
+        $findAbang = Category::where('subcategory_type', strtolower($request->subcategory_type))->get();
+        if($findAbang == null) {
+            return $this->errorResponse('Sorry we can\'t find any abang',404);
+        }
+        foreach($findAbang as $index => $find) {
+            $data_abang[$index] = $find->id;
+        }
+
+        $services = Service::whereIn('category_id', $data_abang)->where('available', '1')->get();
+        if($services == null) {
+            return $this->errorResponse('Sorry we can\'t find any abang',404);
+        }
+
+        foreach($services as $key => $service) {
+            $data_service[$key] = $service->main_service_id;
+        }
+        $mainservices = MainService::whereIn('id', $data_service)->where('city_id', $user->city_id)->with('service')->get();
+        if($mainservices == null) {
+            return $this->errorResponse('Sorry we can\'t find any abang',404);
+        }
+
+        return response()->json([
+                'data' => $mainservices,
+            ], 200);
     }
 }

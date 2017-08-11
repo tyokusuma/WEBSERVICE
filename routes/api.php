@@ -44,6 +44,8 @@ use Illuminate\Http\Request;
 
 
 	Route::resource('services', 'Service\ServiceController', ['only' => ['store', 'update']]);
+	Route::post('services/findTaksi', 'Service\ServiceController@findTaksi');
+	Route::post('services/findAbang', 'Service\ServiceController@findAbang');
 
 	Route::resource('transactions', 'Transaction\TransactionController', ['only' => ['store', 'update']]);
 	Route::patch('transactions/{id}/cancel', 'Transaction\TransactionController@cancel');
@@ -67,5 +69,7 @@ use Illuminate\Http\Request;
 
 	// New route
 	Route::get('termsApp', 'Other\OtherController@termsApp');
+
+	Route::get('armadas', 'Armada\ArmadaController@index');
 
 	

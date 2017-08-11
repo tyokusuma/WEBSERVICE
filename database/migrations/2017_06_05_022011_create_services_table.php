@@ -17,7 +17,7 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('main_service_id')->unsigned()->unique();
-            $table->string('service_code', 11); 
+            $table->string('service_code'); 
             $table->string('ktp_image', 255);
             $table->string('sim_image', 255)->nullable();
             $table->string('stnk_image', 255)->nullable();
@@ -31,6 +31,10 @@ class CreateServicesTable extends Migration
             $table->string('armada', 1)->nullable();
             $table->string('id_driver')->nullable();
             $table->integer('category_id')->unsigned();
+            $table->double('rating', 11, 6)->default(0); //new field
+            $table->double('rating_total', 11, 6)->default(0); //new field
+            $table->double('rating_transactions_total', 11, 6)->default(0); //new field
+            $table->string('location_abang', 1);//new field
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');

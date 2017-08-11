@@ -176,6 +176,8 @@ class TransactionController extends ApiController
             $findGraphic->save();
         }
 
+
+
         return $this->showOne($transaction, 201);
     }
 
@@ -198,10 +200,6 @@ class TransactionController extends ApiController
         $user = Auth::user()->id;
         $transaction = Transaction::findOrFail($id);
 
-        if ($user != $request->buyer_id) {
-
-        }
-
         if ($request->has('main_service_id')||$request->has('buyer_id')||$request->has('current_destination')||$request->has('final_destination')||$request->has('distance')||$request->has('traveling_time')) {
             return $this->errorResponse('Sorry, you can\'t edit these field, please check the allowed request update', 409);
         }
@@ -215,6 +213,36 @@ class TransactionController extends ApiController
         ]; 
 
         $transaction->status_order = $request->has('status_order') ? $request->status_order : $transaction->status_order;
+        if($request->status_order == Transaction::TRANSACTION_STATUS_3 && $request->has('satisfaction_level')) {
+            switch($request->satisfaction_level) {
+                case 'buruk':
+                    $transaction->rating_total = $transaction->rating_total + 1;
+                    $transaction->rating_transactions_total = $transaction->rating_transactions_total + 1;
+                    $transaction->rating = $transaction->rating_total / $transaction->rating_transactions_total; 
+                    break;
+                case 'kurang':
+                    $transaction->rating_total = $transaction->rating_total + 2;
+                    $transaction->rating_transactions_total = $transaction->rating_transactions_total + 1;
+                    $transaction->rating = $transaction->rating_total / $transaction->rating_transactions_total;
+                    break;
+                case 'biasa':
+                    $transaction->rating_total = $transaction->rating_total + 3;
+                    $transaction->rating_transactions_total = $transaction->rating_transactions_total + 1;
+                    $transaction->rating = $transaction->rating_total / $transaction->rating_transactions_total;
+                    break;
+                case 'cakep':
+                    $transaction->rating_total = $transaction->rating_total + 4;
+                    $transaction->rating_transactions_total = $transaction->rating_transactions_total + 1;
+                    $transaction->rating = $transaction->rating_total / $transaction->rating_transactions_total;
+                    break;
+                case 'mantap':
+                    $transaction->rating_total = $transaction->rating_total + 5;
+                    $transaction->rating_transactions_total = $transaction->rating_transactions_total + 1;
+                    $transaction->rating = $transaction->rating_total / $transaction->rating_transactions_total;
+                    break;
+            }
+        }
+
         if($transaction->status_order == Transaction::TRANSACTION_STATUS_6) {
             //ubah driver jadi unavailable
             $service = Service::where('main_service_id', $transaction->main_service_id)->with('category')->first();
@@ -334,7 +362,7 @@ class TransactionController extends ApiController
     public function getByIdandDateForService() {
         $today = Carbon::now()->toDateString();
         $user = Auth::user()->id;
-        $transactions = Transaction::where('main_service_id', $user)->where('order_date', $today)->paginate(10);
+        $transactions = Transaction::where('main_service_id', $user)->whereIn('status_order', ['pesanan berhasil', 'pesanan dibatalkan', 'pesanan ditolak'])->where('order_date', $today)->paginate(10);
         return response()->json([
                 'data' => $transactions,
             ], 200);

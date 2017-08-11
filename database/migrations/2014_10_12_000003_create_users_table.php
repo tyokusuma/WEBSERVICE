@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->string('admin', 1)->default(User::REGULER_USER);
             $table->integer('invite_friends')->unsigned()->nullable();
             $table->timestamp('expired_at')->nullable();
-            $table->string('payment', 1)->nullable();
+            $table->string('payment', 1)->nullable(); //new field
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
