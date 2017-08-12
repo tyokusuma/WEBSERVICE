@@ -28,9 +28,9 @@ use Illuminate\Http\Request;
 	Route::get('buyers/messages', 'Message\MessageController@getBuyerMessageById');
 	Route::get('buyers/messages-details/{id}', 'MessageDetail\MessageDetailController@getBuyerMessageDetailById');
 	Route::get('buyers/favorites', 'Favorite\FavoriteController@getFavoriteById');
-	Route::get('buyers/services/available/{category}', 'MainService\MainServiceController@index');
+	Route::get('buyers/services/available/{subcategory}', 'MainService\MainServiceController@index');
 
-	Route::get('mainservices/available/{category_id}', 'MainService\MainServiceController@available');
+	Route::post('mainservices/available', 'MainService\MainServiceController@available');
 	Route::get('mainservices', 'MainService\MainServiceController@show');
 	Route::get('mainservices/transactions', 'Transaction\TransactionController@getByIdServices');
 	Route::get('mainservices/transactions/booking', 'Transaction\TransactionController@getByIdBookingServices');
@@ -72,4 +72,5 @@ use Illuminate\Http\Request;
 
 	Route::get('armadas', 'Armada\ArmadaController@index');
 
+	Route::post('testingSchedule', 'Other\OtherController@testing');
 	

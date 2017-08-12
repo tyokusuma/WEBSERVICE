@@ -71,10 +71,15 @@ class TransactionController extends ApiController
     public function store(Request $request)
     {
         $user = Auth::user()->id;
-        $findService = Service::where('main_service_id', $user)->first();
-        if ($findService != null) {
-            return $this->errorResponse('Sorry you\'re not a buyer, you can\'t create transaction', 409);
+        $findService = Service::where('main_service_id', $request->main_service_id)->first();
+        $categoryService = Category::findOrFail($findService->category_id);
+        if ($findService->available == '0' && $categoryService->type == 'kendaraan') {
+            return $this->errorResponse('Sorry the service is unavailable', 404);
         }
+
+        // if ($findService != null) {
+        //     return $this->errorResponse('Sorry you\'re not a buyer, you can\'t create transaction', 409);
+        // }
 
         if ($user != $request->buyer_id) {
             return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
@@ -87,13 +92,13 @@ class TransactionController extends ApiController
             }
         }
 
-        if ($request->has('buyer_id')) {
-            $mainservices = MainService::has('service')->get()->pluck('id');
-            $buyers = User::all()->whereNotIn('id', $mainservices)->find($request->buyer_id);
-            if ($buyers == null) {
-                return $this->errorResponse('Sorry, your buyer doesn\'t exist, please change it', 409);
-            }
-        }
+        // if ($request->has('buyer_id')) {
+        //     $mainservices = MainService::has('service')->get()->pluck('id');
+        //     $buyers = User::all()->whereNotIn('id', $mainservices)->find($request->buyer_id);
+        //     if ($buyers == null) {
+        //         return $this->errorResponse('Sorry, your buyer doesn\'t exist, please change it', 409);
+        //     }
+        // }
 
         $rules = [
             'main_service_id' => 'required|numeric',
@@ -114,6 +119,12 @@ class TransactionController extends ApiController
         ]; 
 
         $this->validate($request, $rules);
+
+        //check untuk  untuk kategory service kendaraan
+        //1. Cari semua transaction untuk service itu pada tanggal sesuai booking urutkan berdasarkan order_time
+        //2. 
+
+
 
         $data = $request->all();
 
@@ -142,7 +153,7 @@ class TransactionController extends ApiController
             $admin->notify(new AdminNotification($msgAdmin));
         }
 
-        // Find and create data for graphics for buyer
+        // Find and create data graphics for buyer
         $graphicdate = $transaction->created_at->toDateString();
         $findGraphic = Graphic::where('user_id', $user)->where('date', $graphicdate)->first();
         if($findGraphic == null) {
