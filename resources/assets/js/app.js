@@ -21,7 +21,7 @@ Vue.component('notification', require('./components/Notification.vue'));
 const app = new Vue({
     el: '#app',
     created(){
-    	Echo.channel('admin')
+    	Echo.private('admin')
     	    .listen('AdminNotificationEvent', (e) => {
     	    	console.log('listening channel public admin');
     	        console.log(e);

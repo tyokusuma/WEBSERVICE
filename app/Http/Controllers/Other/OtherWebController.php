@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Other;
 
 use App\Events\AdminNotificationEvent;
+use App\Events\Event;
 use App\Http\Controllers\Controller;
 use App\Other;
 use Illuminate\Http\Request;
@@ -113,7 +114,6 @@ class OtherWebController extends Controller
 
     public function dashboard()
     {
-        event(new AdminNotificationEvent('-----------------------------------------------------'));
         $notifs = Request()->get('notifs');
         return view('layouts.web.dashboard')->with('notifs', $notifs);
     }
@@ -137,6 +137,7 @@ class OtherWebController extends Controller
 
     public function event() {
         $user = auth()->user();
-        return event(new AdminNotificationEvent('First attempt'));
+         event(new Event('First attempt', $user));
     }
+
 }

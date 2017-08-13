@@ -11,7 +11,7 @@
 |
 */
 
-Broadcast::channel('admin', function () {
+Broadcast::channel('admin', function ($user) {
   	return true;
 });
 

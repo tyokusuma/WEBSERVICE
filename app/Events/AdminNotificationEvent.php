@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,11 +12,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AdminNotificationEvent implements ShouldBroadcastNow
+class AdminNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $message;
-    // public $user;
+    public $user;
 
 
     /**
@@ -23,9 +24,10 @@ class AdminNotificationEvent implements ShouldBroadcastNow
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, User $user)
     {
         $this->message = $message;
+        $this->user = $user;
     }
 
     /**
@@ -35,6 +37,6 @@ class AdminNotificationEvent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return new Channel('admin');
+        return new PrivateChannel('admin');
     }
 }

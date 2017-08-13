@@ -27,8 +27,8 @@ class AdminNotificationListener
     public function handle(AdminNotificationEvent $event)
     {
         // dd($event);
-        return response()->json([
-                'data' => $event->message,
-            ], 200);
+        // return response()->json([
+        //         'data' => $event->message,
+        //     ], 200);
     }
 }
