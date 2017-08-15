@@ -4,12 +4,12 @@
 		"selected_items":
 		[
 			[
-				"H",
-				"H:i:s"
+				"req",
+				"$request〔variable〕"
 			],
 			[
-				"req",
-				"request"
+				"H",
+				"H:i:s"
 			],
 			[
 				"create",
@@ -520,72 +520,26 @@
 	"buffers":
 	[
 		{
-			"file": "resources/assets/js/bootstrap.js",
+			"file": "app/Http/Controllers/User/UserController.php",
 			"settings":
 			{
-				"buffer_size": 1704,
-				"encoding": "UTF-8",
+				"buffer_size": 13150,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": ".env",
+			"file": "app/User.php",
 			"settings":
 			{
-				"buffer_size": 907,
+				"buffer_size": 3157,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "config/broadcasting.php",
+			"file": "resources/views/layouts/web/partials/sidebar.blade.php",
 			"settings":
 			{
-				"buffer_size": 1584,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/assets/js/app.js",
-			"settings":
-			{
-				"buffer_size": 888,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "routes/channels.php",
-			"settings":
-			{
-				"buffer_size": 576,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Events/AdminNotificationEvent.php",
-			"settings":
-			{
-				"buffer_size": 990,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Events/Event.php",
-			"settings":
-			{
-				"buffer_size": 916,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Listeners/AdminNotificationListener.php",
-			"settings":
-			{
-				"buffer_size": 643,
-				"encoding": "UTF-8",
+				"buffer_size": 6498,
 				"line_ending": "Unix"
 			}
 		},
@@ -594,24 +548,22 @@
 			"settings":
 			{
 				"buffer_size": 9899,
-				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "app/Http/Controllers/Other/OtherWebController.php",
+			"file": "app/Providers/RouteServiceProvider.php",
 			"settings":
 			{
-				"buffer_size": 4233,
-				"encoding": "UTF-8",
+				"buffer_size": 1500,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "config/app.php",
+			"file": "resources/views/layouts/web/login.blade.php",
 			"settings":
 			{
-				"buffer_size": 9612,
+				"buffer_size": 5111,
 				"line_ending": "Unix"
 			}
 		},
@@ -620,42 +572,54 @@
 			"settings":
 			{
 				"buffer_size": 4937,
-				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/views/layouts/web/partials/header.blade.php",
+			"file": "resources/views/layouts/web/partials/content.blade.php",
 			"settings":
 			{
-				"buffer_size": 777,
-				"encoding": "UTF-8",
+				"buffer_size": 236,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "resources/assets/js/components/Notification.vue",
+			"file": "app/Http/Controllers/Other/OtherWebController.php",
 			"settings":
 			{
-				"buffer_size": 906,
-				"encoding": "UTF-8",
+				"buffer_size": 4233,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "routes/api.php",
+			"file": "app/Http/Controllers/Auth/LoginController.php",
 			"settings":
 			{
-				"buffer_size": 4110,
-				"encoding": "UTF-8",
+				"buffer_size": 2386,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "@forelse(auth()->user()->unreadNotifications as $notification)\n                <li class=\"divider menu\"></li>\n                <li><a>{{ $notification }}</a></li>\n                <li class=\"divider menu\"></li>\n            @endforelse",
+			"file": "vendor/laravel/framework/src/Illuminate/Foundation/Auth/AuthenticatesUsers.php",
 			"settings":
 			{
-				"buffer_size": 232,
+				"buffer_size": 4649,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Middleware/RedirectIfAuthenticated.php",
+			"settings":
+			{
+				"buffer_size": 536,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "vendor/laravel/framework/src/Illuminate/Foundation/Auth/RedirectsUsers.php",
+			"settings":
+			{
+				"buffer_size": 501,
 				"line_ending": "Unix"
 			}
 		}
@@ -712,14 +676,35 @@
 	[
 		"/home/shideichis/bang-sini-bang",
 		"/home/shideichis/bang-sini-bang/app",
-		"/home/shideichis/bang-sini-bang/app/Events",
-		"/home/shideichis/bang-sini-bang/app/Listeners",
-		"/home/shideichis/bang-sini-bang/database",
+		"/home/shideichis/bang-sini-bang/app/Http",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Auth",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other",
+		"/home/shideichis/bang-sini-bang/app/Providers",
+		"/home/shideichis/bang-sini-bang/config",
 		"/home/shideichis/bang-sini-bang/database/migrations",
+		"/home/shideichis/bang-sini-bang/resources/views",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/city",
 		"/home/shideichis/bang-sini-bang/routes"
 	],
 	"file_history":
 	[
+		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php",
+		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php",
+		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authorize.php",
+		"/home/shideichis/bang-sini-bang/resources/views/auth/login.blade.php",
+		"/home/shideichis/Meiji/meijicms/resources/views/welcome.blade.php",
+		"/home/shideichis/vitaflow/app/Http/Controllers/HomeController.php",
+		"/home/shideichis/vitaflow/app/Miscimage.php",
+		"/home/shideichis/vitaflow/database/migrations/2017_08_08_084856_create_miscimages_table.php",
+		"/home/shideichis/bang-sini-bang/routes/api.php",
+		"/home/shideichis/vitaflow/.env",
+		"/home/shideichis/vitaflow/Homestead.yaml",
+		"/home/shideichis/bang-sini-bang/app/User.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000003_create_users_table.php",
+		"/home/shideichis/vitaflow/config/filesystems.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/User/UserController.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherController.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MainService/MainServiceController.php",
@@ -735,8 +720,6 @@
 		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_06_012702_create_transactions_table.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherWebController.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/City/CityController.php",
-		"/home/shideichis/bang-sini-bang/app/User.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000003_create_users_table.php",
 		"/home/shideichis/bang-sini-bang/database/migrations/2017_08_10_162221_create_terms_table.php",
 		"/home/shideichis/bang-sini-bang/app/MainService.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/ApiController.php",
@@ -773,7 +756,6 @@
 		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_12_112037_create_message_details_table.php",
 		"/home/shideichis/vitaflow/config/app.php",
 		"/home/shideichis/vitaflow/config/database.php",
-		"/home/shideichis/vitaflow/.env",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Category/CategoryController.php",
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/buyer/index.blade.php",
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/master_admin.blade.php",
@@ -795,7 +777,6 @@
 		"/home/shideichis/vitaflow/public/css/main.css",
 		"/home/shideichis/HTML Botol Bayi/index.html",
 		"/home/shideichis/vitaflow/resources/views/homepage/content/section-third.blade.php",
-		"/home/shideichis/vitaflow/Homestead.yaml",
 		"/home/shideichis/vitaflow/resources/views/homepage/content/section-second.blade.php",
 		"/home/shideichis/vitaflow/resources/views/homepage/content/slider.blade.php",
 		"/home/shideichis/vitaflow/resources/views/homepage/content",
@@ -806,7 +787,6 @@
 		"/home/shideichis/Meiji/meijicms/resources/views/layouts/home.blade.php",
 		"/home/shideichis/Meiji/meijicms/resources/views/home.blade.php",
 		"/home/shideichis/Meiji/meijicms/resources/views/layouts/page.blade.php",
-		"/home/shideichis/Meiji/meijicms/resources/views/welcome.blade.php",
 		"/home/shideichis/vitaflow/resources/views/welcome.blade.php",
 		"/home/shideichis/BotolBayi/resources/views/homepage.blade.php",
 		"/home/shideichis/vitaflow/app/Providers/AppServiceProvider.php",
@@ -838,16 +818,7 @@
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/user/create.blade.php",
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/province/create.blade.php",
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/message/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/graphic/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/ads/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/city/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/category/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/service/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/armada/create.blade.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Sms/SmsController.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Foundation/Auth/ResetsPasswords.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBrokerManager.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Foundation/Auth/RedirectsUsers.php"
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/graphic/create.blade.php"
 	],
 	"find":
 	{
@@ -866,6 +837,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"logo-net.png",
+			"@auth",
 			"availa",
 			"available",
 			"taksi driver",
@@ -991,9 +964,7 @@
 			"'menunggu konfirmasi'",
 			"'",
 			"has",
-			"stnk_image",
-			"']",
-			"['"
+			"stnk_image"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1023,236 +994,177 @@
 	"groups":
 	[
 		{
-			"selected": 10,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "resources/assets/js/bootstrap.js",
+					"file": "app/Http/Controllers/User/UserController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1704,
+						"buffer_size": 13150,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1672,
-								1672
+								2474,
+								2474
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 242.0,
+						"translation.y": 1080.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/User.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3157,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2001,
+								2001
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1080.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "resources/views/layouts/web/partials/sidebar.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6498,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6402,
+								6402
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1800.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 10,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": ".env",
+					"buffer": 3,
+					"file": "routes/web.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 907,
+						"buffer_size": 9899,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 135.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "config/broadcasting.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1584,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
+								8976,
+								8976
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 180.0,
+						"translation.y": 190.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "resources/assets/js/app.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 888,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								712,
-								712
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
 					"buffer": 4,
-					"file": "routes/channels.php",
-					"semi_transient": false,
+					"file": "app/Providers/RouteServiceProvider.php",
+					"semi_transient": true,
 					"settings":
 					{
-						"buffer_size": 576,
+						"buffer_size": 1500,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								446,
-								446
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "app/Events/AdminNotificationEvent.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 990,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								712,
-								712
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 450.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 4,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "app/Events/Event.php",
+					"buffer": 5,
+					"file": "resources/views/layouts/web/login.blade.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 916,
+						"buffer_size": 5111,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								627,
-								627
+								2286,
+								2286
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"file": "app/Listeners/AdminNotificationListener.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 643,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								619,
-								619
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -1265,98 +1177,7 @@
 					"type": "text"
 				},
 				{
-					"buffer": 8,
-					"file": "routes/web.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9899,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								9899,
-								9899
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2145.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"file": "app/Http/Controllers/Other/OtherWebController.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4233,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4195,
-								4195
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1635.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "config/app.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 9612,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4379,
-								4379
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 1658.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 11,
+					"buffer": 6,
 					"file": "resources/views/layouts/web/master_admin.blade.php",
 					"semi_transient": false,
 					"settings":
@@ -1368,144 +1189,199 @@
 						"selection":
 						[
 							[
-								3039,
-								3039
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 75.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 15,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "resources/views/layouts/web/partials/content.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 236,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/Http/Controllers/Other/OtherWebController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4233,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3530,
+								3530
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/Http/Controllers/Auth/LoginController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2386,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2383,
+								2383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 675.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "vendor/laravel/framework/src/Illuminate/Foundation/Auth/AuthenticatesUsers.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4649,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								366,
+								366
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "app/Http/Middleware/RedirectIfAuthenticated.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 536,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								533,
+								533
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
 					"buffer": 12,
-					"file": "resources/views/layouts/web/partials/header.blade.php",
+					"file": "vendor/laravel/framework/src/Illuminate/Foundation/Auth/RedirectsUsers.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 777,
+						"buffer_size": 501,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								604,
-								604
+								383,
+								383
 							]
 						],
 						"settings":
 						{
-							"auto_complete": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 14,
-					"type": "text"
-				},
-				{
-					"buffer": 13,
-					"file": "resources/assets/js/components/Notification.vue",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 906,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								294,
-								294
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"open_with_edit": true,
-							"syntax": "Packages/Vue Syntax Highlight/vue.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 45.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 13,
-					"type": "text"
-				},
-				{
-					"buffer": 14,
-					"file": "routes/api.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4110,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2062,
-								2062
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 135.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 11,
-					"type": "text"
-				},
-				{
-					"buffer": 15,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 232,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								232,
-								232
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"default_dir": "/home/shideichis/bang-sini-bang",
-							"syntax": "Packages/Vue Syntax Highlight/vue.tmLanguage"
-						},
-						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 12,
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1564,20 +1440,92 @@
 		"selected_items":
 		[
 			[
-				"app.php",
-				"config/app.php"
+				"other",
+				"app/Http/Controllers/Other/OtherWebController.php"
 			],
 			[
-				"broadca",
-				"config/broadcasting.php"
+				"redirectusers",
+				"vendor/laravel/framework/src/Illuminate/Foundation/Auth/RedirectsUsers.php"
+			],
+			[
+				"redirect",
+				"app/Http/Middleware/RedirectIfAuthenticated.php"
+			],
+			[
+				"content.bla",
+				"resources/views/layouts/web/partials/content.blade.php"
+			],
+			[
+				"master",
+				"resources/views/layouts/web/master_admin.blade.php"
+			],
+			[
+				"sidebar.blad",
+				"resources/views/layouts/web/partials/sidebar.blade.php"
+			],
+			[
+				"user",
+				"app/User.php"
+			],
+			[
+				"userco",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"login.bla",
+				"resources/views/layouts/web/login.blade.php"
+			],
+			[
+				"login.bl",
+				"resources/views/auth/login.blade.php"
+			],
+			[
+				"otherwe",
+				"app/Http/Controllers/Other/OtherWebController.php"
+			],
+			[
+				"web.php",
+				"routes/web.php"
+			],
+			[
+				"userc",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"loginc",
+				"app/Http/Controllers/Auth/LoginController.php"
+			],
+			[
+				"homecontrol",
+				"app/Http/Controllers/HomeController.php"
+			],
+			[
+				"router.php",
+				"vendor/laravel/framework/src/Illuminate/Routing/Router.php"
+			],
+			[
+				"web",
+				"routes/web.php"
+			],
+			[
+				"hom",
+				"Homestead.yaml"
 			],
 			[
 				".env",
 				".env"
 			],
 			[
-				"other",
-				"app/Http/Controllers/Other/OtherWebController.php"
+				"ai.php",
+				"routes/api.php"
+			],
+			[
+				"app.php",
+				"config/app.php"
+			],
+			[
+				"broadca",
+				"config/broadcasting.php"
 			],
 			[
 				"tra",
@@ -1626,14 +1574,6 @@
 			[
 				"app",
 				"app/Providers/AppServiceProvider.php"
-			],
-			[
-				"userc",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"user",
-				"app/User.php"
 			],
 			[
 				"cityc",
@@ -1698,10 +1638,6 @@
 			[
 				"otherwebcontroller",
 				"app/Http/Controllers/Other/OtherWebController.php"
-			],
-			[
-				"web.php",
-				"routes/web.php"
 			],
 			[
 				"channels",
@@ -1770,10 +1706,6 @@
 			[
 				"homepa",
 				"resources/views/homepage.blade.php"
-			],
-			[
-				"web",
-				"routes/web.php"
 			],
 			[
 				"homepage.blad",
@@ -1916,10 +1848,6 @@
 				"vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php"
 			],
 			[
-				"userco",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
 				"apps",
 				"app/Providers/AppServiceProvider.php"
 			],
@@ -1954,10 +1882,6 @@
 			[
 				"usercontro",
 				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"otherwe",
-				"app/Http/Controllers/Other/OtherWebController.php"
 			],
 			[
 				"userconto",
@@ -2026,54 +1950,6 @@
 			[
 				"tranasaction",
 				"app/Http/Controllers/Transaction/TransactionController.php"
-			],
-			[
-				"api",
-				"app/Traits/ApiResponser.php"
-			],
-			[
-				"transca",
-				"app/Http/Controllers/Transaction/TransactionController.php"
-			],
-			[
-				"buyerc",
-				"app/Http/Controllers/Buyer/BuyerController.php"
-			],
-			[
-				"province",
-				"app/Http/Controllers/Province/ProvinceWebController.php"
-			],
-			[
-				"httpe",
-				"vendor/symfony/http-kernel/Exception/HttpException.php"
-			],
-			[
-				"armad",
-				"app/Http/Controllers/Armada/ArmadaWebController.php"
-			],
-			[
-				"index.bl",
-				"resources/views/layouts/web/armada/index.blade.php"
-			],
-			[
-				"userweb",
-				"app/Http/Controllers/User/UserWebController.php"
-			],
-			[
-				"smsco",
-				"app/Http/Controllers/Sms/SmsController.php"
-			],
-			[
-				"provinceweb",
-				"app/Http/Controllers/Province/ProvinceWebController.php"
-			],
-			[
-				"boot",
-				"resources/assets/js/bootstrap.js"
-			],
-			[
-				"mast",
-				"resources/views/layouts/web/master_admin.blade.php"
 			]
 		],
 		"width": 0.0
@@ -2104,7 +1980,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 152.0,
+	"side_bar_width": 229.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
