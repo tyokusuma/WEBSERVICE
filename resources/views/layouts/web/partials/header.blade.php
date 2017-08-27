@@ -6,10 +6,10 @@
           <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
               <span class="sr-only">Toggle navigation</span>
           </a>
-          <div class="navbar-custom-menu" id="markasread" onclick="markAsReadNotification()">
+          <div class="navbar-custom-menu" id="markasread">
               <ul class="nav navbar-nav">
                   <!-- Place here the vue notification element -->
-                  <notification :userid="{{ auth()->user()->id }}" :unreads="{{ auth()->user()->unreadNotifications }}"></notification>
+                  <notification :unreads="{{ json_encode($notifs) }}" :userid="{{ json_encode(auth()->user()->id) }}"></notification>
               </ul>
           </div>
       </nav>

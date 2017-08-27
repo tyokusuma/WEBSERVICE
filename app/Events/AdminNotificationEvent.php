@@ -16,7 +16,7 @@ class AdminNotificationEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $message;
-    public $user;
+    // public $user;
 
 
     /**
@@ -24,10 +24,10 @@ class AdminNotificationEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($message, User $user)
+    public function __construct($message)
     {
         $this->message = $message;
-        $this->user = $user;
+        // $this->user = $user;
     }
 
     /**

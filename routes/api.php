@@ -12,14 +12,16 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-	Route::post('users/password/forgot/{id}', 'User\UserController@sendResetLinkPhone');
-	Route::post('users/password/reset', 'User\UserController@reset');
-	Route::post('users/password/change_password/{id}', 'User\UserController@changePassword');
+Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+Route::post('users/password/forgot/{id}', 'User\UserController@sendResetLinkEmail');
+Route::post('users/password/reset/{token}', 'User\UserController@reset');
+Route::resource('users', 'User\UserController', ['only' => ['store']]);
+Route::get('users/{id}/verify/{token}', 'User\UserController@verify')->name('verify');
+Route::get('users/{id}/resend', 'User\UserController@resend')->name('resend');
+// Route::post('users/password/change_password/{id}', 'User\UserController@changePassword');
+Route::group(['middleware' => ['expired']],function () {
 
-	Route::get('users/{id}/verify/{token}', 'User\UserController@verify')->name('verify');
-	Route::get('users/{id}/resend', 'User\UserController@resend')->name('resend');
-	Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-	Route::resource('users', 'User\UserController', ['only' => ['store', 'show', 'update']]);
+	Route::resource('users', 'User\UserController', ['only' => ['show', 'update']]);
 
 	Route::get('buyers', 'Buyer\BuyerController@show');
 	Route::get('buyers/transactions', 'Transaction\TransactionController@getByIdBuyers');
@@ -72,5 +74,5 @@ use Illuminate\Http\Request;
 
 	Route::get('armadas', 'Armada\ArmadaController@index');
 
-	Route::post('testingSchedule', 'Other\OtherController@testing');
-	
+	Route::post('testingSchedule', 'Other\OtherController@testing'); //testing pusher
+});

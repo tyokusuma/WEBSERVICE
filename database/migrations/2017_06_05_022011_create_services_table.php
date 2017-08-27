@@ -34,7 +34,9 @@ class CreateServicesTable extends Migration
             $table->double('rating', 11, 6)->default(0); //new field
             $table->double('rating_total', 11, 6)->default(0); //new field
             $table->double('rating_transactions_total', 11, 6)->default(0); //new field
-            $table->string('location_abang', 1);//new field
+            $table->string('location_abang', 1)->nullable();//new field
+            $table->unsignedInteger('admin_created')->nullable();
+            $table->unsignedInteger('admin_updated')->nullable();
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories');

@@ -115,7 +115,8 @@ class OtherWebController extends Controller
     public function dashboard()
     {
         $notifs = Request()->get('notifs');
-        return view('layouts.web.dashboard')->with('notifs', $notifs);
+        $idUser = Request()->get('idUser');
+        return view('layouts.web.dashboard')->with('notifs', $notifs)->with('idUser', $idUser);
     }
 
     public function slash()
@@ -137,7 +138,7 @@ class OtherWebController extends Controller
 
     public function event() {
         $user = auth()->user();
-         event(new Event('First attempt', $user));
+        event(new AdminNotificationEvent('First attempt'));
     }
 
 }

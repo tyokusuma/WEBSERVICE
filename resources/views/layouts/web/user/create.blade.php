@@ -92,6 +92,9 @@
                   	<select id="admin" name="admin" class="form-control chosen-select" required>
                      	<option value="0">Regular User</option>
                      	<option value="1">Admin</option>
+                     	@if(auth()->user()->admin == '2')
+                     	<option value="2">Superadmin</option>
+                     	@endif
                   	</select>
 	                @if ($errors->has('admin'))
 		               	<span class="help-block">
@@ -113,8 +116,24 @@
 	        	</div>		           
 			</div>
 
+			<div class="form-group{{ $errors->has('city_id') ? ' has-error' : '' }}">
+              	<label class="col-sm-3 control-label">City <span class="asterisk">*</span></label>
+              	<div class="col-sm-7 col-sm-offset-1 form-style">
+	        		<select name="city_id" class="form-control mySelect" placeholder="Choose city" required/>
+	        			@foreach($cities as $index => $city)
+	               		<option value="{{ $index }}">{{ $city->name_city }}</option>
+	               		@endforeach
+	            	</select>
+		           	@if ($errors->has('city_id'))
+		            	<div class="help-block">
+		                	<strong>{{ $errors->first('city_id') }}</strong>
+		               	</div>
+		           	@endif	        	
+	        	</div>		           
+			</div>
+
             <div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block custom-btn">
+		       	<button class="btn btn-info btn-block custom-btn">
 		           Register
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />
@@ -127,9 +146,7 @@
 
 @section('script')
 <script>
-	if (window.performance) {
-	  console.info("window.performance work's fine on this browser");
-	}
+	$('.mySelect').select2();
 
     if (performance.navigation.type == 1) {
 		document.getElementById("profile_image_show").value = "";

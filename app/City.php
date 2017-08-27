@@ -10,6 +10,8 @@ class City extends Model
     protected $fillable = [
         'name_city',
         'province_id',
+        'admin_created',
+        'admin_updated',
     ];
 
     protected $hidden = [

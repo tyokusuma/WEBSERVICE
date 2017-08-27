@@ -7,15 +7,16 @@
 	<table id="user" class="table table-bordred table-striped">
 	    <thead>
 <!--            	<th><input type="checkbox" id="checkall" /></th> -->
-           	<th>ID</th>
+           	<th>No</th>
+           	<th>User ID</th>
            	<th>Full Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Payment</th>
+            <th>Expired</th>
             <th>Gender</th>
             <th>Verified</th>
-            <th>Admin</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>Active</th>
         </thead>
     	<tbody>	
     		<?php $i = 1; $skipped = ($users->currentPage() * $users->perPage()) - $users->perPage(); ?>
@@ -23,10 +24,12 @@
 		    	<tr>
 				    <!-- <td><input type="checkbox" class="checkthis" /></td> -->
 				    <td>{{ $skipped + $i }}</td>
+				    <td>{{ $user->user_code }}</td>
 				    <td>{{ $user->full_name }}</td>
 				    <td>{{ $user->email }}</td>
 				    <td>{{ $user->phone }}</td>
-				    
+				    <td>{{ $user->payment }}</td>
+				    <td>{{ $user->expired_at }}</td>
 				    <!-- Gender -->
 		    		<td><img src="{{ $user->gender == '0' ? URL::asset('logo/female.png') : URL::asset('logo/male.png') }}" class="gender"/></td>
 			    	
@@ -38,136 +41,20 @@
 				    @endif
 
 				    <!-- Admin user or not -->
-				    @if ($user->admin == '1')
+				    @if ($user->status == 'active')
 				    	<td><input type="checkbox" disabled checked/></td>
 				    @else 
 				    	<td><input type="checkbox" disabled/></td>
 				    @endif
-				    <td><p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $user->id }}"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-				    <td><p data-placement="top" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $user->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p></td>
+				    <td>
+				    	<p><a href="{{ route('view-update-users', ['id' => $user->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
+				    	</td>
+				    <td>
+				    	@if(auth()->user()->admin == '2')
+					    	<p data-placement="top" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $user->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
+					    @endif
+				    </td>
 				</tr>
-
-				<!-- Edit Form -->
-				<form action="{{ route('update-users', ['id' => $user->id]) }}" id="update{{ $user->id }}" method="post" role="form" enctype="multipart/form-data">
-	       		{{ csrf_field() }}
-		       	{{ method_field('PATCH') }}
-					<div class="modal fade" id="edit-{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-					    <div class="modal-dialog">
-					    	<div class="modal-content">
-						    	@if(Session::get('error_code'))
-						    		<script>
-						    		// alert('This is so annoying');
-						    			$("#edit-5").modal('show');
-						    		</script>
-						    	@endif
-					    		<input class="form-control hidden" type="text" name="id" value="{{ $user->id }}" disabled>
-					        	<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					        			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					        		</button>
-					        		<h4 class="modal-title custom_align" id="Heading">Edit User</h4>
-					      		</div>
-					        	<div class="modal-body">
-					          		<div class="form-group {{ $errors->has('full_name') ? ' has-error' : '' }}">
-						        		<label>Full Name</label>
-					        			<input class="form-control" type="text" name="full_name" value="{{ $user->full_name }}">
-				        				@if ($errors->has('full_name'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('full_name') }}</strong>
-				        			    	</span>
-				        				@endif	   
-					        		</div>
-						        	<div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">        
-						        		<label>Email</label>
-					        			<input class="form-control" type="text" name="email" value="{{ $user->email }}">
-					        			@if ($errors->has('email'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('email') }}</strong>
-				        			    	</span>
-				        				@endif
-					        		</div>
-					        		<div class="form-group {{ $errors->has('phone') ? ' has-error' : '' }}">
-						        		<label>Phone Number</label>				        		
-					        			<input class="form-control" type="text" name="phone" value="{{ $user->phone }}">
-					        			@if ($errors->has('phone'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('phone') }}</strong>
-				        			    	</span>
-				        				@endif
-					        		</div>
-					        		<div class="form-group {{ $errors->has('profile_image') ? ' has-error' : '' }}">
-						        		<label>Profile Image</label>
-					        			<div>
-		        				            <input type="text" class="btn-up form-control" id="profile_image_show{{ $user->id }}" name="profile_image_show" placeholder="{{ $user->profile_image }}" disabled>
-		        			            	<label for="profile_image{{ $user->id }}" class="btn-upload">Choose File</label>
-	        			                </div>
-	        			                @if ($errors->has('profile_image'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('profile_image') }}</strong>
-				        			    	</span>
-				        				@endif
-		        			                <input type="file" class="hidden" onchange="uploadOnChange(this.id)" id="profile_image{{ $user->id }}" name="profile_image" accept=".jpeg, .png, .jpg">
-					        		</div>
-					        		<div class="form-group {{ $errors->has('gender') ? ' has-error' : '' }}">
-						        		<label>Gender</label>
-						        		<span class="funkyradio">
-						        			<div class="funkyradio-info radio-inline">
-				        			            <input type="radio" name="gender" id="female{{ $user->id }}" value="0" {{ $user->gender == '0' ? 'checked' : ''}}/>
-				        			            <label for="female{{ $user->id }}">Female</label>
-				        			        </div>
-				        			        <div class="funkyradio-info radio-inline"> 
-				        			            <input type="radio" name="gender" id="male{{ $user->id }}" value="1" {{ $user->gender == '1' ? 'checked' : ''}}/>
-				        			            <label for="male{{ $user->id }}">Male</label>
-				        			        </div>
-				        			    </span>
-				        			    @if ($errors->has('gender'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('gender') }}</strong>
-				        			    	</span>
-				        				@endif
-					        		</div>
-					        		<div class="form-group {{ $errors->has('admin') ? ' has-error' : '' }}">
-						        		<label>Admin</label>
-					        			<span class="funkyradio">
-					        				<input type="hidden" name="admin" value="0">
-					        					<div class="funkyradio-primary radio-inline">
-				        			            	<input type="checkbox" name="admin" id="admin{{ $user->id }}" value="1" <?php echo $user->admin == '1' ? 'checked' : '' ?>/>
-				        			            	<label for="admin{{ $user->id }}">Admin</label>
-				        			        	</div>
-				        			    </span>
-				        			    @if ($errors->has('admin'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('admin') }}</strong>
-				        			    	</span>
-				        				@endif
-					        		</div>
-					        		<div class="form-group {{ $errors->has('verified') ? ' has-error' : '' }}">
-						        		<label>Verified Account</label>
-					        			<span class="funkyradio">
-				        					<div class="funkyradio-primary radio-inline">
-				        						@if($user->verified == '1')
-			        			            		<input type="checkbox" name="verified" id="verified{{ $user->id }}" value="1" checked/>
-			        			            	@else
-			        			            		<input type="checkbox" name="verified" id="verified{{ $user->id }}" value="0"/>		        			            	
-			        			            	@endif
-			        			            	<label for="verified{{ $user->id }}">Verified</label>
-			        			        	</div>					        				
-				        			    </span>
-				        			    @if ($errors->has('verified'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('verified') }}</strong>
-				        			    	</span>
-				        				@endif
-					        		</div>
-					      		</div>
-					          	<div class="modal-footer ">
-					        		<button type="submit" form="update{{ $user->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      			<input type="hidden" name="action" value="update{{ $user->id }}" />
-					      		</div>
-					        </div>
-					  	</div>    
-					</div>
-				</form>
 
 				<!-- Delete Form -->
 				<div class="modal fade" id="delete-{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">

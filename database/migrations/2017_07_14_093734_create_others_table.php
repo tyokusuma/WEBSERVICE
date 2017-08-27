@@ -16,8 +16,9 @@ class CreateOthersTable extends Migration
         Schema::create('others', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('invite_friends');
-            $table->integer('annual_price');
-            $table->integer('selling_price');
+            $table->integer('trial_days');
+            $table->integer('share_days');
+            $table->integer('buying_days');
             $table->softDeletes();
             $table->timestamps();
         });

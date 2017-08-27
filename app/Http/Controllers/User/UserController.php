@@ -6,8 +6,10 @@ use App\City;
 use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Sms\SmsController;
-use App\Mail\UserCreated;
+use App\Mail\ForgotPassword;
+// use App\Mail\UserCreated;
 use App\Notifications\AdminNotification;
+use App\Other;
 use App\Province;
 use App\Service;
 use App\User;
@@ -87,7 +89,7 @@ class UserController extends ApiController
         $rules = [
             'full_name' => 'required|regex:/^[a-zA-Z. ]+$/',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:7|confirmed',
             'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
             'phone' => 'required|regex:/[0-9]{10,13}/',
             'profile_image' => 'required|image',
@@ -95,12 +97,14 @@ class UserController extends ApiController
             'gps_longitude' => 'required',
             'city_id' => 'required|integer',
             'province_id' => 'required|integer',
+
         ];
 
         $this->validate($request, $rules);
 
         $findProvince = City::findOrFail($request->city_id);
         if ($findProvince->province_id != $request->province_id) {
+            // dd($findProvince->province_id);
             return $this->errorResponse('Sorry you put invalid province', 409);
         }
 
@@ -117,12 +121,14 @@ class UserController extends ApiController
             $data['admin_code'] = null;            
         }
 
+        $setting=Other::all()->last()->trial_days;
+
         $data['verification_link'] = User::generateVerificationPhone();
         $data['profile_image'] = $request->profile_image->store('');
         $data['reset_password'] = User::generateResetPassword();
-        // return response()->json([
-        //         'data' => $data,
-        //     ], 200);
+        $data['expired_at'] = Carbon::now()->addDays($setting);
+        $data['status'] = User::USER_ACTIVE;
+        $data['payment'] = User::TRIAL_PAYMENT;
         $user = User::create($data);
 
         // Create notification for admin
@@ -322,68 +328,90 @@ class UserController extends ApiController
         return $this->showMessage('The account has been verified succesfully');
     }
 
-    public function sendResetLinkPhone(Request $request, $id) // required phone number and user_id
+    // public function sendResetLinkPhone(Request $request, $id) // required phone number and user_id
+    // {
+    //     $expired = Carbon::now()->addHour()->format('Y-m-d H:i:s');
+    //     $rules = [
+    //         'phone' => 'required|numeric|regex: /[0-9]{10,13}/',
+    //     ];
+
+    //     $valid = $this->validate($request, $rules);
+    //     $user = User::findOrFail($id);
+    //     $verification_code = User::generateResetPassword();
+    //     $user['expired_at'] = $expired;
+    //     $user['reset_password'] = $verification_code;
+    //     $user->save(); 
+    //     $sms = new SmsController();
+    //     $sms->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
+
+    //     return response()->json([
+    //             'success' => 'We have send your password reset link, please check your phone'
+    //         ], 200);
+    // }
+
+    public function sendResetLinkEmail(Request $request) // required phone number and user_id
     {
-        $expired = Carbon::now()->addHour()->format('Y-m-d H:i:s');
+        // $expired = Carbon::now()->addHour()->format('Y-m-d H:i:s');
         $rules = [
-            'phone' => 'required|numeric|regex: /[0-9]{10,13}/',
+            'email' => 'required|email',
         ];
 
         $valid = $this->validate($request, $rules);
-        $user = User::findOrFail($id);
-        $verification_code = User::generateResetPassword();
-        $user['expired_at'] = $expired;
+        $user = User::where('email', $request->email)->firstOrFail();
+        $verification_code = User::generateResetPasswordEmail();
+        // $user['expired_at'] = $expired;
         $user['reset_password'] = $verification_code;
         $user->save(); 
-        $sms = new SmsController();
-        $sms->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
-
+        // $sms = new SmsController();
+        // $sms->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
+        Mail::to($user)->send(new ForgotPassword($user));
         return response()->json([
-                'success' => 'We have send your password reset link, please check your phone'
+                'success' => 'We have send your password reset link, please check your email'
             ], 200);
     }
 
+    public function showReset($reset) {
+        return view('layouts.web.forgotPassword')->with('reset', $reset);        
+    }
     /**
      * Reset the given user's password.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function reset(Request $request) // email, password, password_confirmation, token,
+    public function reset(Request $request, $reset) // email, password, password_confirmation, token,
     {
         $rules = [
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:7',
         ];
         $this->validate($request, $rules);
-        $user = User::where('email', $request->email)->first();
-        $expired_at = $user->expired_at;
-        $now = Carbon::now()->diffInSeconds($expired_at, false);
-        if ($user == null) {
-            return $this->errorResponse('Invalid user', 404);
-        }
+        $user = User::where('reset_password', $reset)->firstOrFail();
+        // $expired_at = $user->expired_at;
+        // $now = Carbon::now()->diffInSeconds($expired_at, false);
+        // if ($user == null) {
+        //     return $this->errorResponse('Invalid user', 404);
+        // }
 
-        if ($now < 0) {
-            return $this->errorResponse('Sorry your token expired please create a new one', 404);
-        }
+        // if ($now < 0) {
+        //     return $this->errorResponse('Sorry your token expired please create a new one', 404);
+        // }
 
-        if ($user->reset_password != $request->token) {
-            return $this->errorResponse('Mismatched token', 409);
-        }
+        // if ($user->reset_password != $request->token) {
+        //     return $this->errorResponse('Mismatched token', 409);
+        // }
         
         $user->forceFill([
             'password' => bcrypt($request->password),
             'reset_password' => null,
         ])->save();
-
-        return $this->showMessage('Success change your password', 200);
+        flash('Your password had changed, you can try login with your new password')->success()->important();
+        return redirect()->back();
     }
 
     public function changePassword(Request $request, $id) // email, password, password_confirmation, token,
     {
         $rules = [
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:7',
         ];
 
         $this->validate($request, $rules);

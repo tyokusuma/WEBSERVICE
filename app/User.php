@@ -23,20 +23,23 @@ class User extends Authenticatable
     const FEMALE_GENDER = '0';
     const MALE_GENDER = '1';
 
-    const VERIFIED_USER = '1';
     const UNVERIFIED_USER = '0';
+    const VERIFIED_USER = '1';
 
-    const ADMIN_USER = '1';
     const REGULER_USER = '0';
+    const ADMIN_USER = '1';
+    const SUPERADMIN_USER = '2';
 
-    const FREE_PAYMENT_A_MONTH = '0'; //free 1 bln
-    const PAYMENT_MONTHLY = '1'; // monthly
-    const PAYMENT_YEARLY = '2'; // yearly
-    const PAYMENT_BUY_FULL = '3'; //buying
+    const SHARE_PAYMENT = 'share'; 
+    const TRIAL_PAYMENT = 'trial'; 
+    const YEAR_PAYMENT = 'year'; 
+    const FULL_PAYMENT = 'full'; 
+
+    const USER_ACTIVE = 'active';
+    const USER_NONACTIVE = 'nonactive';
 
     /**
      * The attributes that are mass assignable.
-     * @SWG\Property(format="array")
      * @var array
      */
     protected $table = 'users';
@@ -49,17 +52,20 @@ class User extends Authenticatable
         'password',
         'gender',
         'phone',
-        'profile_image',
-        'verification_link',
-        'admin',
-        'verified',
-        'invite_friends',
-        'gps_latitude',
-        'gps_longitude',
-        'expired_at',
         'city_id',
         'province_id',
+        'gps_latitude',
+        'gps_longitude',
+        'profile_image',
+        'verified',
+        'admin',
+        'invite_friends',
+        'expired_at',
         'payment',
+        'status',
+        'verification_link',
+        'admin_created',
+        'admin_updated',
     ];
 
     /**
@@ -89,6 +95,10 @@ class User extends Authenticatable
         $this->attributes['email'] = strtolower($email);
     }
     
+    public function getPaymentAttribute($payment) {
+        return ucwords($payment);
+    }
+
     public static function generateVerificationEmail() {
         return str_random(40);
     }
@@ -99,6 +109,10 @@ class User extends Authenticatable
 
     public static function generateResetPassword() {
         return rand(1111111, 9999999);
+    }
+
+    public static function generateResetPasswordEmail() {
+        return str_random(40);
     }
 
     public function isAdmin() {

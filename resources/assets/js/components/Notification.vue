@@ -1,12 +1,10 @@
 <template>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-5-large fa-bell-o sBell"></i>
-            <span v-if="{{ unreadNotifications.length !== 0 }}" class="label label-warning sBadge"{{ unreadNotifications.length }}</span> <!-- show count of unread notification -->
+            <span class="label label-warning sBadge"{{ unreadNotifications.length }}</span> 
         </a>
         <ul class="dropdown-menu notif" id="notifs">
-            
-           
         </ul>
     </li>
 </template>
@@ -16,14 +14,17 @@
         props:['unreads', 'userid'],
         data() {
             return {
-                unreadNotifications:this.unreads
+                unreadNotifications: this.unreads
             }
         },
         mounted() {
             console.log('Component mounted.');
-            Echo.channel('admin')
+            Echo.private('App.User.' + this.userid)
                 .notification((notification) => {
-                    console.log(notification);
+                    // console.log(notification);
+                    let newUnreadNotifications = {data: {message: notification.message, id: notification.id}};
+                    console.log(newUnreadNotifications);
+                    this.unreadNotifications.push(newUnreadNotifications);
                 });
         }
     }

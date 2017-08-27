@@ -12,6 +12,8 @@ class Province extends Model
     
     protected $fillable = [
         'name_province',
+        'admin_created',
+        'admin_updated',
     ];
 
     protected $hidden = [
@@ -28,7 +30,7 @@ class Province extends Model
     }
 
     public function city() {
-        return $this->hasOne(City::class);
+        return $this->hasMany(City::class);
     }
 
     public function user() {

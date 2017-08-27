@@ -52,15 +52,15 @@ class DatabaseSeeder extends Seeder
         Advertisement::flushEventListeners();
         City::flushEventListeners();
 
-    	$userQty = 300;
-    	$serviceQty = 100;
-    	$transactionQty = 500;
-    	$favoriteQty = 150;
-    	$categoryQty = 20;
+    	$userQty = 100;
+    	$serviceQty = 30;
+    	$transactionQty = 250;
+    	$favoriteQty = 100;
+    	$categoryQty = 10;
         $messageQty = 10;
         $messageDetailQty = 15;
         $provinceQty = 30;
-        $armadaQty = 22;
+        $armadaQty = 10;
         $otherQty = 1;
         $adsQty = 5;
         $cityQty = 35;

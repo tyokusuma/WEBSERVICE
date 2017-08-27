@@ -18,8 +18,10 @@ class UserNotificationMiddleware
     public function handle($request, Closure $next)
     {
         if(Auth::check()) {
-            $notifs = Auth::user()->unreadNotifications;    
+            $notifs = Auth::user()->unreadNotifications;
+            $idUser = Auth::user()->id;    
             $request->attributes->add(['notifs' => $notifs]);
+            $request->attributes->add(['idUser' => $idUser]);
             // dd($request);
 
             // return $users;

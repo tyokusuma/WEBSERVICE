@@ -12,8 +12,8 @@ class Other extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = [
         'invite_friends',
-        'annual_price',
-        'selling_price',
+        'trial_days',
+        'buying_share_days',
     ];
 
     protected $hidden = [

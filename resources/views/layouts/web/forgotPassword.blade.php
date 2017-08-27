@@ -20,59 +20,38 @@
             @include ('flash::message')
             <div class="signinpanel cs_df">
                 <div class="row">            
-                    <div class="col-md-7">                
-                        <div class="signin-info">
-                            <div class="logopanel">
-                                <h1><img src="{{ asset('/logo/logo.png') }}" class="img-responsive" /></h1>
-                            </div>
-                            <div class="mb20"></div>
-                        </div>            
-                    </div>            
-                    <div class="col-md-5">                
-                        <form action="{{ route('login') }}" method="post" role="form">
+                    <div class="col-md-8 col-md-offset-2">                
+                        <form action="{{ route('change-pass', ['reset' => $reset]) }}" method="post" role="form">
                             {{ csrf_field() }}
+                            {{ method_field('PATCH') }}
                             <h4 class="nomargin">
-                                Sign In
+                                Reset Password
                             </h4>
                             <p class="mt5 mb20">
-                                Login to access your account.
+                                Change your account password.
                             </p>
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <input type="email" name="email" class="form-control uname" placeholder="Username" required autofocus/>
+                                <input type="password" name="password" class="form-control uname" placeholder="New password" required autofocus/>
                                 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-
-                            </div>
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <input type="password" name="password" class="form-control pword" placeholder="Password" required/>
-
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
-                                  
+
                             </div>
-                            <div class="form-group">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>                                    
-                                </div>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <input type="password" name="password_confirmation" class="form-control pword" placeholder="Confirm your password" required/>
                             </div>
+                            
                             <button class="btn btn-success btn-block">
-                                Sign In
+                                Change Password
                             </button>
                             <input type="hidden" name="action" value="login" />
                         </form>
                     </div>            
                 </div>       
-            @include('/layouts/web/partials/footer')
             </div>  
         </section>
         

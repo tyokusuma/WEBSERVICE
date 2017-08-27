@@ -52,5 +52,4 @@ window.Echo = new Echo({
     key: '3424100873aedf2476de',
     cluster: 'ap1',
     encrypted: true,
-    // authEndpoint: 'http://bangsinibang.dev/broadcasting/auth'﻿
 });

@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\City;
 use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Sms\SmsController;
+use App\Other;
+use App\Province;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -58,7 +63,8 @@ class UserWebController extends Controller
     public function create()
     {
         $notifs = request()->get('notifs');
-        return view('layouts.web.user.create')->with('notifs', $notifs);
+        $cities = City::all();
+        return view('layouts.web.user.create')->with('notifs', $notifs)->with('cities', $cities);
     }
 
     /**
@@ -68,14 +74,16 @@ class UserWebController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|regex:/^[a-zA-Z. ]+$/',
             'email' => 'required|email|unique:users', //email-> follow format valid email, unique:users -> must be unique in users table
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:7|confirmed',
             'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
             'phone' => 'required|regex:/[0-9]{10,13}/',
             'profile_image' => 'required|image',
+            'city_id' => 'required|numeric',
+            'admin' => 'required|in:'.User::REGULER_USER.','.User::ADMIN_USER.','.User::SUPERADMIN_USER,         
         ]);
 
         if ($validator->fails()) {
@@ -84,6 +92,7 @@ class UserWebController extends Controller
                 ->withInput();
         }
 
+        $findProv = City::findOrFail($request->city_id);
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $data['verified'] = User::UNVERIFIED_USER;
@@ -100,7 +109,15 @@ class UserWebController extends Controller
             $data['gender'] = null;
         }
         $data['verification_link'] = User::generateVerificationPhone();
+        $data['admin_created'] = auth()->user()->id;
+        $data['admin_updated'] = auth()->user()->id;
+        $data['province_id'] = $findProv->province_id;
         $data['profile_image'] = $request->profile_image->store('');
+
+        $trial_days = Other::all()->last()->trial_days;
+        $data['expired_at'] = Carbon::now()->addDays($trial_days);
+        $data['status'] = User::USER_ACTIVE;
+        $data['payment'] = User::TRIAL_PAYMENT;
         $user = User::create($data);
         flash('Your data user created successfully')->success()->important();
         $notifs = request()->get('notifs');
@@ -126,7 +143,10 @@ class UserWebController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::where('id', $id)->with('city')->first();
+        $notifs = request()->get('notifs');
+        $cities = City::all();
+        return view('layouts.web.user.edit')->with('notifs', $notifs)->with('user', $user)->with('cities', $cities); 
     }
 
     /**
@@ -140,65 +160,64 @@ class UserWebController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($request->has('user_code')) {
-            flash('Sorry, you can\'t edit the user code')->error()->important();
-        }
-
-        if ($request->has('admin_code')) {
-            flash('Sorry, you can\'t edit the admin code')->error()->important();
-        }
-
-        if ($request->hasFile('profile_image')) {
-            Storage::delete($user->profile_image);
-
-            $user->profile_image = $request->profile_image->store('');
-        }
-
-        if ($request->has('email') && $user->email != $request->email) {
-            $user['verified'] = User::UNVERIFIED_USER;
-            $user['verification_link'] = User::generateVerificationEmail();
-            $user->email = $request->email;
-        }
-
-        if ($request->has('phone')) {
-            $user->phone = $request->phone;
-        }
-
-        if ($request->has('password')) {
-            $user->password = bcrypt($request->password);
-        }
-
-        if ($request->has('full_name')) {
-            $user->full_name = $request->full_name;            
-        }
-
-        if ($request->has('verified')) {
-            $user->verified = $request->verified;            
-        }
-
-        if ($request->has('gender')) {
-            $user->gender = $request->gender;            
-        }
-
-        if ($request->has('profile_image')) {
-            $user->profile_image = $request->profile_image;
-        }      
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'email' => 'required|email|unique:users,email,'.$user->id,
-            'password' => 'min:6|confirmed',
-            'gender' => 'in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
-            'phone' => 'regex:/[0-9]{10,13}/',
-            'profile_image' => 'image',
+            'email' => 'required|email',
+            'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
+            'phone' => 'required|regex:/[0-9]{10,13}/',
+            'city_id' => 'required|numeric',
+            'admin' => 'required|in:'.User::REGULER_USER.','.User::ADMIN_USER.','.User::SUPERADMIN_USER,    
+            'payment' => 'nullable|regex:[a-zA-Z]', 
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
-                ->with('error_code', $id)
                 ->withInput();
         }
 
+        if ($request->has('payment')) {
+            $setting = Other::all()->last();
+
+            switch ($request->payment) {
+                case User::FULL_PAYMENT:
+                    $user->expired_at = null;
+                    $user->status = User::USER_ACTIVE;
+                    $user->payment = $request->payment;
+                    break;
+                case User::YEAR_PAYMENT:
+                    $user->expired_at = Carbon::now()->addDays($setting->buying_days);
+                    $user->status = User::USER_ACTIVE;
+                    $user->payment = $request->payment;
+                    break;
+                default:
+            }
+
+        }
+
+        $user->phone = $request->phone;
+        $user->full_name = $request->full_name;            
+        $user->gender = $request->gender;            
+        $user->admin_updated = auth()->user()->id;
+        $user->admin = $request->admin;
+
+        if ($request->has('email') && $user->email != $request->email) {
+            $findEmail = User::where('email', $request->email)->first();
+            if($findEmail != null) {
+                flash('The email already taken by other user')->error()->important();
+                return redirect()->back()->withInput();
+            }
+            $user['verified'] = User::UNVERIFIED_USER;
+            $user['verification_link'] = User::generateVerificationPhone();
+            $sms = new SmsController();
+            $phone = $user->phone;
+            $name = $user->full_name;
+            $link = $user->verification_link;
+            $sms->sendVerificationPhone($phone, $name, $link);
+            $user->email = $request->email;
+        }
+
+        
         $user->save();
         $notifs = request()->get('notifs');
         flash('Success updated your user')->success()->important();

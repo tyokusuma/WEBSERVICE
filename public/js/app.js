@@ -792,7 +792,7 @@ var app = new Vue({
   el: '#app',
   created: function created() {
     Echo.private('admin').listen('AdminNotificationEvent', function (e) {
-      console.log('listening channel public admin');
+      console.log('listening channel private admin');
       console.log(e);
     });
   }
@@ -1662,8 +1662,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['unreads', 'userid'],
@@ -1673,9 +1671,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         console.log('Component mounted.');
-        Echo.channel('admin').notification(function (notification) {
+        Echo.private('App.User.' + this.userid).notification(function (notification) {
             console.log(notification);
+            var newUnreadNotifications = { data: { thread: notification.thread, user: notification.user } };
+            _this.unreadNotifications.push(newUnreadNotifications);
         });
     }
 });
@@ -1742,7 +1744,6 @@ window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   key: '3424100873aedf2476de',
   cluster: 'ap1',
   encrypted: true
-  // authEndpoint: 'http://bangsinibang.dev/broadcasting/auth'﻿
 });
 
 /***/ }),
@@ -36698,8 +36699,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "dropdown-toggle",
     attrs: {
       "href": "#",
-      "data-toggle": "dropdown",
-      "onclick": ""
+      "data-toggle": "dropdown"
     }
   }, [_c('i', {
     staticClass: "fa fa-5-large fa-bell-o sBell"

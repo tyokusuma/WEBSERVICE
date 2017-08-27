@@ -17,9 +17,12 @@ class ProvinceWebController extends Controller
      */
     public function index()
     {
-        $provinces = Province::paginate(10);
+        $provinces = Province::with('city')->paginate(10);
         $notifs = request()->get('notifs');
         return view('layouts.web.province.index')->with('provinces', $provinces)->with('notifs', $notifs);
+        // return response()->json([
+        //         'data' => $provinces,
+        //     ]);
     }
 
     /**
@@ -117,10 +120,14 @@ class ProvinceWebController extends Controller
      */
     public function destroy($id)
     {
-        $find = Province::findOrFail($id);
+        $prov = Province::findOrFail($id);
 
-        $find->delete();
-        flash('The province data successfully deleted')->success()->important();
+        $prov->delete();
+        $cities = City::where('province_id', $id)->get();
+        foreach ($cities as $city) {
+            $city->delete();
+        }
+        flash('The province and related city data successfully deleted')->success()->important();
         $notifs = request()->get('notifs');
         return redirect()->route('view-provinces')->with('notifs', $notifs);
     }

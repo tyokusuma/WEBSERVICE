@@ -19,6 +19,8 @@ class CreateMessagesTable extends Migration
             $table->string('title');
             $table->string('read_admin', 1);
             $table->string('read_user', 1);
+            $table->unsignedInteger('admin_created')->nullable();
+            $table->unsignedInteger('admin_updated')->nullable();
             $table->timestamp('deleted_by_user')->nullable();
             $table->timestamp('deleted_by_admin')->nullable();
             $table->timestamps();

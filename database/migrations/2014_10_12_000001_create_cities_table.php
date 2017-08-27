@@ -17,6 +17,8 @@ class CreateCitiesTable extends Migration
             $table->increments('id');
             $table->integer('province_id')->unsigned();
             $table->string('name_city');
+            $table->unsignedInteger('admin_created')->nullable();
+            $table->unsignedInteger('admin_updated')->nullable();
             $table->timestamps();
             $table->foreign('province_id')->references('id')->on('provinces');
         });

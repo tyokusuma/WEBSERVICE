@@ -20,13 +20,14 @@ use Illuminate\Database\Query\paginate;
 // $this->post('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Password Reset Routes...
-$this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-$this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-$this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-$this->post('password/reset', 'Auth\ResetPasswordController@reset');
+// $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+// $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+// $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+// $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
-Route::get('error-401', 'Other\OtherWebController@error401')->name('error-401');
-
+// Route::get('error-401', 'Other\OtherWebController@error401')->name('error-401');
+Route::get('changePassword/{reset}', 'User\UserController@showReset')->name('verify-web');
+Route::patch('confirmNewPassword/{reset}', 'User\UserController@reset')->name('change-pass');
 Route::prefix('adminpanel')->group(function () {
 	Route::get('/', 'Other\OtherWebController@slash');
 	Route::get('login', 'Auth\LoginController@redirectLogin')->name('login');
@@ -34,7 +35,6 @@ Route::prefix('adminpanel')->group(function () {
 
 	Route::group(['middleware' => ['auth', 'notif']],function () {
 		$idUser = Auth::user();
-		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 		// Route::resource('users', 'User\UserWebController', ['names' => [
 		// 		'index' => 'view-users',
@@ -45,6 +45,7 @@ Route::prefix('adminpanel')->group(function () {
 		Route::get('users', 'User\UserWebController@index', ['idUser', $idUser])->name('view-users');
 		Route::get('users/add', 'User\UserWebController@create')->name('view-create-users');
 		Route::post('users/add', 'User\UserWebController@store')->name('create-users');
+		Route::get('users/update/{id}', 'User\UserWebController@edit')->name('view-update-users');
 		Route::patch('users/update/{id}', 'User\UserWebController@update')->name('update-users');
 
 
@@ -168,6 +169,7 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('event', 'Other\OtherWebController@event');
 
+		Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 	});
 });
 

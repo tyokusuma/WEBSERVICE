@@ -23,7 +23,7 @@ class CreateTransactionsTable extends Migration
             $table->date('order_date');
             $table->time('order_time');
             $table->string('status_order');
-            $table->integer('satisfaction_level')->default(0);
+            $table->string('satisfaction_level')->default(null);
             $table->longText('comment')->nullable(); 
             $table->longText('current_destination'); 
             $table->longText('final_destination');
@@ -33,7 +33,7 @@ class CreateTransactionsTable extends Migration
             $table->double('longitude_destination', 11,6);
             $table->integer('priority')->nullable(); //new field
             $table->decimal('distance', 5, 2);
-            $table->unsignedInteger('traveling_time');
+            $table->unsignedInteger('traveling_time');//in minute
             $table->timestamps();
             $table->softDeletes();
 

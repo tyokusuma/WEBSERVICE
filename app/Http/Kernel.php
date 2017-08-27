@@ -61,5 +61,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cors' => \Barryvdh\Cors\HandleCors::class,
         'notif' => \App\Http\Middleware\UserNotificationMiddleware::class,
+        'expired' => \App\Http\Middleware\CheckExpiredUser::class,
     ];
 }

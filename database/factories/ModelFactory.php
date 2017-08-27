@@ -1,21 +1,21 @@
 <?php
 
+use App\Advertisement;
+use App\Armada;
 use App\Buyer;
-use App\User;
-use App\MainService;
-
 use App\Category;
+use App\City;
+use App\Favorite;
+use App\MainService;
+use App\Message;
+use App\MessageDetail;
+use App\Notification;
+use App\Other;
+use App\Province;
 use App\Service;
 use App\Transaction;
-use App\Favorite;
-use App\Message;
-use App\Notification;
-use App\Armada;
-use App\MessageDetail;
-use App\Province;
-use App\Other;
-use App\Advertisement;
-use App\City;
+use App\User;
+use Carbon\Carbon;
 // use App\Role;
 
 /*
@@ -44,14 +44,16 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'city_id' => $faker->randomElement([1,2,3,4]),
         'province_id' => $faker->randomElement([1,2,3,4,5]),
         'profile_image' => 'pp.jpeg',
-        'verified' => '1',
+        'verified' => $verified = '1',
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
         'reset_password' => null,
         'admin' => User::REGULER_USER,
         'invite_friends' => $faker->randomElement([2, 4, 6, 8, 10]),
         'gps_latitude' => -6.9053654,
         'gps_longitude' => 107.6157788,
-        'expired_at' => null,
+        'expired_at' => Carbon::now()->addDays(60),
+        'payment' => User::TRIAL_PAYMENT,
+        'status' => User::USER_ACTIVE,
     ];
 });
 
@@ -70,6 +72,7 @@ $factory->define(Service::class, function (Faker\Generator $faker) {
         'setting_mode' => '1',
         'status' => '1', 
         'available' => '1',
+        'location_abang' => null,
     ];
 });
 
@@ -156,8 +159,9 @@ $factory->define(City::class, function (Faker\Generator $faker) {
 $factory->define(Other::class, function (Faker\Generator $faker) {
     return [
         'invite_friends' => 10,
-        'annual_price' => 225000,
-        'selling_price' => 675000,
+        'trial_days' => 60,
+        'buying_days' => 365,
+        'share_days' => 90,
     ];
 });
 

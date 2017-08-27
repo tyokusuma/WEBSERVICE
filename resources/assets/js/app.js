@@ -23,7 +23,7 @@ const app = new Vue({
     created(){
     	Echo.private('admin')
     	    .listen('AdminNotificationEvent', (e) => {
-    	    	console.log('listening channel public admin');
+    	    	console.log('listening channel private admin');
     	        console.log(e);
     	    });
     }

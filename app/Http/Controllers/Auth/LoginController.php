@@ -53,10 +53,10 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
         
         $adminstatus = User::where('email', $request->email)->first();
-        if ($adminstatus->admin == '1' && $adminstatus->verified == '1' ) {
+        if (($adminstatus->admin == '1' || $adminstatus->admin == '2') && $adminstatus->verified == '1' ) {
             return $this->authenticated($request, $this->guard()->user())
                 ?  : redirect()->intended($this->redirectPath());
-        } elseif ($adminstatus->admin == '1' && $adminstatus->verified == '0') {
+        } elseif (($adminstatus->admin == '1' || $adminstatus->admin == '2') && $adminstatus->verified == '0') {
             $request->session()->invalidate();
             flash('Sorry you\'re not verify your email, please verify it first')->error()->important();
             return redirect()->route('login');
@@ -73,5 +73,16 @@ class LoginController extends Controller
             return redirect()->route('dashboard');
         }
         return view('layouts.web.login');
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->flush();
+
+        $request->session()->regenerate();
+
+        return redirect()->route('login');
     }
 }

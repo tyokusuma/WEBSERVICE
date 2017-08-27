@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
             $name = $user->full_name;
             $verification_code = $user->verification_link;
             $sms->sendVerificationPhone($phone, $name, $verification_code);
+            
             // Mail::to($user->email)->send(new UserCreated($user));
             // $data['user_id'] = $user->id;
             // $data['title'] = 'New User';
@@ -44,15 +45,15 @@ class AppServiceProvider extends ServiceProvider
 
         User::updated(function($user) {
             if($user->isDirty('phone')) {
-                // retry(5, function() use ($user) {
-                //     Mail::to($user)->send(new UserMailChanged($user));
-                // }, 100);
                 $sms = new SmsController();
                 $phone = $user->phone;
                 $name = $user->full_name;
                 $verification_code = $user->verification_link;
                 $sms->sendVerificationPhone($phone, $name, $verification_code);
             }
+                // retry(5, function() use ($user) {
+                //     Mail::to($user)->send(new UserMailChanged($user));
+                // }, 100);
         });
 
         Service::updated(function($service) {

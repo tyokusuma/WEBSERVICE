@@ -65,6 +65,7 @@
        });
     });  
 
+
     </script>
     <script>
         $(function(){
@@ -83,10 +84,10 @@
         //         }
         //     });
         // };
-
-        function markAsReadNotification() {
-            $.get('/adminpanel/markasread');
-        }
+        // uncomment these for make unread to read notification
+        // function markAsReadNotification() {
+        //     $.get('/adminpanel/markasread');
+        // }
 
         // function unreadNotification() {
         //     $.get('/adminpanel/unread');
@@ -108,6 +109,12 @@
         // };
     </script>
     <!-- <script src="{{ asset ('/bower_components/admin-lte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script> -->
+    <script>
+        window.Laravel = {!! json_encode([
+                'csrfToken' => csrf_token(),
+            ])
+        !!};
+    </script>
     </body>
     <script type="text/javascript">
         $(document).ready(function() {
