@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Buyer;
 use App\City;
+use App\MainService;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,5 +37,13 @@ class Province extends Model
 
     public function user() {
         return $this->hasMany(User::class);
+    }
+
+    public function mainservice() {
+        return $this->hasMany(MainService::class);
+    }
+
+    public function buyer() {
+        return $this->hasMany(Buyer::class);
     }
 }

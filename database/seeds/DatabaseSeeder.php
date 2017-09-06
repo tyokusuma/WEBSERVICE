@@ -2,12 +2,15 @@
 
 use App\Advertisement;
 use App\Armada;
+use App\Bank;
 use App\Category;
 use App\City;
+use App\FCM;
 use App\Favorite;
 use App\Message;
 use App\MessageDetail;
 use App\Other;
+use App\Payment;
 use App\Province;
 use App\Service;
 use App\Transaction;
@@ -38,6 +41,9 @@ class DatabaseSeeder extends Seeder
         Other::truncate();
         Advertisement::truncate();
         City::truncate();
+        FCM::truncate();
+        // Payment::truncate();
+        // Bank::truncate();
 
         User::flushEventListeners();
         Category::flushEventListeners();
@@ -51,19 +57,23 @@ class DatabaseSeeder extends Seeder
         Other::flushEventListeners();
         Advertisement::flushEventListeners();
         City::flushEventListeners();
+        FCM::flushEventListeners();
+        // Payment::flushEventListeners();
+        // Bank::flushEventListeners();
 
     	$userQty = 100;
     	$serviceQty = 30;
     	$transactionQty = 250;
     	$favoriteQty = 100;
-    	$categoryQty = 10;
+    	$categoryQty = 1;
         $messageQty = 10;
         $messageDetailQty = 15;
-        $provinceQty = 30;
+        $provinceQty = 1;
         $armadaQty = 10;
         $otherQty = 1;
         $adsQty = 5;
-        $cityQty = 35;
+        $cityQty = 1;
+        $fcmQty = 1;
 
         factory(User::class, $userQty)->create();
         factory(Category::class, $categoryQty)->create();       
@@ -77,5 +87,6 @@ class DatabaseSeeder extends Seeder
         factory(Other::class, $otherQty)->create();
         factory(Advertisement::class, $adsQty)->create();
         factory(Transaction::class, $transactionQty)->create();
+        factory(FCM::class, $fcmQty)->create();
     }
 }

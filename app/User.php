@@ -3,10 +3,12 @@
 namespace App;
 
 use App\City;
+use App\FCM;
 use App\Graphic;
 use App\Message;
 use App\MessageDetail;
 use App\Notification;
+use App\Payment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -38,12 +40,15 @@ class User extends Authenticatable
     const USER_ACTIVE = 'active';
     const USER_NONACTIVE = 'nonactive';
 
+    //FCM 
+    const USER_TAG_CREATED = 'created';
+    const USER_TITLE_CREATED = 'User Created';
     /**
      * The attributes that are mass assignable.
      * @var array
      */
     protected $table = 'users';
-    protected $dates = ['deleted_at', 'expired_at'];
+    protected $dates = ['deleted_at', 'expired_at', 'old_expired_at'];
     protected $fillable = [
         'user_code',
         'admin_code',
@@ -62,10 +67,13 @@ class User extends Authenticatable
         'invite_friends',
         'expired_at',
         'payment',
-        'status',
+        // 'status',
         'verification_link',
         'admin_created',
         'admin_updated',
+        //new field
+        'share_newfriends', //format json
+        'already_hadfriends' //format json
     ];
 
     /**
@@ -144,5 +152,13 @@ class User extends Authenticatable
 
     public function province() {
         return $this->belongsTo(Province::class);
+    }
+
+    public function payments() {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function fcm() {
+        return $this->hasOne(FCM::class);
     }
 }

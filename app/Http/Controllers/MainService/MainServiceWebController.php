@@ -12,8 +12,7 @@ class MainServiceWebController extends Controller
     public function index()
     {
         $mainservices = MainService::with(['service.category'])->paginate(10);
-        $notifs = request()->get('notifs');
-        return view('layouts.web.mainservice.index')->with('mainservices', $mainservices)->with('notifs', $notifs);
+        return view('layouts.web.mainservice.index')->with('mainservices', $mainservices);
     }
 
     public function create()
@@ -89,8 +88,7 @@ class MainServiceWebController extends Controller
         // dd($mainservice);
         $mainservice->save();
         flash('Your main service data updated successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-servicedetails')->with('notifs', $notifs);
+        return redirect()->route('view-servicedetails');
     }
 
     public function destroy($id)

@@ -32,29 +32,11 @@
           </ul>
         </li>
 
-        <!-- Category menu -->
-        <li class="treeview">
-          <a href="#"><i class="fa fa-list-alt" aria-hidden="true"></i> <span>Category</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-categories') }}"><i class="fa fa-plus" aria-hidden="true"></i><span class="dropdown">Add new category</span></a></li>
-            <li class="treeview"><a href="{{ route('view-categories') }}"><i class="fa fa-eye" aria-hidden="true"></i><span class="dropdown">View all categories data</span></a></li>
-          </ul>
-        </li>
-
-        <!-- Transaction menu -->
-        <li class="treeview">
-          <a href="{{ route('view-transactions') }}"><i class="glyphicon glyphicon-duplicate"></i> <span>Transaction</span></a>
-        </li>
-
         <!-- Buyer menu -->
         <li class="treeview">
           <a href="{{ route('view-buyers') }}"><i class="fa fa-users"></i> <span>Buyer</span></a>
         </li>
-
+        
         <!-- Service detail menu -->
         <li class="treeview">
           <a href="#"><i class="fa fa-taxi"></i> <span>Service</span>
@@ -68,17 +50,29 @@
           </ul>
         </li>
 
+        <!-- Category menu -->
+        <li class="treeview">
+          <a href="{{ route('view-categories') }}"><i class="fa fa-list-alt" aria-hidden="true"></i> <span>Category</span></a>
+        </li>
+
+        <!-- Transaction menu -->
+        <li class="treeview">
+          <a href="{{ route('view-transactions') }}"><i class="glyphicon glyphicon-duplicate"></i> <span>Transaction</span></a>
+        </li>
+
+        <!-- Bank menu -->
+        <li class="treeview">
+          <a href="{{ route('view-index-bank') }}"><i class="fa fa-money"></i> <span>Bank</span></a>
+        </li>
+
+        <!-- Payment menu -->
+        <li class="treeview">
+          <a href="{{ route('view-index-payments') }}"><i class="fa fa-usd"></i> <span>Payment</span></a>
+        </li>
+
         <!-- Armada menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-taxi"></i> <span>Armada</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-armadas') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new armada</span></a></li>
-            <li class="treeview"><a href="{{ route('view-armadas') }}"><i class="fa fa-eye" aria-hidden="true"></i><span>View all armada</span></a></li>
-          </ul>
+          <a href="{{ route('view-armadas') }}"><i class="fa fa-taxi"></i> <span>Armada</span></a>
         </li>
 
         <!-- Province menu -->
@@ -89,9 +83,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-provinces') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new province</span></a></li>
             <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="fa fa-globe" aria-hidden="true"></i><span>View provinces</span></a></li>
-            <li class="treeview"><a href="{{ route('view-create-cities') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new city</span></a></li>
             <li class="treeview"><a href="{{ route('view-cities') }}"><i class="fa fa-university" aria-hidden="true"></i><span>View city</span></a></li>
           </ul>
         </li>
@@ -104,8 +96,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-ads') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new ads</span></a></li>
-            <li class="treeview"><a href="{{ route('view-ads') }}"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Choose ads</span></a></li>
+            <li class="treeview"><a href="{{ route('view-ads') }}"><i class="fa fa-picture-o" aria-hidden="true"></i><span>Advertisement</span></a></li>
             <li class="treeview"><a href="{{ route('view-others') }}"><i class="glyphicon glyphicon-pencil" aria-hidden="true"></i><span>Setting Invite Friends, and Price</span></a></li>
           </ul>
         </li>

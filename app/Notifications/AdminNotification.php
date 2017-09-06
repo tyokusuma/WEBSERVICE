@@ -9,20 +9,20 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AdminNotification extends Notification
+class AdminNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $msg;
+    public $message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($msg)
+    public function __construct($message)
     {
-        $this->message = $msg;
+        $this->message = $message;
     }
 
     /**
@@ -33,7 +33,8 @@ class AdminNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        // return ['database', 'broadcast'];
+        return ['database'];
     }
 
     /**

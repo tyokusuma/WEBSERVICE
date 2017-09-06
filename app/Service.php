@@ -11,6 +11,8 @@ class Service extends Model
 { 	
     use SoftDeletes;
 
+    const RADIUS_KM = 2;
+
     const STAYED_SHOP = '0';
     const MOVEABLE_SHOP = '1';
 
@@ -30,8 +32,14 @@ class Service extends Model
     const NOT_IN_ARMADA = '0';
 
     const NOT_HAVE_ID_DRIVER = '0';
+    const NOT_ABANG = '0';
 
-    protected $dates = ['deleted_at'];
+    //FCM
+    const SERVICE_TITLE_CREATED = 'Service created';
+    const SERVICE_TAG_CREATED = 'created'; 
+    const SERVICE_TAG_UPDATE = 'updated'; 
+
+    protected $dates = ['deleted_at', 'expired_at', 'old_expired_at'];
     protected $fillable = [
         'main_service_id',
     	'service_code',
@@ -43,14 +51,18 @@ class Service extends Model
     	'vehicle_type',
         'category_id',
         'verified_service', //verified, unverified
-        'setting_mode', //online, offline
+        // 'setting_mode', //online, offline 
         'status', //active, suspend
-        'available', //available, unavailable khusus service kendaraan, seperti bemo, taksi, becak, bajaj, bentor, ojek
+        'available', //available, unavailable khusus service kendaraan, seperti bemo, taksi, becak, bajaj, bentor, ojek 
         'armada',  //khusus taksi
         'id_driver',  //khusus taksi
+        'location_abang', //lokasi abang menetap ato ngak
         'rating',
         'rating_total',
         'rating_transactions_total',
+        'admin_created',
+        'admin_updated',
+        'expired_at',
     ];
 
     protected $hidden = [
@@ -66,6 +78,6 @@ class Service extends Model
     }
 
     public function mainservice() {
-        return $this->belongsTo(MainService::class, 'id');
+        return $this->belongsTo(MainService::class, 'id', 'main_service_id');
     }
 }

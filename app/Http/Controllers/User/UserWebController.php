@@ -50,9 +50,8 @@ class UserWebController extends Controller
      */
     public function index()
     {
-        $notifs = request()->get('notifs');
         $users = User::paginate(10);
-        return view('layouts.web.user.index')->with('users', $users)->with('notifs', $notifs);
+        return view('layouts.web.user.index')->with('users', $users);
     }
 
     /**
@@ -62,9 +61,8 @@ class UserWebController extends Controller
      */
     public function create()
     {
-        $notifs = request()->get('notifs');
         $cities = City::all();
-        return view('layouts.web.user.create')->with('notifs', $notifs)->with('cities', $cities);
+        return view('layouts.web.user.create')->with('cities', $cities);
     }
 
     /**
@@ -116,12 +114,12 @@ class UserWebController extends Controller
 
         $trial_days = Other::all()->last()->trial_days;
         $data['expired_at'] = Carbon::now()->addDays($trial_days);
+        $data['old_expired_at'] = Carbon::now()->addDays($trial_days);
         $data['status'] = User::USER_ACTIVE;
         $data['payment'] = User::TRIAL_PAYMENT;
         $user = User::create($data);
         flash('Your data user created successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-create-users')->with('notifs', $notifs);
+        return redirect()->route('view-create-users');
     }
 
     /**
@@ -130,9 +128,11 @@ class UserWebController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public static function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return $user;
     }
 
     /**
@@ -144,9 +144,8 @@ class UserWebController extends Controller
     public function edit($id)
     {
         $user = User::where('id', $id)->with('city')->first();
-        $notifs = request()->get('notifs');
         $cities = City::all();
-        return view('layouts.web.user.edit')->with('notifs', $notifs)->with('user', $user)->with('cities', $cities); 
+        return view('layouts.web.user.edit')->with('user', $user)->with('cities', $cities); 
     }
 
     /**
@@ -177,8 +176,6 @@ class UserWebController extends Controller
         }
 
         if ($request->has('payment')) {
-            $setting = Other::all()->last();
-
             switch ($request->payment) {
                 case User::FULL_PAYMENT:
                     $user->expired_at = null;
@@ -200,6 +197,7 @@ class UserWebController extends Controller
         $user->gender = $request->gender;            
         $user->admin_updated = auth()->user()->id;
         $user->admin = $request->admin;
+        $user->verified = User::VERIFIED_USER;
 
         if ($request->has('email') && $user->email != $request->email) {
             $findEmail = User::where('email', $request->email)->first();
@@ -219,9 +217,8 @@ class UserWebController extends Controller
 
         
         $user->save();
-        $notifs = request()->get('notifs');
         flash('Success updated your user')->success()->important();
-        return redirect()->route('view-users')->with('notifs', $notifs);
+        return redirect()->route('view-users');
 
     }
 

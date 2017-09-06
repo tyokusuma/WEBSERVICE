@@ -5,107 +5,122 @@ namespace App\Http\Controllers\Other;
 use App\Events\AdminNotificationEvent;
 use App\Events\Event;
 use App\Http\Controllers\Controller;
+use App\Notifications\AdminNotification;
 use App\Other;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class OtherWebController extends Controller
 {
     public function index()
     {
-        $other = Other::all()->last();
-        // dd($other);
-        $notifs = request()->get('notifs');
-        if ($other == null) {
-            return redirect()->route('view-none')->with('notifs', $notifs);
-        }
+        $other = Other::all()->first();
 
-        return redirect()->route('view-update-others')->with('notifs', $notifs);
-        // return response()->json([
-        //         'data' => $others,
-        //     ]);
+        return view('layouts.web.etc.other.index')->with('other', $other);
+        // return redirect()->route('view-update-others');
     }
 
     public function edit()
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.etc.other.none')->with('notifs', $notifs);
+        // return view('layouts.web.etc.other.none');
     }
     
     public function store(Request $request) 
     {
-        $rules = [
+        $validator = Validator::make($request->all(), [
             'invite_friends' => 'required|regex:/[0-9]{1,3}/',
-            'annual_price' => 'required|regex:/[1-9][0-9]{5,13}/',
-            'selling_price' => 'required|regex:/[1-9][0-9]{5,13}/',
-        ];
-        $this->validate($request, $rules);
+            'trial_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'share_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'buying_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'price_year_user' => 'required',
+            'price_full_user' => 'required',
+            'price_year_service' => 'required',
+            'price_full_service' => 'required',
+        ]);
 
-        //block if already had data
-        $find = Other::all();
-        if ($find == null) {
-            flash('Sorry, you can\'t create new data')->error()->important();
+        if($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
         $data = $request->all();
         $other = Other::create($data);
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-others')->with('notifs', $notifs);
+        flash('Success create new setting')->success()->important();
+        return redirect()->route('view-others');
     }
 
     public function show(Request $request) 
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.etc.other.create')->with('notifs', $notifs);
+        // return view('layouts.web.etc.other.create');
     }
 
-    public function viewUpdate()
-    {
-        $notifs = request()->get('notifs');
-        $other = Other::all()->last();
+    // public function viewUpdate()
+    // {
+    //     $other = Other::all()->last();
         
-        return view('layouts.web.etc.other.index')->with('notifs', $notifs)->with('other', $other);
-    }
+    //     return view('layouts.web.etc.other.index')->with('other', $other);
+    // }
 
     public function update(Request $request, $id)
     {
-        $rules = [
-            'invite_friends' => 'required|regex:/[1-9][0-9]{1,3}/',
-            'annual_price' => 'required|regex:/[1-9][0-9]{5,13}/',
-            'selling_price' => 'required|regex:/[1-9][0-9]{5,13}/',
-        ];
+        $validator = Validator::make($request->all(), [
+            'invite_friends' => 'required|regex:/[0-9]{1,3}/',
+            'trial_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'share_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'buying_days' => 'required|regex:/[1-9][0-9]{1,3}/',
+            'price_year_user' => 'required',
+            'price_full_user' => 'required',
+            'price_year_service' => 'required',
+            'price_full_service' => 'required',
+        ]);
 
-        $this->validate($request, $rules);
+        if($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $other = Other::findOrFail($id);
         
-        if($request->has('invite_friends')) {
+        if($request->invite_friends != null || $request->invite_friends != 0 ) {
             $other['invite_friends'] = $request->invite_friends;
         }
 
-        if($request->has('annual_price')) {
-            $other['annual_price'] = $request->annual_price;
+        if($request->trial_days != null || $request->trial_days != 0) {
+            $other['trial_days'] = $request->trial_days;
         }
 
-        if($request->has('selling_price')) {
-            $other['selling_price'] = $request->selling_price;
+        if($request->share_days != null || $request->share_days != 0) {
+            $other['share_days'] = $request->share_days;
         }
 
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-others')->with('notifs', $notifs);
+        if($request->buying_days != null || $request->buying_days != 0) {
+            $other['buying_days'] = $request->buying_days;
+        }
+
+        $other['price_year_user'] = $request->price_year_user;
+        $other['price_full_user'] = $request->price_full_user;
+        $other['price_year_user'] = $request->price_year_user;
+        $other['price_full_user'] = $request->price_full_user;
+
+        $other->save();
+        flash('Success update setting')->success()->important();
+        return redirect()->route('view-others');
     }
 
-    public function unread() 
-    {
-        $notifs = Auth::user()->unreadNotifications()->paginate(8);
-        return view('layouts.web.partials.header')->with('notifs', $notifs);
-    }
+    // public function unread() 
+    // {
+    //     $notifs = Auth::user()->unreadNotifications()->paginate(8);
+    //     return view('layouts.web.partials.header')->with('notifs', $notifs);
+    // }
 
-    public function notifications(Request $request) 
-    {
-        $notifs = auth()->user()->unreadNotifications()->paginate(10);
-        return view('layouts.web.notifications.index')->with('notifs', $notifs);
-    }
+    // public function notifications(Request $request) 
+    // {
+    //     $notifs = auth()->user()->unreadNotifications()->paginate(10);
+    //     return view('layouts.web.notifications.index')->with('notifs', $notifs);
+    // }
 
     public function markasread() 
     {
@@ -114,15 +129,12 @@ class OtherWebController extends Controller
 
     public function dashboard()
     {
-        $notifs = Request()->get('notifs');
-        $idUser = Request()->get('idUser');
-        return view('layouts.web.dashboard')->with('notifs', $notifs)->with('idUser', $idUser);
+        return view('layouts.web.dashboard');
     }
 
     public function slash()
     {
-        $notifs = Request()->get('notifs');
-        return redirect()->route('login')->with('notifs', $notifs);
+        return redirect()->route('login');
     }
 
     public function error401() 
@@ -132,13 +144,6 @@ class OtherWebController extends Controller
 
     public function map($current_lat, $current_lng, $last_lat, $last_lng)
     {
-        $notifs = Request()->get('notifs');
-        return view('layouts.web.map.index')->with('notifs', $notifs)->with('current_lat', $current_lat)->with('current_lng', $current_lng)->with('last_lat', $last_lat)->with('last_lng', $last_lng);
+        return view('layouts.web.map.index')->with('current_lat', $current_lat)->with('current_lng', $current_lng)->with('last_lat', $last_lat)->with('last_lng', $last_lng);
     }
-
-    public function event() {
-        $user = auth()->user();
-        event(new AdminNotificationEvent('First attempt'));
-    }
-
 }

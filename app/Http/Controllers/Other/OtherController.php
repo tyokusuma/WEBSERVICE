@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class OtherController extends ApiController
 {
+    public static function setting() {
+        $setting = Other::all()->last();
+
+        return $setting;        
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +28,7 @@ class OtherController extends ApiController
         //
     }
 
-    public function testing(Request $request)
+    public function testing(Request $request) //testing booking feature
     {
         $service = Auth::user();
         $user = Service::where('main_service_id', $service->id)->first();

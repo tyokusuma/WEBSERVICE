@@ -25,7 +25,7 @@ class CreateServicesTable extends Migration
             $table->string('license_platenumber', 255)->nullable(); 
             $table->string('verified_service', 1); 
             $table->string('vehicle_type', 255)->nullable(); 
-            $table->string('setting_mode', 1);
+            // $table->string('setting_mode', 1);
             $table->string('status', 1);
             $table->string('available', 1);
             $table->string('armada', 1)->nullable();
@@ -34,14 +34,16 @@ class CreateServicesTable extends Migration
             $table->double('rating', 11, 6)->default(0); //new field
             $table->double('rating_total', 11, 6)->default(0); //new field
             $table->double('rating_transactions_total', 11, 6)->default(0); //new field
-            $table->string('location_abang', 1)->nullable();//new field
+            $table->string('location_abang', 1)->nullable();//new field, lokasi abang bangunan ato gerobak
             $table->unsignedInteger('admin_created')->nullable();
             $table->unsignedInteger('admin_updated')->nullable();
-            $table->timestamps();
+            $table->dateTime('expired_at')->nullable(); 
+            $table->dateTime('old_expired_at')->nullable(); 
 
+            $table->timestamps();
+            $table->softDeletes();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('main_service_id')->references('id')->on('users');
-            $table->softDeletes();
     
         });
     }

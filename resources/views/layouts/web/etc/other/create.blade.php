@@ -21,28 +21,93 @@
 		           	@endif		                
 	            </div>
 	        </div>
-	        <div class="form-group {{ $errors->has('annual_price') ? ' has-error' : '' }}">
+	        <div class="form-group {{ $errors->has('trial_days') ? ' has-error' : '' }}">
 	        	<div class="col-sm-3 form-style">
-		            <label class="control-label">Annual Price <span class="asterisk">*</span></label>
+		            <label class="control-label">Free days for trial <span class="asterisk">*</span></label>
 	            </div>
 	            <div class="col-sm-7 col-sm-offset-1 form-style">
-	                <input type="text" id="annual_price" name="annual_price" placeholder="Your price for annual payment" class="btn-up form-control">
-	                @if ($errors->has('annual_price'))
+	                <input type="text" id="trial_days" name="trial_days" placeholder="How many days for trial active until expired" class="btn-up form-control">
+	                @if ($errors->has('trial_days'))
 		               	<span class="help-block">
-		                   	<strong>{{ $errors->first('annual_price') }}</strong>
+		                   	<strong>{{ $errors->first('trial_days') }}</strong>
 		               	</span>
 		           	@endif		                
 	            </div>
 	        </div>
-	        <div class="form-group {{ $errors->has('selling_price') ? ' has-error' : '' }}">
+	        <div class="form-group {{ $errors->has('share_days') ? ' has-error' : '' }}">
 	        	<div class="col-sm-3 form-style">
-		            <label class="control-label">Selling Price <span class="asterisk">*</span></label>
+		            <label class="control-label">Free days for invite friends method <span class="asterisk">*</span></label>
 	            </div>
 	            <div class="col-sm-7 col-sm-offset-1 form-style">
-	                <input type="text" id="selling_price" name="selling_price" placeholder="Your price for selling price" class="btn-up form-control">
-	                @if ($errors->has('selling_price'))
+	                <input type="text" id="share_days" name="share_days" placeholder="How many days for invite friends method active until expired" class="btn-up form-control">
+	                @if ($errors->has('share_days'))
 		               	<span class="help-block">
-		                   	<strong>{{ $errors->first('selling_price') }}</strong>
+		                   	<strong>{{ $errors->first('share_days') }}</strong>
+		               	</span>
+		           	@endif		                
+	            </div>
+	        </div>
+	        <div class="form-group {{ $errors->has('buying_days') ? ' has-error' : '' }}">
+	        	<div class="col-sm-3 form-style">
+		            <label class="control-label">Free days for buying apps per year method <span class="asterisk">*</span></label>
+	            </div>
+	            <div class="col-sm-7 col-sm-offset-1 form-style">
+	                <input type="text" id="buying_days" name="buying_days" placeholder="How many days for buying user/service apps per year active until expired" class="btn-up form-control">
+	                @if ($errors->has('buying_days'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('buying_days') }}</strong>
+		               	</span>
+		           	@endif		                
+	            </div>
+	        </div>
+	        <div class="form-group {{ $errors->has('price_year_user') ? ' has-error' : '' }}">
+	        	<div class="col-sm-3 form-style">
+		            <label class="control-label">Setting apps user price per year (not service/provider app) <span class="asterisk">*</span></label>
+	            </div>
+	            <div class="col-sm-7 col-sm-offset-1 form-style">
+	                <input type="text" id="price_year_user" name="price_year_user" placeholder="How much the price for user apps per year" class="btn-up form-control">
+	                @if ($errors->has('price_year_user'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('price_year_user') }}</strong>
+		               	</span>
+		           	@endif		                
+	            </div>
+	        </div>
+	        <div class="form-group {{ $errors->has('price_full_user') ? ' has-error' : '' }}">
+	        	<div class="col-sm-3 form-style">
+		            <label class="control-label">Setting apps user full price (not service/provider app) <span class="asterisk">*</span></label>
+	            </div>
+	            <div class="col-sm-7 col-sm-offset-1 form-style">
+	                <input type="text" id="price_full_user" name="price_full_user" placeholder="How much the full price for user apps" class="btn-up form-control">
+	                @if ($errors->has('price_full_user'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('price_full_user') }}</strong>
+		               	</span>
+		           	@endif		                
+	            </div>
+	        </div>
+	        <div class="form-group {{ $errors->has('price_year_service') ? ' has-error' : '' }}">
+	        	<div class="col-sm-3 form-style">
+		            <label class="control-label">Setting apps service price per year <span class="asterisk">*</span></label>
+	            </div>
+	            <div class="col-sm-7 col-sm-offset-1 form-style">
+	                <input type="text" id="price_year_service" name="price_year_service" placeholder="How much the price for service apps per year" class="btn-up form-control">
+	                @if ($errors->has('price_year_service'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('price_year_service') }}</strong>
+		               	</span>
+		           	@endif		                
+	            </div>
+	        </div>
+	        <div class="form-group {{ $errors->has('price_full_service') ? ' has-error' : '' }}">
+	        	<div class="col-sm-3 form-style">
+		            <label class="control-label">Setting apps service full price <span class="asterisk">*</span></label>
+	            </div>
+	            <div class="col-sm-7 col-sm-offset-1 form-style">
+	                <input type="text" id="price_full_service" name="price_full_service" placeholder="How much the full price for service/provider apps" class="btn-up form-control">
+	                @if ($errors->has('price_full_service'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('price_full_service') }}</strong>
 		               	</span>
 		           	@endif		                
 	            </div>

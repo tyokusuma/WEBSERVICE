@@ -8,6 +8,22 @@
    			<form action="{{ route('create-cities') }}" method="post" role="form">
 	       	{{ csrf_field() }}
 	       	
+	       	<div class="form-group {{ $errors->has('province_id') ? ' has-error' : '' }}">
+                <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
+                <div class="col-sm-6 col-sm-offset-1 form-style">
+	        		<select id="type" name="province_id" class="form-control chosen-select mySelect" required>
+                     	@foreach($provinces as $province)
+	                     	<option value="{{ $province->id }}">{{ $province->name_province }}</option>
+                     	@endforeach
+                  	</select>
+	                @if ($errors->has('type'))
+		               	<span class="help-block">
+		                   	<strong>{{ $errors->first('type') }}</strong>
+		               	</span>
+		           	@endif
+                </div>
+            </div>
+
 	       	<div class="form-group {{ $errors->has('name_city') ? ' has-error' : '' }}">
               	<label class="col-sm-3 control-label">Name City <span class="asterisk">*</span></label>
               	<div class="col-sm-7 col-sm-offset-1 form-style">
@@ -34,5 +50,7 @@
 @endsection
 
 @section('script')
-
+<script>
+	$('.mySelect').select2();
+</script>
 @endsection

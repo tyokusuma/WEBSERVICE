@@ -34,6 +34,8 @@ class CreateTransactionsTable extends Migration
             $table->integer('priority')->nullable(); //new field
             $table->decimal('distance', 5, 2);
             $table->unsignedInteger('traveling_time');//in minute
+            $table->time('estimation_time_start');
+            $table->time('estimation_time_end');
             $table->timestamps();
             $table->softDeletes();
 

@@ -10,11 +10,16 @@ class MessageDetail extends Model
     const UNREAD_MESSAGEDETAILS = '0';
     const READ_MESSAGEDETAILS = '1';
 
+    //Notification FCM
+    const TAG_MSG_DETAIL = 'message detail';
+    const TITLE_MSG_DETAIL = 'new reply';
+
     protected $fillable = [
         'message_id',
-        'sender_id',
-        'receiver_id',
+        'admin_id',
+        'user_id',
         'content',
+        'image',
         'read_admin',
         'read_user',
     ];

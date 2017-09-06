@@ -11,7 +11,13 @@
 	       	<div class="form-group {{ $errors->has('type') ? ' has-error' : '' }}">
                 <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
                 <div class="col-sm-6 col-sm-offset-1 form-style">
-	        		<input type="text" name="type" class="form-control" placeholder="Type"/>
+	        		<!-- <input type="text" name="type" class="form-control" placeholder="Type"/> -->
+	        		<select id="type" name="type" class="form-control chosen-select" required>
+                     	<option value=""></option>
+                     	<option value="kendaraan">Kendaraan</option>
+	        		    <option value="pedagang">Pedagang</option>
+                  	</select>
+
 	                @if ($errors->has('type'))
 		               	<span class="help-block">
 		                   	<strong>{{ $errors->first('type') }}</strong>

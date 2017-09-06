@@ -29,11 +29,12 @@
     </head>
     <body class="skin-blue">
         <div id="app">
+            <notification></notification>
             <div id="preloader">
                 <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
             </div>
             <div class="wrapper">
-                @include('layouts.web.partials.header', ['notifs' => $notifs])
+                @include('layouts.web.partials.header')
                 <div class="content-wrapper">
                 @include('layouts.web.partials.content')
                 </div>
@@ -75,38 +76,7 @@
             });
         });
 
-        // function fetchNotif() {
-        //     $.ajax({
-        //         type: "GET", 
-        //         url: "bangsinibang.com/adminpanel/unread",
-        //         success: function(data){
-        //             alert(data); 
-        //         }
-        //     });
-        // };
-        // uncomment these for make unread to read notification
-        // function markAsReadNotification() {
-        //     $.get('/adminpanel/markasread');
-        // }
-
-        // function unreadNotification() {
-        //     $.get('/adminpanel/unread');
-        // }
-
-        // $(document).ready(function() {
-        //     refreshHeader();
-        // });
-
-        // function refreshHeader() {
-        //     $('#notifs').load("{{ route('unread-notifs') }}", function(data) {
-        //         // console.log(data);
-        //         setTimeout(refreshHeader, 15000);
-        //     });
-            
-        //     // $.get("{{ route('unread-notifs') }}", function(data){
-        //     //     console.log(data);
-        //     // });
-        // };
+        
     </script>
     <!-- <script src="{{ asset ('/bower_components/admin-lte/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script> -->
     <script>

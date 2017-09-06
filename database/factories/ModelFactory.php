@@ -5,6 +5,7 @@ use App\Armada;
 use App\Buyer;
 use App\Category;
 use App\City;
+use App\FCM;
 use App\Favorite;
 use App\MainService;
 use App\Message;
@@ -30,7 +31,6 @@ use Carbon\Carbon;
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-
 $factory->define(User::class, function (Faker\Generator $faker) {
     return [
         'remember_token' => str_random(10),    
@@ -41,8 +41,8 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'password' => bcrypt('password'),
         'gender' => $faker->randomElement([User::FEMALE_GENDER, User::MALE_GENDER]),
         'phone' => '085721024770',
-        'city_id' => $faker->randomElement([1,2,3,4]),
-        'province_id' => $faker->randomElement([1,2,3,4,5]),
+        'city_id' => 1,
+        'province_id' => 1,
         'profile_image' => 'pp.jpeg',
         'verified' => $verified = '1',
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
@@ -53,7 +53,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'gps_longitude' => 107.6157788,
         'expired_at' => Carbon::now()->addDays(60),
         'payment' => User::TRIAL_PAYMENT,
-        'status' => User::USER_ACTIVE,
+        // 'status' => User::USER_ACTIVE,
     ];
 });
 
@@ -69,10 +69,11 @@ $factory->define(Service::class, function (Faker\Generator $faker) {
         'verified_service' => '1',
         'vehicle_type' => $faker->word,
         'category_id' => $idCategory = Category::inRandomOrder()->first()->id,
-        'setting_mode' => '1',
+        // 'setting_mode' => '1',
         'status' => '1', 
         'available' => '1',
         'location_abang' => null,
+        'expired_at' => Carbon::now()->addDays(60),
     ];
 });
 
@@ -91,8 +92,8 @@ $factory->define(MessageDetail::class, function (Faker\Generator $faker) {
     $message = Message::where('user_id', 1)->get()->first();
     return [
         'message_id' => $message->id,
-        'sender_id' => $message->user_id, 
-        'receiver_id' => 0,
+        'user_id' => $message->user_id, 
+        'admin_id' => 0,
         'content' => $faker->paragraph($nbSentences = 3),
         'read_admin' => MessageDetail::UNREAD_MESSAGEDETAILS,
         'read_user' => MessageDetail::UNREAD_MESSAGEDETAILS,
@@ -106,8 +107,9 @@ $factory->define(MessageDetail::class, function (Faker\Generator $faker) {
 $factory->define(Category::class, function (Faker\Generator $faker) {
     return [
         'type' => 'kendaraan',
-        'category_type' => $driver = $faker->randomElement(['taksi', 'abang']),
-        'subcategory_type' => $driver == 'taxi' ? $faker->randomElement(['bluebird', 'gemah ripah']) : $faker->randomElement(['kolek', 'es buah', 'nasi goreng']),
+        'category_type' => 'taksi',
+        'subcategory_type' => 'gemah ripah',
+        'tags' => 'taksi',
     ];
 });
 
@@ -145,14 +147,14 @@ $increment = 0;
 
 $factory->define(Province::class, function (Faker\Generator $faker) {
     return [
-        'name_province' => $faker->paragraph($nbSentences = 1),
+        'name_province' => 'jawa barat',
     ];
 });
 
 $factory->define(City::class, function (Faker\Generator $faker) {
     return [
-        'name_city' => $faker->paragraph($nbSentences = 1),
-        'province_id' => $faker->randomElement([1,2,3]),
+        'name_city' => 'bandung',
+        'province_id' => 1,
     ];
 });
 
@@ -162,6 +164,10 @@ $factory->define(Other::class, function (Faker\Generator $faker) {
         'trial_days' => 60,
         'buying_days' => 365,
         'share_days' => 90,
+        'price_year_user' => 275000,
+        'price_full_user' => 300000,
+        'price_year_service' => 375000,
+        'price_full_service' => 450000,
     ];
 });
 
@@ -173,6 +179,13 @@ $factory->define(Advertisement::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(FCM::class, function (Faker\Generator $faker) {
+    return [
+        'fcm_registration_token' => 'dsq3yElx8pQ:APA91bFeL18hcNUy3EOc0bHiDxtI1d16kDjlGDbZcGLNptNBSEZhupr2VmKGBcXNuru75LaPAzNbUAAjL5DleKrVAU_uS9ZdXr6xiRTafNff79HTsfuHathUPSf6BjiJj0actw60ydVs',
+        'user_id' => 101,
+    ];
+});
+
 $factory->define(Transaction::class, function (Faker\Generator $faker) {
     $mainservices = MainService::has('service')->get()->pluck('id');
     $service = Service::inRandomOrder()->first();
@@ -181,10 +194,10 @@ $factory->define(Transaction::class, function (Faker\Generator $faker) {
         'buyer_id' => $idUser2 = User::whereNotIn('id', $mainservices)->inRandomOrder()->first(),
         'order_code' => $faker->ean8,
         'booking' => $faker->randomElement([Transaction::BOOKING, Transaction::NOT_BOOKING]),
-        'order_date' => '2017-06-15',
-        'order_time' => '18:22:30',
-        'status_order' => $faker->randomElement([Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3]), 
-        'satisfaction_level' => $faker->randomElement([Transaction::SATISFACTION_LEVEL_1, Transaction::SATISFACTION_LEVEL_2, Transaction::SATISFACTION_LEVEL_3]),
+        'order_date' => Carbon::now()->toDateString(),
+        'order_time' => Carbon::now()->toTimeString(),
+        'status_order' => Transaction::TRANSACTION_STATUS_5, 
+        'satisfaction_level' => null,
         'comment' => null,
         'current_destination' => $faker->streetAddress,
         'final_destination' => $faker->streetAddress,
@@ -194,5 +207,7 @@ $factory->define(Transaction::class, function (Faker\Generator $faker) {
         'longitude_destination' =>$faker->longitude($min = -180, $max = 180),
         'distance' =>$faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 100),
         'traveling_time' =>$faker->randomNumber($nbDigits = 3, $strict = false),
+        'estimation_time_start' => Carbon::now()->subMinutes(30),
+        'estimation_time_end' => Carbon::now()->addMinutes(30),   
     ];
 });

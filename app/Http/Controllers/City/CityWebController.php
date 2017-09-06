@@ -14,14 +14,13 @@ class CityWebController extends Controller
     {
         $cities = City::with('province')->paginate(10);
         $provinces = Province::all()->sortBy('name_province');
-        $notifs = request()->get('notifs');
-        return view('layouts.web.city.index')->with('cities', $cities)->with('provinces', $provinces)->with('notifs', $notifs);
+        return view('layouts.web.city.index')->with('cities', $cities)->with('provinces', $provinces);
     }
 
     public function create()
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.city.create')->with('notifs', $notifs);
+        $provinces = Province::all();
+        return view('layouts.web.city.create')->with('provinces', $provinces);
     }
 
     public function store(Request $request)
@@ -40,8 +39,7 @@ class CityWebController extends Controller
         $data = $request->all();
         $province = City::create($data);
         flash('Your new city created successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('create-cities')->with('notifs', $notifs);
+        return redirect()->route('create-cities');
     }
 
     public function show($id)
@@ -51,7 +49,9 @@ class CityWebController extends Controller
 
     public function edit($id)
     {
-        //
+        $provinces = Province::all();
+        $city = City::where('id', $id)->with('province')->first();
+        return view('layouts.web.city.edit')->with('provinces', $provinces)->with('city', $city);
     }
 
     public function update(Request $request, $id)
@@ -68,18 +68,11 @@ class CityWebController extends Controller
         }
 
         $find = City::findOrFail($id);
-        if ($request->has('name_city')) {
-            $find['name_city'] = $request->name_city;
-        }
-
-        if ($request->has('province_id')) {
-            $find['province_id'] = $request->province_id;
-        }
-        
+        $find['name_city'] = $request->name_city;
+        $find['province_id'] = $request->province_id;
         $find->save();
         flash('Your data city updated successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-cities')->with('notifs', $notifs);
+        return redirect()->route('view-cities');
     }
 
     public function destroy($id)

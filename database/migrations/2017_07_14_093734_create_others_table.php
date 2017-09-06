@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Other;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateOthersTable extends Migration
 {
@@ -15,10 +16,14 @@ class CreateOthersTable extends Migration
     {
         Schema::create('others', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('invite_friends');
-            $table->integer('trial_days');
-            $table->integer('share_days');
-            $table->integer('buying_days');
+            $table->unsignedInteger(Other::OTHER_1);
+            $table->unsignedInteger(Other::OTHER_2);
+            $table->unsignedInteger(Other::OTHER_3);
+            $table->unsignedInteger(Other::OTHER_4);
+            $table->string(Other::OTHER_5);
+            $table->string(Other::OTHER_6);
+            $table->string(Other::OTHER_7);
+            $table->string(Other::OTHER_8);
             $table->softDeletes();
             $table->timestamps();
         });

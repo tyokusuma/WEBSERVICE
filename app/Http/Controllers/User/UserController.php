@@ -5,9 +5,10 @@ namespace App\Http\Controllers\User;
 use App\City;
 use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\FCM\FCMController;
+use App\Http\Controllers\Other\OtherController;
 use App\Http\Controllers\Sms\SmsController;
 use App\Mail\ForgotPassword;
-// use App\Mail\UserCreated;
 use App\Notifications\AdminNotification;
 use App\Other;
 use App\Province;
@@ -35,7 +36,7 @@ class UserController extends ApiController
         
         // $this->middleware('client.credentials')->only(['index', 'store', 'show', 'update', 'destroy']);
         $this->middleware('auth:api')->only(['index', 'show', 'update', 'destroy', 'sendResetLinkPhone', 'changePassword']);
-        $this->admin = User::where('admin', User::ADMIN_USER)->get();
+        $this->admin = User::where('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->get();
     }
     
     // Generate user code from the latest user code
@@ -65,19 +66,6 @@ class UserController extends ApiController
         return 'ADM'.sprintf('%03d', intval($number) + 1);
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $users = User::all();
-
-        return $this->showAll($users);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -93,8 +81,8 @@ class UserController extends ApiController
             'gender' => 'required|in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
             'phone' => 'required|regex:/[0-9]{10,13}/',
             'profile_image' => 'required|image',
-            'gps_latitude' => 'required',
-            'gps_longitude' => 'required',
+            'gps_latitude' => 'required|numeric',
+            'gps_longitude' => 'required|numeric',
             'city_id' => 'required|integer',
             'province_id' => 'required|integer',
 
@@ -104,8 +92,7 @@ class UserController extends ApiController
 
         $findProvince = City::findOrFail($request->city_id);
         if ($findProvince->province_id != $request->province_id) {
-            // dd($findProvince->province_id);
-            return $this->errorResponse('Sorry you put invalid province', 409);
+            return $this->errorResponse('Maaf, kode provinsi yang anda masukkan salah', 409);
         }
 
         $data = $request->all();
@@ -113,30 +100,35 @@ class UserController extends ApiController
         $data['password'] = bcrypt($request->password);
         $data['verified'] = User::UNVERIFIED_USER;
         $data['user_code'] = $this->generateUserCode();
+        $data['admin'] = User::REGULER_USER;
+        $data['admin_code'] = null;            
 
-        if ($data['admin'] == User::ADMIN_USER) {
-            $data['admin_code'] = $this->generateAdminCode();
-        } else {
-            $data['admin'] = User::REGULER_USER;
-            $data['admin_code'] = null;            
-        }
-
-        $setting=Other::all()->last()->trial_days;
-
+        $setting=OtherController::setting()->trial_days;
         $data['verification_link'] = User::generateVerificationPhone();
         $data['profile_image'] = $request->profile_image->store('');
         $data['reset_password'] = User::generateResetPassword();
         $data['expired_at'] = Carbon::now()->addDays($setting);
+        $data['old_expired_at'] = Carbon::now()->addDays($setting);
         $data['status'] = User::USER_ACTIVE;
         $data['payment'] = User::TRIAL_PAYMENT;
         $user = User::create($data);
 
+        //notifikasi handphone
+        // $sms = new SmsController();
+        // $phone = $user->phone;
+        // $name = $user->full_name;
+        // $verification_code = $user->verification_link;
+        // $sms->sendVerificationPhone($phone, $name, $verification_code);
+        
         // Create notification for admin
-        $msgAdmin = 'New User created with ID User '.$data['user_code'];
-        foreach($this->admin as $admin) {
-            $admin->notify(new AdminNotification($msgAdmin));
-            event(new AdminNotificationEvent($msgAdmin));
-        }
+        $msgAdmin = 'New User created with ID User '.$data['user_code'].', email: '.$data['email'].', name:'.$data['full_name'];
+        event(new AdminNotificationEvent($msgAdmin));
+        // foreach($this->admin as $admin) {
+        //     $admin->notify(new AdminNotification($msgAdmin));
+        // }
+        // $fcm = new FCMController();
+        // $message = 'Your account created, you\'ll need to verified your account first';
+        // $fcm->sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
 
         return $this->showOne($user, 201);
     }
@@ -147,15 +139,11 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        $user = Auth::user()->with('city')->with('province');
-        if($id != $user->id) {
-            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
-        }
-        // $user = User::findOrFail($id);
+        $user = User::where('id', auth()->user()->id)->with('city')->with('province')->get();
 
-        return $this->showOne($user);
+        return $this->showAll($user);
     }
 
     /**
@@ -165,47 +153,38 @@ class UserController extends ApiController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = Auth::user();
-        if($id != $user->id) {
-            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
-        }
+        //For payment by share we put inside contactCheck function in this controller
+        $user = auth()->user()->id;
         $rules = [
             'full_name' => 'regex:/^[a-zA-Z. ]+$/',
-            'email' => 'email|unique: users,email',
+            'email' => 'email|unique:users,email,'.$user,
             'gender' => 'in:'.User::FEMALE_GENDER.','.User::MALE_GENDER,
             'phone' => 'regex:/[0-9]{10,13}/',
             'profile_image' => 'nullable|image',
-            'gps_latitude' => 'required',
-            'gps_longitude' => 'required',
-            'city_id' => 'required|integer',
-            'province_id' => 'required|integer',
-            'invite_friends' => 'integer',
-            'payment' => 'string',
+            'city_id' => 'integer',
+            'province_id' => 'integer',
         ];
 
         $this->validate($request, $rules);
-        // $user = User::findOrFail($id);
-        if ($request->has('payment')) {
-            $user['payment'] = $request->payment;
-        }
 
+        $user = auth()->user();
         if ($request->has('password')) {
             return $this->errorResponse('Sorry, you can\'t edit the user password using these api', 409);
         }
 
-        if ($request->has('user_code')) {
-            return $this->errorResponse('Sorry, you can\'t edit the user code', 409);
-        }
+        // if ($request->has('user_code')) {
+        //     return $this->errorResponse('Sorry, you can\'t edit the user code', 409);
+        // }
 
-        if ($request->has('admin_code')) {
-            return $this->errorResponse('Sorry, you can\'t edit the admin code', 409);
-        }
+        // if ($request->has('admin_code')) {
+        //     return $this->errorResponse('Sorry, you can\'t edit the admin code', 409);
+        // }
 
-        if ($request->has('admin')) {
-            return $this->errorResponse('Sorry, you can\'t edit the admin status', 409);
-        }
+        // if ($request->has('admin')) {
+        //     return $this->errorResponse('Sorry, you can\'t edit the admin status', 409);
+        // }
 
         if ($request->hasFile('profile_image')) {
             Storage::delete($user->profile_image);
@@ -214,25 +193,17 @@ class UserController extends ApiController
         }
         
         if ($request->has('email') && $user->email != $request->email) {
-            $user['verified'] = User::UNVERIFIED_USER;
-            $user['verification_link'] = User::generateVerificationEmail();
             $user['email'] = $request->email;
         }
 
         if ($request->has('phone')) {
+            $user['verified'] = User::UNVERIFIED_USER;
+            $user['verification_link'] = User::generateVerificationPhone();
             $user['phone'] = $request->phone;
-        }
-
-        if ($request->has('password')) {
-            return $this->errorResponse('Sorry, you need token to change your password', 409);
         }
 
         if ($request->has('full_name')) {
             $user['full_name'] = $request->full_name; 
-        }
-
-        if ($request->has('verified')) {
-            $user['verified'] = $request->verified;            
         }
 
         if ($request->has('gender')) {
@@ -240,28 +211,28 @@ class UserController extends ApiController
         }      
 
         if ($request->has('city_id')) {
-            $id = City::findOrFail($request->city_id);
             $user['city_id'] = $request->city_id;
             $user['province_id'] = $request->province_id;
         }
 
-        if ($request->has('province_id')) {
-            $id = Province::findOrFail($request->province_id);
-            $province_city_user = City::findOrFail($user['city_id']);
-            if ($province_city_user->province_id != $request->province_id) {
-                return $this->errorResponse('Sorry your province data is invalid with user data', 409);
-            } 
-            $user['province_id'] = $request->province_id;
-        }
+        // if ($request->has('province_id')) {
+        //     $id = Province::findOrFail($request->province_id);
+        //     $province_city_user = City::findOrFail($user['city_id']);
+        //     if ($province_city_user->province_id != $request->province_id) {
+        //         return $this->errorResponse('Sorry your province data is invalid with user data', 409);
+        //     } 
+        //     $user['province_id'] = $request->province_id;
+        // }
 
-        if ($request->has('invite_friends')) {
-            if ($user['invite_friends'] == $request->invite_friends) {
-                $user['invite_friends'] = $request->invite_friends;
-            }
+        // if ($request->has('invite_friends')) {
+        //     if ($user['invite_friends'] == $request->invite_friends) {
+        //         $user['invite_friends'] = $request->invite_friends;
+        //     }
+        // }
+        if ($request->has('gps_latitude') || $request->has('gps_longitude')) {
+            $user['gps_latitude'] = $request->gps_latitude;
+            $user['gps_longitude'] = $request->gps_longitude;
         }
-
-        $user['gps_latitude'] = $request->gps_latitude;
-        $user['gps_longitude'] = $request->gps_longitude;
 
         // if ($user->isClean()) {
         //     return $this->errorResponse('Sorry, you need to change some field', 409);
@@ -269,28 +240,6 @@ class UserController extends ApiController
 
         $user->save();
         return $this->showOne($user);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // When delete user, we need to delete the service too
-        $user = Auth::user($id);
-        $service = Service::where('main_service_id', $id)->get()->first();
-
-        $user->delete();
-        if ($service != null) {
-            $service->delete();
-            return $this->showOne('user', $user, 'service', $service);
-        }
-        
-        return $this->showOne($user);
-
     }
 
     // resend verification link for phone
@@ -349,7 +298,7 @@ class UserController extends ApiController
     //         ], 200);
     // }
 
-    public function sendResetLinkEmail(Request $request) // required phone number and user_id
+    public function sendResetLinkEmail(Request $request) // required email
     {
         // $expired = Carbon::now()->addHour()->format('Y-m-d H:i:s');
         $rules = [
@@ -373,6 +322,7 @@ class UserController extends ApiController
     public function showReset($reset) {
         return view('layouts.web.forgotPassword')->with('reset', $reset);        
     }
+
     /**
      * Reset the given user's password.
      *
@@ -386,29 +336,16 @@ class UserController extends ApiController
         ];
         $this->validate($request, $rules);
         $user = User::where('reset_password', $reset)->firstOrFail();
-        // $expired_at = $user->expired_at;
-        // $now = Carbon::now()->diffInSeconds($expired_at, false);
-        // if ($user == null) {
-        //     return $this->errorResponse('Invalid user', 404);
-        // }
-
-        // if ($now < 0) {
-        //     return $this->errorResponse('Sorry your token expired please create a new one', 404);
-        // }
-
-        // if ($user->reset_password != $request->token) {
-        //     return $this->errorResponse('Mismatched token', 409);
-        // }
         
         $user->forceFill([
             'password' => bcrypt($request->password),
             'reset_password' => null,
         ])->save();
         flash('Your password had changed, you can try login with your new password')->success()->important();
-        return redirect()->back();
+        return view('layouts.web.disabledForgotPassword');
     }
 
-    public function changePassword(Request $request, $id) // email, password, password_confirmation, token,
+    public function changePassword(Request $request) // email, password, password_confirmation, token,
     {
         $rules = [
             'password' => 'required|confirmed|min:7',
@@ -416,9 +353,6 @@ class UserController extends ApiController
 
         $this->validate($request, $rules);
         $user = Auth::user();
-        if($user->id != $id) {
-            return $this->errorResponse('Invalid user', 404);
-        }
         
         $user->forceFill([
             'password' => bcrypt($request->password),
@@ -427,4 +361,81 @@ class UserController extends ApiController
         return $this->showMessage('Success change your password', 200);
     }
 
+    public function contactCheck(Request $request, $id) {
+        // setiap dapet respon dari sini, frontend android filter lagi contact yg ada pake 'found', jadi klo kirim lagi ga perlu ngecekin apa uda masuk ke already_hadfriends
+        $setting = OtherController::setting();
+        $notFound = collect();
+        $found = collect();
+        $count = 0;
+        $authUser = User::findOrFail($id);
+        $checks = $request->data;
+        foreach($checks as $check) {
+            $user = User::where('phone', $check['phone'])->first();
+            if($user == null) {
+                $notFound->push(['name' => $check['name'], 'phone' => $check['phone']]); //not found
+            } else {
+                $found->push(['name' => $check['name'], 'phone' => $check['phone']]); //found
+                $count++;
+            }
+        }
+        if($authUser->already_hadfriends == null && $authUser->share_newfriends == null) { //case belum ada data sama sekali, krn nanti yg share_newfriends bakal d null klo jumlah invite friend melampui req
+            //save ke db yg uda ada 
+            $authUser->already_hadfriends = json_encode($found);
+
+            //save ke db yg belum ada
+            $authUser->share_newfriends = json_encode($notFound);
+            $authUser->invite_friends = $notFound->count();
+            $authUser->save();
+            return response()->json([
+                'not_found' => json_decode($authUser->share_newfriends),
+                'found' => json_decode($authUser->already_hadfriends),
+                'friends_found' => count(json_decode($authUser->already_hadfriends)),
+                'friends_needed' => $setting->invite_friends - $authUser->invite_friends
+            ]);
+        } else {
+            //gabungin sama data friends yg lama
+            $hadFriends = json_encode(array_merge(json_decode($authUser->already_hadfriends), json_decode($found))); //uda ada sbg user aplikasi
+            $notFriends = json_encode(array_merge(json_decode($authUser->share_newfriends), json_decode($notFound ))); //belum ada sbg user aplikasi
+
+            $authUser->share_newfriends = $notFriends;
+            $authUser->already_hadfriends = $hadFriends;
+            $authUser->invite_friends = $authUser->invite_friends + count(json_decode($notFriends));
+            $authUser->save();
+
+        }
+
+        if($setting->invite_friends > $authUser->invite_friends) {
+            return response()->json([
+                'not_found' => json_decode($authUser->share_newfriends),
+                'found' => json_decode($authUser->already_hadfriends),
+                'friends_found' => count(json_decode($authUser->already_hadfriends)),
+                'friends_needed' => $setting->invite_friends - $authUser->invite_friends
+            ]);
+        } else {
+            $authUser->invite_friends = $setting->invite_friends;
+            $authUser->payment = User::SHARE_PAYMENT;
+            $authUser->expired_at = Carbon::now()->addDays($setting->share_days);
+            $authUser->share_newfriends = null;
+            $authUser->save();
+            return $this->onlyMessage('Success');
+        }
+    }
+
+    public function gps(Request $request) {
+        $rules = [
+            'gps_latitude' => 'required|numeric',
+            'gps_longitude' => 'required|numeric',
+        ];
+
+        $this->validate($request, $rules);
+
+        $user = auth()->user();
+        $user['gps_latitude'] = $request->gps_latitude;
+        $user['gps_longitude'] = $request->gps_longitude;
+        $user->save();
+
+        return response()->json([
+                'data' => 'Success update gps'
+            ]);
+    }
 }

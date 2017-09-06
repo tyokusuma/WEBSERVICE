@@ -8,8 +8,17 @@
           </a>
           <div class="navbar-custom-menu" id="markasread">
               <ul class="nav navbar-nav">
-                  <!-- Place here the vue notification element -->
-                  <notification :unreads="{{ json_encode($notifs) }}" :userid="{{ json_encode(auth()->user()->id) }}"></notification>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="">
+                      <i class="fa fa-bell-o"></i>
+                      <!-- <span class="label label-warning">12</span> -->
+                  </a>
+                  <ul class="dropdown-menu">
+                      <li class="divider menu"></li>
+                      <li><a href="#">User stats</a></li>
+                      <li class="divider menu"></li>
+                  </ul>
+                </li>
               </ul>
           </div>
       </nav>

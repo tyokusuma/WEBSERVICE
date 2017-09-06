@@ -35,4 +35,8 @@ trait ApiResponser
 	protected function showAllNew($collection, $code = 200) {
 		return $this->successResponses($collection, $code);
 	}
+
+	protected function onlyMessage($data, $code = 200) {
+		return response()->json(['data' => $data], $code);
+	}
 }

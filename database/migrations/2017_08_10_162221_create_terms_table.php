@@ -16,7 +16,9 @@ class CreateTermsTable extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->increments('id');
             $table->longText('content')->nullable();
+            
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

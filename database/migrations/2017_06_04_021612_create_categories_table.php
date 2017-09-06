@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('type', 255);
             $table->string('category_type', 255);
             $table->string('subcategory_type', 255)->nullable();
+            $table->mediumText('tags');
             $table->unsignedInteger('admin_created')->nullable();
             $table->unsignedInteger('admin_updated')->nullable();
             $table->timestamps();

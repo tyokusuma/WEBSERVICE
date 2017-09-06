@@ -3,7 +3,7 @@
 @section('content-subheader', 'Tracking Driver')
 @section('main-content')
 	<div id="map" style="height: 500px; width: 100%">
-		
+		{{config('app.googlemap') }}
 	</div>
 	@include('layouts.web.partials.footer')
 @endsection
@@ -49,7 +49,7 @@
 
 		var options = //options default setting map, zoom buat level map zoom nya, center buat lokasi center dr map nya
 		{
-			zoom: 11,
+			zoom: 7,
 			center: myCenter,
 		}
 
@@ -71,7 +71,7 @@
 	}
 </script>
 <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_WDgM1vw2F6r2ErDcvd4FWIwngv5goRg&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{ config('app.googlemap') }}&callback=initMap">
     // these callback is to call function you provide for google map api
 </script>
 @endsection

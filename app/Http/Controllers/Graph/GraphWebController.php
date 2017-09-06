@@ -34,9 +34,8 @@ class GraphController extends Controller
         // // return view('layouts.web.etc.graphic.graph')->with('notifs', $notifs);
     }
 
-    public function create()
+    public function create() //pilih tahun dan bulan untuk liat grafik transaksi
     {
-        $notifs = request()->get('notifs');
         $users = User::all();
         $yearStart = Transaction::oldest()->first()->created_at->year;
         $yearEnd = Transaction::latest()->first()->created_at->year;
@@ -44,56 +43,43 @@ class GraphController extends Controller
             $years = [];
             for($i = $yearStart; $i <= $yearEnd; $i++) {
                 $years[$i] = $i;
-                dd($years);
             }
         }
         $years = [$yearStart];
         $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return view('layouts.web.etc.graphic.create')->with('users', $users)->with('years', $years)->with('months', $months)->with('notifs', $notifs);
+        return view('layouts.web.etc.graphic.create')->with('users', $users)->with('years', $years)->with('months', $months);
     }
 
-    public function store(Request $request)
+    public function show(Request $request) //showing grpahic for user transaction based on choosen year and month
     {
-        //
-    }
-
-    public function show(Request $request)
-    {
+        // dd($request);
         $full_name = User::findOrFail($request->user_id)->full_name;
         $chooseDate = 1;
         $chooseMonth = $request->month;
         $chooseYear = $request->year;
         $setDate = Carbon::create($chooseYear, $chooseMonth, $chooseDate);
+
         //find beginning date of month
         $awal = $setDate->startOfMonth();
         $tglAwal = $awal->toDateString();
+
         //find last date of month
         $akhir = $setDate->endOfMonth();
         $tglAkhir = $akhir->toDateString();
 
+        $data = [];
+        $days = [];
         $graphics = Graphic::where('user_id', $request->user_id)->get();
+        // dd($graphics);
+        if($graphics == null) {
+            flash('Sorry you don\'t have any transactions')->error()->important();
+        }
+
         foreach($graphics as $keyIndex => $graphic) {
             $data[$keyIndex] = $graphic->count;
             $tgl = substr($graphic->date, -2);
             $days[$keyIndex] = intval($tgl);
         }
-        // dd($days, $data);
-        $notifs = request()->get('notifs');
-        return view('layouts.web.etc.graphic.graph')->with('notifs', $notifs)->with('data', $data)->with('days', $days)->with('date', $setDate->format('F Y'))->with('full_name', $full_name);
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        return view('layouts.web.etc.graphic.graph')->with('data', $data)->with('days', $days)->with('date', $setDate->format('F Y'))->with('full_name', $full_name);
     }
 }

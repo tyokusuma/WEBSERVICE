@@ -3,6 +3,7 @@
 @section('content-subheader', 'List Provinces')
 @section('main-content')
     @include ('flash::message')
+    <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-provinces') }}"><span>  Add</span></a></div>
 	<table id="province" class="table table-bordred table-striped">
 	    <thead>
            	<th>No</th>
@@ -15,47 +16,13 @@
 				    <td>{{ $skipped + $i }}</td>
 				    <td>{{ $province->name_province }}</td>
 					<td>
-						<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $province->id }}"><span class="glyphicon glyphicon-pencil"></span></button></p>
+						<p><a href="{{ route('view-update-provinces', ['id' => $province->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
 					</td>
 				    <td>
 				    	<p data-placement="top" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $province->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
 				    </td>
 				    <td>
 				</tr>
-
-				<!-- Form edit -->
-				<form action="{{ route('update-provinces', ['id' => $province->id]) }}" id="update{{ $province->id }}" method="post" role="form">
-				{{ csrf_field() }}
-			   	{{ method_field('PATCH') }}
-					<div class="modal fade" id="edit-{{ $province->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-					    <div class="modal-dialog">
-					    	<div class="modal-content">
-					    		<input class="form-control hidden" type="text" name="id" value="{{ $province->id }}" disabled>
-					        	<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					        			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					        		</button>
-					        		<h4 class="modal-title custom_align" id="Heading">Edit Province</h4>
-					      		</div>
-					        	<div class="modal-body">
-					          		<div class="form-group {{ $errors->has('name_province') ? ' has-error' : '' }}">
-						        		<label class="spasi">Province Name</label>
-					        			<input class="form-control" type="text" name="name_province" value="{{ $province->name_province }}">
-
-				        				@if ($errors->has('name_province'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('name_province') }}</strong>
-				        			    	</span>
-				        				@endif	   
-					        		</div>
-					      		</div>
-					          	<div class="modal-footer ">
-					        		<button type="submit" form="update{{ $province->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      		</div>
-					        </div>
-					  	</div>    
-					</div>
-				</form>
 
 				<!-- Form delete -->
 	    		<form action="{{ route('delete-provinces', ['id' => $province->id]) }}" id="delete{{ $province->id }}" method="post" role="form">

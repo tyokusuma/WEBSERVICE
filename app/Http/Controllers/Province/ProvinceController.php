@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ProvinceController extends ApiController
 {
     public function __construct() {
-        $this->middleware('auth:api')->only(['searchByName']);
+        // $this->middleware('auth:api')->only(['searchByName']);
     }
 
     /**

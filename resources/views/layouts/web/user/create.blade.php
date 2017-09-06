@@ -148,11 +148,11 @@
 <script>
 	$('.mySelect').select2();
 
-    if (performance.navigation.type == 1) {
-		document.getElementById("profile_image_show").value = "";
-    } else {
-		document.getElementById("profile_image_show").value = "";
-    }
+  //   if (performance.navigation.type == 1) {
+		// document.getElementById("profile_image_show").value = "";
+  //   } else {
+		// document.getElementById("profile_image_show").value = "";
+  //   }
     
 	document.getElementById('profile_image').onchange = uploadOnChange;
 

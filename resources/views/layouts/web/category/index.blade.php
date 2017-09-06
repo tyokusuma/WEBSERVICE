@@ -3,7 +3,7 @@
 @section('content-subheader', 'List Categories')
 @section('main-content')
     @include ('flash::message')
-	
+	<div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-categories') }}"><span>  Add</span></a></div>
 	<table id="category" class="table table-bordred table-striped">
 	    <thead>
            	<th>ID</th>
@@ -21,50 +21,12 @@
 				    <td>{{ $category->subcategory_type }}</td>
 				    
 					<td>
-				    	<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $category->id }}" ><span class="glyphicon glyphicon-pencil"></span></button></p>
+				    	<p><a href="{{ route('view-update-categories', ['id' => $category->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
 				    </td>
 				    <td>
 				    	<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $category->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
 				    </td>
 				</tr>
-
-				<!-- Edit Form -->
-				<form action="{{ route('update-categories', ['id' => $category->id]) }}" id="update{{ $category->id }}" method="post" role="form">
-	       		{{ csrf_field() }}
-		       	{{ method_field('PATCH') }}
-	       			<input type="text" class="hidden" name="id" value="{{ $category->id }}" disabled>
-					<div class="modal fade" id="edit-{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-					    <div class="modal-dialog">
-					    	<div class="modal-content">
-					    		<input class="form-control hidden" type="text" name="id" value="{{ $category->id }}" disabled>
-					        	<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					        			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					        		</button>
-					        		<h4 class="modal-title custom_align" id="Heading">Edit Category</h4>
-					      		</div>
-					        	<div class="modal-body">
-					        		<div class="form-group">
-						        		<label>Type</label>
-					        			<input class="form-control" type="text" name="type" value="{{ $category->type }}">					        		
-					        		</div>
-					          		<div class="form-group">
-						        		<label>Category Type</label>
-					        			<input class="form-control" type="text" name="category_type" value="{{ $category->category_type }}">					        		
-					        		</div>
-					        		<div class="form-group">
-						        		<label>Subcategory Type</label>				        		
-					        			<input class="form-control" type="text" name="subcategory_type" value="{{ $category->subcategory_type }}">					        		
-					        		</div>						        	
-					      		</div>
-					          	<div class="modal-footer ">
-					        		<button onclick="edit_form()" type="submit" form="update{{ $category->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      			<!-- <input type="hidden" name="action" value="update{{ $category->id }}" /> -->
-					      		</div>
-					        </div>
-					  	</div>    
-					</div>
-				</form>
 
 				<!-- Form delete -->
 				<form action="{{ route('delete-categories', ['id' => $category->id]) }}" id="delete{{ $category->id }}" method="post" role="form">

@@ -4,12 +4,384 @@
 		"selected_items":
 		[
 			[
-				"new",
-				"newUnreadNotifications"
+				"mess",
+				"message"
+			],
+			[
+				"paddin",
+				"padding-top"
+			],
+			[
+				"ser",
+				"servicedetail"
+			],
+			[
+				"metho",
+				"method_field('PATCH"
+			],
+			[
+				"servi",
+				"servicedetails"
+			],
+			[
+				"rTab",
+				"rTableCell"
+			],
+			[
+				"rT",
+				"rTableCell"
+			],
+			[
+				"ve",
+				"vehicle_type"
+			],
+			[
+				"li",
+				"license_platenumber"
+			],
+			[
+				"vehicle",
+				"vehicle_type"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"mains",
+				"main_service_id"
+			],
+			[
+				"unsigned",
+				"unsignedInteger"
+			],
+			[
+				"FCM",
+				"FCMController"
+			],
+			[
+				"id",
+				"id_driver"
+			],
+			[
+				"main",
+				"main_service_id"
+			],
+			[
+				"str",
+				"strtolower"
+			],
+			[
+				"bank_",
+				"bank_name"
+			],
+			[
+				"bank",
+				"bank_name"
+			],
+			[
+				"err",
+				"$errors〔variable〕"
+			],
+			[
+				"User",
+				"User\\UserController"
+			],
+			[
+				"APP",
+				"APPS_USER〔constant〕"
+			],
+			[
+				"expire",
+				"expired_at"
+			],
+			[
+				"meth",
+				"method=〔attribute〕"
+			],
+			[
+				"find",
+				"findOrFail"
+			],
+			[
+				"clas",
+				"class"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"paymen",
+				"$payments〔variable〕"
+			],
+			[
+				"P",
+				"PAYMENT_VERIFIED〔constant〕"
+			],
+			[
+				"req",
+				"$request〔variable〕"
+			],
+			[
+				"Admin",
+				"AdminNotificationEvent〔namespace〕"
+			],
+			[
+				"Message",
+				"MessageDetail〔namespace〕"
+			],
+			[
+				"msg",
+				"$msgDetail〔variable〕"
+			],
+			[
+				"messag",
+				"message_id"
+			],
+			[
+				"Messga",
+				"MessageDetail〔namespace〕"
+			],
+			[
+				"method",
+				"method_field('DELETE"
+			],
+			[
+				"messa",
+				"$message〔variable〕"
 			],
 			[
 				"notif",
-				"notification"
+				"$notifUser〔variable〕"
+			],
+			[
+				"s",
+				"sendAndroidNotification〔function〕"
+			],
+			[
+				"dat",
+				"$data_available〔variable〕"
+			],
+			[
+				"serv",
+				"$services〔variable〕"
+			],
+			[
+				"data",
+				"data_service"
+			],
+			[
+				"all",
+				"$all_services〔variable〕"
+			],
+			[
+				"data_",
+				"$data_service〔variable〕"
+			],
+			[
+				"city",
+				"$cityUser〔variable〕"
+			],
+			[
+				"U",
+				"UNVERIFIED_SERVICE〔constant〕"
+			],
+			[
+				"mainser",
+				"$mainservice〔variable〕"
+			],
+			[
+				"name",
+				"name_city"
+			],
+			[
+				"m",
+				"mainservices"
+			],
+			[
+				"fa",
+				"$favorite〔variable〕"
+			],
+			[
+				"flush",
+				"flushEventListeners"
+			],
+			[
+				"TRAN",
+				"TRANSACTION_MOTOR_MIN"
+			],
+			[
+				"grap",
+				"$graphics〔variable〕"
+			],
+			[
+				"cate",
+				"category"
+			],
+			[
+				"value",
+				"value=〔attribute〕"
+			],
+			[
+				"ca",
+				"categories"
+			],
+			[
+				"text",
+				"textarea\tTag"
+			],
+			[
+				"gps",
+				"gps_latitude"
+			],
+			[
+				"nul",
+				"nullable|image"
+			],
+			[
+				"price_",
+				"price_year_service"
+			],
+			[
+				"price_fu",
+				"price_full_user"
+			],
+			[
+				"price_year",
+				"price_year_user"
+			],
+			[
+				"buy",
+				"buying_days"
+			],
+			[
+				"trial",
+				"trial_days"
+			],
+			[
+				"cha",
+				"$channelbuyer〔variable〕"
+			],
+			[
+				"TR",
+				"TRANSACTION_SERVICE_CONFIRMATION"
+			],
+			[
+				"sho",
+				"showMessage〔function〕"
+			],
+			[
+				"fcm",
+				"fcm_registration_token"
+			],
+			[
+				"ru",
+				"$rules〔variable〕"
+			],
+			[
+				"paym",
+				"payment_verified"
+			],
+			[
+				"payme",
+				"$payments〔variable〕"
+			],
+			[
+				"admin",
+				"admin_updated"
+			],
+			[
+				"vie",
+				"view-index-bank"
+			],
+			[
+				"fl",
+				"flushEventListeners"
+			],
+			[
+				"fore",
+				"foreign"
+			],
+			[
+				"status",
+				"status_order"
+			],
+			[
+				"uc",
+				"ucwords"
+			],
+			[
+				"use",
+				"$user_name〔variable〕"
+			],
+			[
+				"PA",
+				"PAYMENT_YEAR〔constant〕"
+			],
+			[
+				"uns",
+				"unsignedInteger"
+			],
+			[
+				"js",
+				"json_decode"
+			],
+			[
+				"invie",
+				"invite_friends"
+			],
+			[
+				"auth",
+				"authUser"
+			],
+			[
+				"not",
+				"$notFriends〔variable〕"
+			],
+			[
+				"had",
+				"$hadFriends〔variable〕"
+			],
+			[
+				"json",
+				"json_decode〔function〕"
+			],
+			[
+				"array_m",
+				"array_merge"
+			],
+			[
+				"share_",
+				"share_newfriends"
+			],
+			[
+				"auh",
+				"$authUser〔variable〕"
+			],
+			[
+				"alread",
+				"already_hadfriends"
+			],
+			[
+				"invite",
+				"invite_friends"
+			],
+			[
+				"che",
+				"$check〔variable〕"
+			],
+			[
+				"show",
+				"showAll"
+			],
+			[
+				"expir",
+				"expired_at"
+			],
+			[
+				"new",
+				"newUnreadNotifications"
 			],
 			[
 				"log",
@@ -24,16 +396,8 @@
 				"subscribers"
 			],
 			[
-				"sho",
-				"showAll〔function〕"
-			],
-			[
 				"cont",
 				"$contents〔variable〕"
-			],
-			[
-				"show",
-				"showOne〔function〕"
 			],
 			[
 				"con",
@@ -68,10 +432,6 @@
 				"$request〔variable〕"
 			],
 			[
-				"req",
-				"$request〔variable〕"
-			],
-			[
 				"H",
 				"H:i:s"
 			],
@@ -84,18 +444,6 @@
 				"order_time"
 			],
 			[
-				"main",
-				"main_service_id"
-			],
-			[
-				"cate",
-				"$categoryService〔variable〕"
-			],
-			[
-				"find",
-				"$findService〔variable〕"
-			],
-			[
 				"fin",
 				"$findService〔variable〕"
 			],
@@ -104,16 +452,8 @@
 				"$favorites〔variable〕"
 			],
 			[
-				"data_",
-				"data_favorite"
-			],
-			[
 				"fave",
 				"$favorites〔variable〕"
-			],
-			[
-				"data",
-				"$data_available〔variable〕"
 			],
 			[
 				"lat",
@@ -130,14 +470,6 @@
 			[
 				"us",
 				"$users〔variable〕"
-			],
-			[
-				"mains",
-				"mainservices"
-			],
-			[
-				"ser",
-				"$services〔variable〕"
 			],
 			[
 				"cat",
@@ -182,391 +514,16 @@
 			[
 				"inter",
 				"$intersect〔variable〕"
-			],
-			[
-				"coll",
-				"$collection〔variable〕"
-			],
-			[
-				"var",
-				"var_dump〔function〕"
-			],
-			[
-				"province",
-				"province_id"
-			],
-			[
-				"city",
-				"city_id"
-			],
-			[
-				"error",
-				"errorResponse〔function〕"
-			],
-			[
-				"ra",
-				"randomElement〔function〕"
-			],
-			[
-				"s",
-				"showAll〔function〕"
-			],
-			[
-				"expired",
-				"$expired_at〔variable〕"
-			],
-			[
-				"padding-",
-				"padding-right"
-			],
-			[
-				"exp",
-				"$expired_at〔variable〕"
-			],
-			[
-				"margin",
-				"margin-top"
-			],
-			[
-				"rest",
-				"reset_password"
-			],
-			[
-				"reset",
-				"reset_password"
-			],
-			[
-				"res",
-				"resetPassword"
-			],
-			[
-				"rese",
-				"reset_password"
-			],
-			[
-				"veri",
-				"verification_code"
-			],
-			[
-				"date",
-				"$dateAwal〔variable〕"
-			],
-			[
-				"tg",
-				"$tglAkhir〔variable〕"
-			],
-			[
-				"tgl",
-				"tglAwal"
-			],
-			[
-				"choo",
-				"$chooseYear〔variable〕"
-			],
-			[
-				"yeras",
-				"$years〔variable〕"
-			],
-			[
-				"year",
-				"$yearStart〔variable〕"
-			],
-			[
-				"gra",
-				"$graphic〔variable〕"
-			],
-			[
-				"user",
-				"user_id"
-			],
-			[
-				"tra",
-				"$transaction〔variable〕"
-			],
-			[
-				"buyer",
-				"buyer_id"
-			],
-			[
-				"gps",
-				"gps_longitude"
-			],
-			[
-				"last",
-				"last_lng"
-			],
-			[
-				"curr",
-				"current_lng"
-			],
-			[
-				"current",
-				"current_lat"
-			],
-			[
-				"erro",
-				"errorResponse〔function〕"
-			],
-			[
-				"gps_l",
-				"gps_longitude"
-			],
-			[
-				"gps_",
-				"gps_longitude"
-			],
-			[
-				"dire",
-				"directions_request"
-			],
-			[
-				"direction",
-				"direction_render"
-			],
-			[
-				"stat",
-				"status〔argument〕"
-			],
-			[
-				"sea",
-				"$searchServices〔variable〕"
-			],
-			[
-				"str",
-				"strtolower〔function〕"
-			],
-			[
-				"TRA",
-				"TRANSACTION_STATUS_6"
-			],
-			[
-				"transact",
-				"$transaction〔variable〕"
-			],
-			[
-				"messg",
-				"$messages〔variable〕"
-			],
-			[
-				"messa",
-				"message_id"
-			],
-			[
-				"Mess",
-				"MessageDetail〔namespace〕"
-			],
-			[
-				"mess",
-				"$messages〔variable〕"
-			],
-			[
-				"message",
-				"message_id"
-			],
-			[
-				"ms",
-				"$msgDetails〔variable〕"
-			],
-			[
-				"ero",
-				"errorResponse〔function〕"
-			],
-			[
-				"favo",
-				"$favorite〔variable〕"
-			],
-			[
-				"curre",
-				"current_destination"
-			],
-			[
-				"sta",
-				"status_order"
-			],
-			[
-				"vehicle",
-				"vehicle_image"
-			],
-			[
-				"serv",
-				"$service〔variable〕"
-			],
-			[
-				"servi",
-				"$servicesWithoutOwn〔variable〕"
-			],
-			[
-				"U",
-				"UNVERIFIED_SERVICE"
-			],
-			[
-				"categ",
-				"category_id"
-			],
-			[
-				"err",
-				"errorResponse〔function〕"
-			],
-			[
-				"cho",
-				"$chooseYear〔variable〕"
-			],
-			[
-				"tglA",
-				"$tglAwal〔variable〕"
-			],
-			[
-				"dif",
-				"diffInDays〔function〕"
-			],
-			[
-				"end",
-				"endOfMonth"
-			],
-			[
-				"noti",
-				"notifs"
-			],
-			[
-				"paddin",
-				"padding-bottom"
-			],
-			[
-				"text",
-				"text-decoration-line"
-			],
-			[
-				"border",
-				"border-bottom"
-			],
-			[
-				"fon",
-				"font-weight"
-			],
-			[
-				"Adv",
-				"Advertisement\\A"
-			],
-			[
-				"align",
-				"align-items"
-			],
-			[
-				"ad",
-				"adminpanel"
-			],
-			[
-				"trans",
-				"$transactions〔variable〕"
-			],
-			[
-				"mainser",
-				"$mainservices〔variable〕"
-			],
-			[
-				"unread",
-				"unreadNotifications"
-			],
-			[
-				"unrea",
-				"unreadNotifications"
-			],
-			[
-				"set",
-				"setTimeout〔function〕"
-			],
-			[
-				"cs",
-				"csrf-token"
-			],
-			[
-				"font",
-				"font-size"
-			],
-			[
-				"pad",
-				"padding-left"
-			],
-			[
-				"unre",
-				"unreadNotifications"
-			],
-			[
-				"flush",
-				"flushEventListeners"
-			],
-			[
-				"smsD",
-				"$smsDevice〔variable〕"
-			],
-			[
-				"sms",
-				"$smsPass〔variable〕"
-			],
-			[
-				"SMs",
-				"SmsController"
-			],
-			[
-				"config",
-				"config_path〔function〕"
-			],
-			[
-				"view",
-				"view-provinces"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "resources/assets/js/components/Notification.vue",
+			"file": "routes/api.php",
 			"settings":
 			{
-				"buffer_size": 1047,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "resources/assets/js/app.js",
-			"settings":
-			{
-				"buffer_size": 889,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Http/Controllers/User/UserWebController.php",
-			"settings":
-			{
-				"buffer_size": 7758,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/User.php",
-			"settings":
-			{
-				"buffer_size": 3336,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "routes/channels.php",
-			"settings":
-			{
-				"buffer_size": 576,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/Events/AdminNotificationEvent.php",
-			"settings":
-			{
-				"buffer_size": 984,
+				"buffer_size": 6162,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -575,8 +532,123 @@
 			"file": "routes/web.php",
 			"settings":
 			{
-				"buffer_size": 9992,
+				"buffer_size": 11600,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Service/ServiceController.php",
+			"settings":
+			{
+				"buffer_size": 19757,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/MainService/MainServiceWebController.php",
+			"settings":
+			{
+				"buffer_size": 2893,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Service.php",
+			"settings":
+			{
+				"buffer_size": 2053,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Transaction/TransactionController.php",
+			"settings":
+			{
+				"buffer_size": 18216,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Service/ServiceWebController.php",
+			"settings":
+			{
+				"buffer_size": 17521,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/MessageDetail/MessageDetailWebController.php",
+			"settings":
+			{
+				"buffer_size": 2457,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "resources/views/layouts/web/messagedetail/index.blade.php",
+			"settings":
+			{
+				"buffer_size": 3981,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Category.php",
+			"settings":
+			{
+				"buffer_size": 1487,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/Message/MessageWebController.php",
+			"settings":
+			{
+				"buffer_size": 3551,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/MessageDetail/MessageDetailController.php",
+			"settings":
+			{
+				"buffer_size": 2140,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Http/Controllers/User/UserController.php",
+			"settings":
+			{
+				"buffer_size": 16360,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Transaction.php",
+			"settings":
+			{
+				"buffer_size": 3043,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "//master_admin\n\n// function fetchNotif() {\n        //     $.ajax({\n        //         type: \"GET\", \n        //         url: \"bangsinibang.com/adminpanel/unread\",\n        //         success: function(data){\n        //             alert(data); \n        //         }\n        //     });\n        // };\n        // uncomment these for make unread to read notification\n        // function markAsReadNotification() {\n        //     $.get('/adminpanel/markasread');\n        // }\n\n        // function unreadNotification() {\n        //     $.get('/adminpanel/unread');\n        // }\n\n        // $(document).ready(function() {\n        //     refreshHeader();\n        // });\n\n        // function refreshHeader() {\n        //     $('#notifs').load(\"{{ route('unread-notifs') }}\", function(data) {\n        //         // console.log(data);\n        //         setTimeout(refreshHeader, 15000);\n        //     });\n            \n        //     // $.get(\"{{ route('unread-notifs') }}\", function(data){\n        //     //     console.log(data);\n        //     // });\n        // };\n\ndsq3yElx8pQ:APA91bFeL18hcNUy3EOc0bHiDxtI1d16kDjlGDbZcGLNptNBSEZhupr2VmKGBcXNuru75LaPAzNbUAAjL5DleKrVAU_uS9ZdXr6xiRTafNff79HTsfuHathUPSf6BjiJj0actw60ydVs\n\n-6.9053654, 107.6157788 //gps all except 101\n\nUser 101\neyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjQ4N2JmOTVlNTRjMTEyMTFhMjMzMjY1Njc2MWVjMWRmZDc2MTI4Y2MxZjU5MDgzYTVmMDEzOWZlMmY2OGRkNmQ2YjFlMGI4MzcyOGE1YTA4In0.eyJhdWQiOiIxIiwianRpIjoiNDg3YmY5NWU1NGMxMTIxMWEyMzMyNjU2NzYxZWMxZGZkNzYxMjhjYzFmNTkwODNhNWYwMTM5ZmUyZjY4ZGQ2ZDZiMWUwYjgzNzI4YTVhMDgiLCJpYXQiOjE1MDQ2ODI3MTgsIm5iZiI6MTUwNDY4MjcxOCwiZXhwIjoxNTM2MjE4NzE4LCJzdWIiOiIxMDEiLCJzY29wZXMiOltdfQ.CZmjtKogv6xUy6u4KdA4V-2r13ipSnOXLXV2DeUih1-go4PWHW20Hj5ptKRbcJORML6JS_2OgNixzrSs3d8V7ELuXhC8nm4ms5TjqjxvvM-_VD-OUY9mNov-Cbl3Re2egAdHU-_ua7AXLc7rb0qu2a9oX_gi_xL_eRj9admDoRIV9yiNilh1t4t60n3NxDlZX5SlIkepyKYZbTpplUgbR3z5WphUweCFTYka430mh0VQfLKAwirMWGnA5UbflhZROvj80_rqlJOe3N8Y1-1H5UgEZMmP0xK-HamnIg8KP0TPvzbTm9BelR-xumneZZ2zu1KOmWCBNFbSsWtdcdRWRuvpZqMwRZI506qeAyeV6PUXF-ZDfTcnLLvIcjHbMZbKrxSYT7xvVMXgwjmInfoXK0afXN_a7GK_0sAzhSVgcBxWaifwemVtB6bX0-5naNBy5Adw-jf3N78CnksdWqHNCJjDAJDT1NnbmLViDqV1rWI8WclHAX0_yAaziflA16R9PEfQ1pDD83YjveY06RvZatTtQPx224XuyVXg_CRinjKALopyBRUk1GiAFQKUulN2cxsx3PcoxCPA5k_umA56NxPuhxJqLPpQVWFtzVSoO68acSWjekTNVnDgXyh4VkfB6xDue8ZZbAcGZ5Yl_fsT15bMFofdu6MrMWD9_0bqzE4\n\nService 102\neyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImU1ZjUzNzFkZWY2ZmY4OGExZTI0ZDU5NmZkMmU1OWFkYjM4OWY5ODdmZWY3YzFhNjljMmQwNDZjYjg0YzBjMDdkOTYwNjNkOTlkNTRiOWMyIn0.eyJhdWQiOiIxIiwianRpIjoiZTVmNTM3MWRlZjZmZjg4YTFlMjRkNTk2ZmQyZTU5YWRiMzg5Zjk4N2ZlZjdjMWE2OWMyZDA0NmNiODRjMGMwN2Q5NjA2M2Q5OWQ1NGI5YzIiLCJpYXQiOjE1MDQ2ODI3MzcsIm5iZiI6MTUwNDY4MjczNywiZXhwIjoxNTM2MjE4NzM3LCJzdWIiOiIxMDIiLCJzY29wZXMiOltdfQ.R5CLFImORkyH__kVVCPHl926_zqkV3quRXCaeL1u6GF6A3EACVwO3CVY8d38HB7mpBQahzWObBlEbteZIPCPZIvcTFm2X7fVA1R6CFIKkNYMk1OIplHm6L1ad4j2wtOBz0hXKBXM9opvu1QatjpMtvt_EI88Hj2TsB0cPZsBLEjspz1YIMtE0DzwK6ZQQBolqWsKhqUaF5Y6LovDlsZD7NsehwMKgNfbnIoPA_zefpVV0ButxInELHnO-Z1jC6R_bFewqLB_aImmkNHP6Q2ioNP2whmX3uLQM8H58Ehm0sabJPapE0kv9h3sHDnIROQ3B3cg4FU37KRNBDROtVfZlrYzyAdaDbF2_B5hFDBrrqNgoUiZKr1Xw25LdluM8UFXQhpa3EDBzBYD-ApX4JfzZdlFI7WOYkntI69SyBBQAust2eBdCQ1Jt5G6G2sHH3kGpSkq42nXE2g230crEziYHucj4LG0KAej9hA3OEF4VmZ-UD61jSBvVf8AhDr5LcqcZiwhvcwfhgXR79HOXHeNYLcmpQO5n_UtMD7-9qfmzwudJp8bfmVdEk1u-PkGDylC-YjSmQJIyh0DnZqEiKxeHuBUJOhTpmnZfEZXPxUS52aQPLC_JwL4FmGQLbuqD1j3pKZGPPT4wH0PSc_gXNYzyXf4X5Ijiu6_AXrWS6qlFsk",
+			"settings":
+			{
+				"buffer_size": 3428,
+				"line_ending": "Unix",
+				"name": "//master_admin"
 			}
 		}
 	],
@@ -632,136 +704,166 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/home/shideichis/bang-sini-bang",
+		"/home/shideichis/bang-sini-bang/app",
+		"/home/shideichis/bang-sini-bang/app/Http",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Advertisement",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Payment",
+		"/home/shideichis/bang-sini-bang/app/Http/Middleware",
+		"/home/shideichis/bang-sini-bang/config",
+		"/home/shideichis/bang-sini-bang/database",
+		"/home/shideichis/bang-sini-bang/database/migrations",
+		"/home/shideichis/bang-sini-bang/public",
+		"/home/shideichis/bang-sini-bang/resources",
+		"/home/shideichis/bang-sini-bang/resources/views",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/bank",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/buyer",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/mainservice",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/map",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/message",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/messagedetail",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/payment",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/service",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/user",
+		"/home/shideichis/bang-sini-bang/storage",
+		"/home/shideichis/bang-sini-bang/storage/logs"
+	],
 	"file_history":
 	[
-		"/home/shideichis/bang-sini-bang/notifiaction_bangsinibang_item.vue",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/transaction/index.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/master_admin.blade.php",
-		"/home/shideichis/bang-sini-bang/config/app.php",
-		"/home/shideichis/bang-sini-bang/resources/views/auth/login.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/partials/content.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/partials/header.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/armada/create.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/login.blade.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Foundation/Auth/AuthenticatesUsers.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/partials/sidebar.blade.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Auth/LoginController.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/app.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/partials/footer.blade.php",
-		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/dashboard.blade.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherWebController.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/User/UserController.php",
-		"/home/shideichis/bang-sini-bang/public/bower_components/admin-lte/dist/css/style.default.css",
-		"/home/shideichis/backup bang sini bang/initial git latest project (masuk ke server)/bang-sini-bang/app/Http/Controllers/Auth/LoginController.php",
-		"/home/shideichis/backup bang sini bang/bang-sini-bang/app/Http/Controllers/Auth/LoginController.php",
-		"/home/shideichis/bang-sini-bang/app/Notifications/AdminNotification.php",
-		"/home/shideichis/bang-sini-bang/app/Providers/AppServiceProvider.php",
-		"/home/shideichis/bang-sini-bang/app/Providers/BroadcastServiceProvider.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Middleware/UserNotificationMiddleware.php",
-		"/home/shideichis/bang-sini-bang/config/smsgateway.php",
-		"/home/shideichis/bang-sini-bang/routes/channels.php",
-		"/home/shideichis/vitaflow/resources/views/layouts/admin/partials/footer.blade.php",
-		"/home/shideichis/bang-sini-bang/app/Events/AdminNotificationEvent.php",
-		"/home/shideichis/backup bang sini bang/bang-sini-bang/resources/views/layouts/web/partials/header.blade.php",
-		"/home/shideichis/bang-sini-bang/config/broadcasting.php",
-		"/home/shideichis/bang-sini-bang/resources/assets/js/bootstrap.js",
-		"/home/shideichis/bang-sini-bang/app/Listeners/AdminNotificationListener.php",
-		"/home/shideichis/bang-sini-bang/.env",
-		"/home/shideichis/www/html/adminpanel/_footer.php",
-		"/home/shideichis/Downloads/bracket/index.html",
-		"/home/shideichis/vitaflow/public/css/style.default.css",
-		"/home/shideichis/www/html/adminpanel/_leftpanel.php",
-		"/home/shideichis/bracket/index.html",
-		"/home/shideichis/vitaflow/resources/views/layouts/admin/partials/content.blade.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_18_011847_create_subscribers_table.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_12_112037_create_message_details_table.php",
-		"/home/shideichis/bang-sini-bang/app/MainService.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MainService/MainServiceController.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_16_025310_create_subcontents_table.php",
-		"/home/shideichis/bang-sini-bang/app/Message.php",
-		"/home/shideichis/bang-sini-bang/app/MessageDetail.php",
-		"/home/shideichis/vitaflow/app/Traits/BaseResponser.php",
-		"/home/shideichis/vitaflow/app/Http/Controllers/BaseController.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/ApiController.php",
-		"/home/shideichis/vitaflow/app/Content.php",
-		"/home/shideichis/vitaflow/app/Http/Controllers/Testimony/TestimonyController.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_16_012858_create_testimonies_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_14_143251_create_contents_table.php",
-		"/home/shideichis/vitaflow/app/Testimony.php",
-		"/home/shideichis/bang-sini-bang/app/User.php",
-		"/home/shideichis/Meiji/meijicms/app/Helpers/ArticleHelper.php",
-		"/home/shideichis/vitaflow/.env",
-		"/home/shideichis/vitaflow/app/Providers/RouteServiceProvider.php",
-		"/home/shideichis/vitaflow/app/Http/Controllers/Content/ContentController.php",
-		"/home/shideichis/bang-sini-bang/app/Traits/ApiResponser.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_05_022011_create_services_table.php",
+		"/home/shideichis/bang-sini-bang/app/Tag.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_04_021612_create_categories_table.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/user/create.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/user/index.blade.php",
 		"/home/shideichis/bang-sini-bang/database/factories/ModelFactory.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_06_012702_create_transactions_table.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/City/CityController.php",
-		"/home/shideichis/bang-sini-bang/.gitignore",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Support/Facades/Auth.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authorize.php",
-		"/home/shideichis/Meiji/meijicms/resources/views/welcome.blade.php",
-		"/home/shideichis/vitaflow/app/Http/Controllers/HomeController.php",
-		"/home/shideichis/vitaflow/app/Miscimage.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_084856_create_miscimages_table.php",
-		"/home/shideichis/bang-sini-bang/routes/api.php",
-		"/home/shideichis/vitaflow/Homestead.yaml",
-		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000003_create_users_table.php",
-		"/home/shideichis/vitaflow/config/filesystems.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherController.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Transaction/TransactionController.php",
-		"/home/shideichis/bang-sini-bang/app/Transaction.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Favorite/FavoriteController.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Service/ServiceController.php",
-		"/home/shideichis/bang-sini-bang/app/Service.php",
-		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Armada/ArmadaController.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_08_10_162221_create_terms_table.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_20_155325_create_notifications_table.php",
+		"/home/shideichis/bang-sini-bang/.env",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/service/index.blade.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_12_112037_create_message_details_table.php",
+		"/home/shideichis/bang-sini-bang/app/User.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/User/UserWebController.php",
+		"/home/shideichis/bang-sini-bang/app/MessageDetail.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/master_admin.blade.php",
+		"/home/shideichis/bang-sini-bang/public/bower_components/admin-lte/dist/css/style.default.css",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MainService/MainServiceController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/FCM/FCMController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Payment/PaymentController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherController.php",
+		"/home/shideichis/bang-sini-bang/app/Other.php",
+		"/home/shideichis/bang-sini-bang/app/Service.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_05_022011_create_services_table.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000003_create_users_table.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_08_31_084157_create_f_c_ms_table.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/User/UserController.php",
+		"/home/shideichis/bang-sini-bang/app/MainService.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Armada/ArmadaController.php",
+		"/home/shideichis/bang-sini-bang/config/app.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/map/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Other/OtherWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Middleware/CheckExpiredUser.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Middleware/CheckExpiredService.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Favorite/FavoriteController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Message/MessageController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Payment/PaymentWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Payment.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Sms/SmsController.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_14_093734_create_others_table.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/payment/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Bank.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/payment/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/bank/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Service/ServiceController.php",
+		"/home/shideichis/bang-sini-bang/app/Message.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MessageDetail/MessageDetailController.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_08_30_003657_create_payments_table.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Kernel.php",
+		"/home/shideichis/bang-sini-bang/app/Traits/ApiResponser.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Province/ProvinceController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/City/CityController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Advertisement/AdvertisementController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Transaction/TransactionController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/mainservice/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MainService/MainServiceWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Advertisement/AdvertisementWebController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/ads/create.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/ads/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/partials/sidebar.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/armada/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/armada/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Armada/ArmadaWebController.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_11_214823_create_armadas_table.php",
+		"/home/shideichis/bang-sini-bang/app/Armada.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/armada/create.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Province/ProvinceWebController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/province/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Province.php",
+		"/home/shideichis/bang-sini-bang/app/Buyer.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000000_create_provinces_table.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/other/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/transaction/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Message/MessageWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/MessageDetail/MessageDetailWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Events/AdminNotificationEvent.php",
+		"/home/shideichis/bang-sini-bang/app/Notifications/AdminNotification.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/messagedetail/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/assets/js/components/Notification.vue",
+		"/home/shideichis/bang-sini-bang/app/Providers/AppServiceProvider.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Service/ServiceWebController.php",
 		"/home/shideichis/bang-sini-bang/public/js/app.js",
-		"/home/shideichis/bang-sini-bang/node_modules/pusher-js/dist/web/pusher.js",
-		"/home/shideichis/bang-sini-bang/app/Providers/EventServiceProvider.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Notifications/Messages/BroadcastMessage.php",
-		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Bus/Queueable.php",
-		"/home/shideichis/bang-sini-bang/app/Notifications/UserNotification.php",
-		"/home/shideichis/backup bangsinibang/navbar-notification.vue",
-		"/home/shideichis/bang-sini-bang/composer.json",
-		"/home/shideichis/bang-sini-bang/app/Events/UserCreated.php",
-		"/home/shideichis/bang-sini-bang/app/Events/TransactionCreated.php",
-		"/home/shideichis/bang-sini-bang/app/Listeners/AdminNotification/AdminpanelUserNotification.php",
-		"/home/shideichis/bang-sini-bang/app/Listeners/AdminNotification/AdminpanelTransactionNotification.php",
-		"/home/shideichis/bang-sini-bang/public/favicon.ico",
-		"/home/shideichis/HT/frontend/.env.example",
-		"/home/shideichis/HT/frontend/.env",
-		"/home/shideichis/asia-commerce-api/database/migrations/2017_03_23_175918_update_columns_cart_item_table.php",
-		"/home/shideichis/HT/adminpanel/plugins/category/active.sql",
-		"/home/shideichis/HT/frontend/storage/framework/views/378af28b3d9424ff5d6a618f021fa953",
-		"/home/shideichis/vitaflow/database/migrations/2014_10_12_000000_create_users_table.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2014_10_12_000001_create_cities_table.php",
-		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_19_142341_create_sms_table.php",
-		"/home/shideichis/vitaflow/config/app.php",
-		"/home/shideichis/vitaflow/config/database.php",
+		"/home/shideichis/bang-sini-bang/routes/channels.php",
+		"/home/shideichis/bang-sini-bang/resources/assets/js/app.js",
+		"/home/shideichis/bang-sini-bang/resources/assets/js/bootstrap.js",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/message/index.blade.php",
+		"/home/shideichis/bang-sini-bang/app/FCM.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/login.blade.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_11_151621_create_messages_table.php",
+		"/home/shideichis/bang-sini-bang/app/Favorite.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Category/CategoryWebController.php",
 		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Category/CategoryController.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Graph/GraphWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Transaction.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_06_012702_create_transactions_table.php",
+		"/home/shideichis/bang-sini-bang/database/seeds/DatabaseSeeder.php",
+		"/home/shideichis/bang-sini-bang/storage/logs/laravel.log",
+		"/home/shideichis/bang-sini-bang/app/City.php",
+		"/home/shideichis/bang-sini-bang/vendor/laravel/framework/src/Illuminate/Database/Seeder.php",
+		"/home/shideichis/bang-sini-bang/app/Graphic.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/graphic/graph.blade.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_28_175236_create_graphics_table.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_06_06_083045_create_favorites_table.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Favorite/FavoriteWebController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/province/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/city/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/city/create.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/City/CityWebController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/city/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/category/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Bank/BankWebController.php",
+		"/home/shideichis/bang-sini-bang/app/Category.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/category/index.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/category/create.blade.php",
+		"/home/shideichis/vitaflow/resources/views/layouts/admin/subcontent/edit.blade.php",
+		"/home/shideichis/vitaflow/resources/views/layouts/admin/slider/edit.blade.php",
+		"/home/shideichis/vitaflow/resources/views/layouts/admin/contact/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Buyer/BuyerWebController.php",
 		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/buyer/index.blade.php",
-		"/home/shideichis/vitaflow/resources/views/homepage/footer.blade.php",
-		"/home/shideichis/vitaflow/resources/views/homepage/content/onlinestore.blade.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_075404_create_subcontents_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_074839_create_sizes_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_074749_create_colors_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_074719_create_subscribers_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_074649_create_stores_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_011938_create_contacts_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_011925_create_contents_table.php",
-		"/home/shideichis/vitaflow/database/migrations/2017_08_08_011903_create_backgrounds_table.php",
-		"/home/shideichis/Meiji/meijicms/app/Helpers/RoleHelper.php",
-		"/home/shideichis/vitaflow/resources/views/homepage/footer/contact.blade.php",
-		"/home/shideichis/vitaflow/app/Http/Kernel.php",
-		"/home/shideichis/vitaflow/resources/views/backup_homepage.html",
-		"/home/shideichis/vitaflow/public/css/main.css",
-		"/home/shideichis/HTML Botol Bayi/index.html"
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Bank/BankController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/bank/create.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/bank/edit.blade.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_30_122737_create_banks_table.php",
+		"/home/shideichis/bang-sini-bang/database/migrations/2017_07_14_132449_create_advertisements_table.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/disabledForgotPassword.blade.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/forgotPassword.blade.php",
+		"/home/shideichis/bang-sini-bang/app/Advertisement.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Middleware/CheckIfVerifiedUser.php",
+		"/home/shideichis/bang-sini-bang/app/Http/Controllers/Auth/LoginController.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/etc/other/create.blade.php",
+		"/home/shideichis/bang-sini-bang/routes/api.php",
+		"/home/shideichis/bang-sini-bang/resources/views/layouts/web/user/edit.blade.php"
 	],
 	"find":
 	{
@@ -780,6 +882,126 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"-\">",
+			";",
+			"strong",
+			"</b>",
+			"<b>",
+			"b",
+			"MainService\\MainServiceController@show",
+			"servicecontroller@index",
+			"$user",
+			"$this",
+			"update",
+			"$user",
+			"numeric",
+			"required|",
+			"$user",
+			"|unique",
+			"sendAndroidNotification",
+			"$valid",
+			"'setting_mode",
+			"'rating'",
+			"servicesWithoutOwn",
+			"FCMController::sendAnd",
+			"latitude",
+			"user",
+			"available",
+			"changePas",
+			"password",
+			"apps_type",
+			"expire",
+			"buyers",
+			"buyer",
+			"//---------------------------- FCM --------------------------------------------------\n\t\tRoute::post('fcm', 'FCM\\FCMController@store');\n\t\t",
+			"->type",
+			"check",
+			"'layouts.web.mainservice.index'",
+			"unsignedInteger",
+			"MainService::has",
+			"trial_days",
+			"if()",
+			"$other",
+			";",
+			"|regex:/[1-9][0-9]{1,11}/",
+			"nullable",
+			"Rp",
+			"trial_days",
+			"tracking-map",
+			"Message",
+			"messagedetailcon",
+			"New Notification!",
+			"window.Laravel",
+			"mes",
+			"receiver",
+			"$id",
+			"dd",
+			"favorite",
+			"data",
+			"<option",
+			"category",
+			"profile",
+			"Profile",
+			"profile",
+			"showAllNew",
+			"ads",
+			"changePassword",
+			"change-pass",
+			"destr",
+			"expired",
+			"contactCh",
+			"contactCh/",
+			"contactCh",
+			"Other::",
+			"'status'",
+			"regex",
+			"$this->",
+			"FIELD",
+			"invite_friends",
+			"required|",
+			"col-sm-7",
+			"col-sm-3",
+			"(not service/provider app) ",
+			"(not service/provider app)",
+			"ads",
+			"show",
+			"route",
+			"unread-notifs",
+			"unread",
+			"How much the price for user apps per year",
+			"user",
+			"share_days",
+			"selling_price",
+			"annual_price",
+			"EventListener",
+			"<opt",
+			"n>",
+			"sms",
+			"$id",
+			"name",
+			"bank",
+			"();\n",
+			"bank",
+			"Payment",
+			"Ads",
+			"payment",
+			"$bank",
+			"$payments",
+			"payment->",
+			"user",
+			"bank",
+			"Bank",
+			"bank",
+			"favorite",
+			"favorites",
+			"_type",
+			"integer",
+			"user",
+			"Auth",
+			"']",
+			"['",
+			"user",
+			"Other",
 			"$type",
 			"'flash'",
 			"pagina",
@@ -787,127 +1009,7 @@
 			"notif",
 			"public admin",
 			"admin",
-			"&",
-			"Information",
-			"\">",
-			"=\"",
-			"src=\"js",
-			"=\"",
-			"information summar",
-			"headerbar",
-			"web",
-			"color",
-			"size",
-			"nipple_paragraph",
-			"Content",
-			"size",
-			"nipple",
-			"location_abang",
-			"logo-net.png",
-			"@auth",
-			"availa",
-			"available",
-			"taksi driver",
-			"$companyName",
-			"get",
-			"arma",
-			"reset",
-			"User",
-			"PrivateChannel",
-			"cluster",
-			"search(",
-			"return ",
-			"return v",
-			"return view('product')",
-			"mst_category",
-			"gps",
-			"Toriphone",
-			"toriphone",
-			"baofeng",
-			"view('product')",
-			"Route::get('/promo",
-			"yield",
-			"background: url",
-			"background",
-			"backgrounf",
-			"img",
-			"images",
-			"footer",
-			"alt=",
-			"alt-\"",
-			"</sc",
-			"assets/",
-			"assets/images/",
-			"<img src",
-			"alt=",
-			"assets/images/",
-			"<img src=",
-			"alt=",
-			"assets/images/",
-			"<img src",
-			"alt",
-			"assets/images/",
-			"<img src=",
-			"assets/images/",
-			"<img src",
-			"alt",
-			"assets/images/",
-			"<img src",
-			"alt",
-			"assets/images/",
-			"alt",
-			"assets/images/",
-			"<img src",
-			"alt=",
-			"assets/images/",
-			"alt=",
-			"assets",
-			"sliderItem",
-			"assets/images/sliderItem",
-			"assets/images/",
-			"<img src",
-			"alt",
-			"<img src=",
-			"/js",
-			"asset",
-			"assets",
-			"asstes",
-			"asset",
-			"Code/",
-			"Code",
-			"_",
-			"{{ asset('",
-			"https://",
-			"') }}",
-			"{{ assets('/js",
-			"assets",
-			"province",
-			"City",
-			"city",
-			"City",
-			"city",
-			"City",
-			"unsigned",
-			"hasOne",
-			";",
-			"string",
-			"order_date",
-			"show@show",
-			"footer",
-			"@media",
-			"media",
-			"content-wrapper",
-			".content-wrapper",
-			".btn",
-			"btn",
-			"col-sm-6",
-			"getImages",
-			"validationErrorMessages",
-			"Str",
-			"DB::table('password_resets')",
-			"getUser",
-			"createToken",
-			"'"
+			"&"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -931,61 +1033,307 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 9,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "resources/assets/js/components/Notification.vue",
+					"file": "routes/api.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1047,
+						"buffer_size": 6162,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								414,
-								414
+								983,
+								983
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/Vue Syntax Highlight/vue.tmLanguage",
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 990.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "routes/web.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11600,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5321,
+								5321
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1045.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/Http/Controllers/Service/ServiceController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19757,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								17484,
+								17484
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 5920.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/Http/Controllers/MainService/MainServiceWebController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2893,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 135.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/Service.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2053,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1163,
+								1163
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 315.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/Http/Controllers/Transaction/TransactionController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18216,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2070.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "app/Http/Controllers/Service/ServiceWebController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17521,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								17424,
+								17424
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5625.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/Http/Controllers/MessageDetail/MessageDetailWebController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2457,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								404,
+								404
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "resources/views/layouts/web/messagedetail/index.blade.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3981,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1415,
+								1415
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 227.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "resources/assets/js/app.js",
+					"buffer": 9,
+					"file": "app/Category.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 889,
+						"buffer_size": 1487,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								822,
-								822
+								434,
+								434
 							]
 						],
 						"settings":
 						{
 							"auto_complete": false,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -995,109 +1343,82 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "app/Http/Controllers/User/UserWebController.php",
+					"buffer": 10,
+					"file": "app/Http/Controllers/Message/MessageWebController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7758,
+						"buffer_size": 3551,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								2145,
+								2145
 							]
 						],
 						"settings":
 						{
+							"auto_complete": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 675.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "app/Http/Controllers/MessageDetail/MessageDetailController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2140,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1290,
+								1290
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 422.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "app/User.php",
+					"buffer": 12,
+					"file": "app/Http/Controllers/User/UserController.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3336,
+						"buffer_size": 16360,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 119.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "routes/channels.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 576,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								576,
-								576
-							]
-						],
-						"settings":
-						{
-							"auto_complete": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "app/Events/AdminNotificationEvent.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 984,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								573,
-								573
+								3936,
+								3936
 							]
 						],
 						"settings":
@@ -1108,19 +1429,19 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1170.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "routes/web.php",
+					"buffer": 13,
+					"file": "app/Transaction.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9992,
+						"buffer_size": 3043,
 						"regions":
 						{
 						},
@@ -1134,13 +1455,43 @@
 						"settings":
 						{
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 168.0,
+						"translation.y": 360.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3428,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2340,
+								2340
+							]
+						],
+						"settings":
+						{
+							"auto_name": "//master_admin",
+							"default_dir": "/home/shideichis/bang-sini-bang",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 285.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
 					"type": "text"
 				}
 			]
@@ -1186,7 +1537,7 @@
 		"height": 25.0
 	},
 	"pinned_build_system": "",
-	"project": "bangsinibang.sublime-workspace",
+	"project": "bangsinibang.sublime-project",
 	"replace":
 	{
 		"height": 42.0
@@ -1199,516 +1550,516 @@
 		"selected_items":
 		[
 			[
-				"ot",
-				"~/bang-sini-bang/app/Http/Controllers/Other/OtherWebController.php"
+				"category",
+				"app/Category.php"
 			],
 			[
-				"logincon",
-				"~/bang-sini-bang/app/Http/Controllers/Auth/LoginController.php"
+				"create.blade",
+				"resources/views/layouts/web/user/create.blade.php"
 			],
 			[
-				"login.bl",
-				"resources/views/layouts/web/login.blade.php"
-			],
-			[
-				"style.defa",
-				"public/bower_components/admin-lte/dist/css/style.default.css"
-			],
-			[
-				"create.blade.",
-				"resources/views/layouts/web/armada/create.blade.php"
-			],
-			[
-				"user.p",
-				"app/User.php"
-			],
-			[
-				"userweb",
-				"app/Http/Controllers/User/UserWebController.php"
-			],
-			[
-				"usercont",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"app.bl",
-				"resources/views/layouts/app.blade.php"
-			],
-			[
-				"login.b",
-				"resources/views/auth/login.blade.php"
-			],
-			[
-				"app.php",
-				"config/app.php"
-			],
-			[
-				"app.p",
-				"config/app.php"
-			],
-			[
-				"login",
-				"app/Http/Controllers/Auth/LoginController.php"
-			],
-			[
-				"sideba",
-				"resources/views/layouts/web/partials/sidebar.blade.php"
-			],
-			[
-				"router.php",
-				"vendor/laravel/framework/src/Illuminate/Routing/Router.php"
-			],
-			[
-				"loginc",
-				"app/Http/Controllers/Auth/LoginController.php"
-			],
-			[
-				"userc",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"content.blade",
-				"resources/views/layouts/web/partials/content.blade.php"
-			],
-			[
-				"dashboa",
-				"resources/views/layouts/web/dashboard.blade.php"
-			],
-			[
-				"user",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"userco",
-				"app/Http/Controllers/User/UserController.php"
-			],
-			[
-				"app.js",
-				"resources/assets/js/app.js"
-			],
-			[
-				"other",
-				"app/Http/Controllers/Other/OtherWebController.php"
-			],
-			[
-				"bootst",
-				"resources/assets/js/bootstrap.js"
-			],
-			[
-				".env",
-				".env"
-			],
-			[
-				"bro",
-				"config/broadcasting.php"
-			],
-			[
-				"web.php",
-				"routes/web.php"
-			],
-			[
-				"header",
-				"resources/views/layouts/web/partials/header.blade.php"
-			],
-			[
-				"sidebar.",
-				"resources/views/layouts/web/partials/sidebar.blade.php"
-			],
-			[
-				"footer",
-				"resources/views/layouts/web/partials/footer.blade.php"
-			],
-			[
-				"testimon",
-				"app/Http/Controllers/Testimony/TestimonyController.php"
-			],
-			[
-				"subs",
-				"app/Http/Controllers/Subscriber/SubscriberController.php"
-			],
-			[
-				"2017",
-				"~/vitaflow/database/migrations/2017_08_16_025310_create_subcontents_table.php"
-			],
-			[
-				"cont",
-				"app/Content.php"
-			],
-			[
-				"subcon",
-				"app/Http/Controllers/Subcontent/SubcontentController.php"
-			],
-			[
-				"api.php",
-				"routes/api.php"
-			],
-			[
-				"contentc",
-				"app/Http/Controllers/Content/ContentController.php"
-			],
-			[
-				"transa",
-				"app/Transaction.php"
-			],
-			[
-				"prov",
-				"app/Http/Controllers/Province/ProvinceWebController.php"
-			],
-			[
-				"cityweb",
-				"app/Http/Controllers/City/CityWebController.php"
-			],
-			[
-				"city",
-				"app/Http/Controllers/City/CityController.php"
-			],
-			[
-				"redirectusers",
-				"vendor/laravel/framework/src/Illuminate/Foundation/Auth/RedirectsUsers.php"
-			],
-			[
-				"redirect",
-				"app/Http/Middleware/RedirectIfAuthenticated.php"
-			],
-			[
-				"content.bla",
-				"resources/views/layouts/web/partials/content.blade.php"
-			],
-			[
-				"master",
-				"resources/views/layouts/web/master_admin.blade.php"
-			],
-			[
-				"sidebar.blad",
-				"resources/views/layouts/web/partials/sidebar.blade.php"
-			],
-			[
-				"login.bla",
-				"resources/views/layouts/web/login.blade.php"
-			],
-			[
-				"otherwe",
-				"app/Http/Controllers/Other/OtherWebController.php"
-			],
-			[
-				"homecontrol",
-				"app/Http/Controllers/HomeController.php"
-			],
-			[
-				"web",
-				"routes/web.php"
-			],
-			[
-				"hom",
-				"Homestead.yaml"
-			],
-			[
-				"ai.php",
-				"routes/api.php"
-			],
-			[
-				"broadca",
-				"config/broadcasting.php"
-			],
-			[
-				"tra",
-				"app/Transaction.php"
-			],
-			[
-				"trans",
-				"app/Transaction.php"
-			],
-			[
-				"favoritec",
-				"app/Http/Controllers/Favorite/FavoriteController.php"
+				"index.blade.php",
+				"resources/views/layouts/web/user/index.blade.php"
 			],
 			[
 				"model",
 				"database/factories/ModelFactory.php"
 			],
 			[
+				"messagewe",
+				"app/Http/Controllers/Message/MessageWebController.php"
+			],
+			[
+				"userc",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				".env",
+				".env"
+			],
+			[
+				"messagedetailw",
+				"app/Http/Controllers/MessageDetail/MessageDetailWebController.php"
+			],
+			[
+				"userweb",
+				"app/Http/Controllers/User/UserWebController.php"
+			],
+			[
+				"messagede",
+				"app/Http/Controllers/MessageDetail/MessageDetailController.php"
+			],
+			[
+				"messag",
+				"app/MessageDetail.php"
+			],
+			[
+				"default.css",
+				"public/bower_components/admin-lte/dist/css/style.default.css"
+			],
+			[
+				"master_",
+				"resources/views/layouts/web/master_admin.blade.php"
+			],
+			[
+				"serviceweb",
+				"app/Http/Controllers/Service/ServiceWebController.php"
+			],
+			[
+				"mainserv",
+				"app/Http/Controllers/MainService/MainServiceWebController.php"
+			],
+			[
+				"mains",
+				"app/Http/Controllers/MainService/MainServiceController.php"
+			],
+			[
 				"service",
 				"app/Service.php"
 			],
 			[
-				"servicec",
-				"app/Http/Controllers/Service/ServiceController.php"
+				"f_c_",
+				"database/migrations/2017_08_31_084157_create_f_c_ms_table.php"
 			],
 			[
-				"armada",
-				"app/Http/Controllers/Armada/ArmadaController.php"
+				"fcm",
+				"app/Http/Controllers/FCM/FCMController.php"
 			],
 			[
-				"serv",
-				"app/Service.php"
+				"users",
+				"database/migrations/2014_10_12_000003_create_users_table.php"
 			],
 			[
 				"services",
 				"database/migrations/2017_06_05_022011_create_services_table.php"
 			],
 			[
-				"app",
-				"app/Providers/AppServiceProvider.php"
+				"user",
+				"app/User.php"
 			],
 			[
-				"cityc",
-				"app/Http/Controllers/City/CityController.php"
+				"ser",
+				"app/Service.php"
 			],
 			[
-				"transac",
-				"app/Http/Controllers/Transaction/TransactionController.php"
+				"usercon",
+				"app/Http/Controllers/User/UserController.php"
 			],
 			[
-				"main",
+				"mainse",
 				"app/MainService.php"
 			],
 			[
-				"mainser",
-				"app/Http/Controllers/MainService/MainServiceController.php"
-			],
-			[
-				"apic",
-				"app/Http/Controllers/ApiController.php"
+				"armadacon",
+				"app/Http/Controllers/Armada/ArmadaController.php"
 			],
 			[
 				".en",
 				".env"
 			],
 			[
-				"adminn",
-				"app/Events/AdminNotificationEvent.php"
+				"tran",
+				"app/Transaction.php"
 			],
 			[
-				"broadcast",
-				"app/Providers/BroadcastServiceProvider.php"
+				"paymentcontro",
+				"app/Http/Controllers/Payment/PaymentController.php"
 			],
 			[
-				"broad",
-				"config/broadcasting.php"
+				"usercontroller",
+				"app/Http/Controllers/User/UserController.php"
 			],
 			[
-				"userwebcontro",
-				"app/Http/Controllers/User/UserWebController.php"
+				"fcmco",
+				"app/Http/Controllers/FCM/FCMController.php"
 			],
 			[
-				"otherweb",
+				"othe",
+				"app/Other.php"
+			],
+			[
+				"othercontro",
+				"app/Http/Controllers/Other/OtherController.php"
+			],
+			[
+				"otherwe",
 				"app/Http/Controllers/Other/OtherWebController.php"
 			],
 			[
-				"othere",
+				"otherw",
 				"app/Http/Controllers/Other/OtherWebController.php"
 			],
 			[
-				"broadcasting.php",
-				"config/broadcasting.php"
-			],
-			[
-				"usercon",
-				"app/Http/Controllers/User/UserWebController.php"
-			],
-			[
-				"otherwebcontroller",
-				"app/Http/Controllers/Other/OtherWebController.php"
-			],
-			[
-				"channels",
-				"routes/channels.php"
-			],
-			[
-				"userwer",
-				"app/Http/Controllers/User/UserWebController.php"
-			],
-			[
-				"pusher.",
-				"node_modules/pusher-js/dist/web/pusher.js"
-			],
-			[
-				"bootstra",
-				"resources/assets/js/bootstrap.js"
-			],
-			[
-				"broadc",
-				"config/broadcasting.php"
-			],
-			[
-				"header.blade.",
-				"resources/views/layouts/web/partials/header.blade.php"
-			],
-			[
-				"master_admi",
+				"master",
 				"resources/views/layouts/web/master_admin.blade.php"
 			],
 			[
-				"home",
-				"frontend/app/Http/Controllers/HomeController.php"
+				"app.php",
+				"config/app.php"
 			],
 			[
-				"route",
-				"frontend/app/Http/routes.php"
+				"checke",
+				"app/Http/Middleware/CheckExpiredService.php"
 			],
 			[
-				"content",
-				"app/Content.php"
-			],
-			[
-				"mis",
-				"app/Miscimage.php"
-			],
-			[
-				"databas",
-				"config/database.php"
-			],
-			[
-				"kernel",
-				"app/Http/Kernel.php"
-			],
-			[
-				"main.",
-				"public/css/main.css"
-			],
-			[
-				"homepa",
-				"resources/views/homepage.blade.php"
-			],
-			[
-				"homepage.blad",
-				"resources/views/homepage.blade.php"
-			],
-			[
-				"homepagc",
-				"app/Http/Controllers/Homepage/HomepageController.php"
-			],
-			[
-				"index.blade.php",
-				"resources/views/layouts/web/message/index.blade.php"
-			],
-			[
-				"messagec",
-				"app/Http/Controllers/Message/MessageController.php"
-			],
-			[
-				"messa",
-				"app/Http/Controllers/Message/MessageWebController.php"
+				"check",
+				"app/Http/Middleware/CheckExpiredUser.php"
 			],
 			[
 				"servicecont",
 				"app/Http/Controllers/Service/ServiceController.php"
 			],
 			[
-				"mainservicec",
-				"app/Http/Controllers/MainService/MainServiceController.php"
-			],
-			[
-				"mode",
-				"database/factories/ModelFactory.php"
-			],
-			[
-				"pro",
-				"app/Province.php"
-			],
-			[
-				"adver",
-				"app/Http/Controllers/Advertisement/AdvertisementController.php"
-			],
-			[
-				"mains",
-				"app/MainService.php"
+				"messagec",
+				"app/Http/Controllers/Message/MessageController.php"
 			],
 			[
 				"servic",
 				"app/Service.php"
 			],
 			[
-				"mod",
-				"database/factories/ModelFactory.php"
-			],
-			[
-				"s",
-				"app/Service.php"
-			],
-			[
-				"transactionc",
-				"app/Http/Controllers/Transaction/TransactionController.php"
-			],
-			[
-				"provin",
-				"app/Province.php"
-			],
-			[
-				"users",
-				"database/migrations/2014_10_12_000000_create_users_table.php"
-			],
-			[
-				"index.blad",
-				"resources/views/layouts/web/transaction/index.blade.php"
-			],
-			[
-				"messagewe",
-				"app/Http/Controllers/Message/MessageWebController.php"
-			],
-			[
-				"controller.php",
-				"vendor/laravel/framework/src/Illuminate/Routing/Controller.php"
-			],
-			[
-				"api.ph",
-				"routes/api.php"
-			],
-			[
-				"passpo",
-				"vendor/laravel/passport/src/Passport.php"
-			],
-			[
-				"apiresp",
-				"app/Traits/ApiResponser.php"
-			],
-			[
-				"style.de",
-				"public/bower_components/admin-lte/dist/css/style.default.css"
-			],
-			[
-				"footer.blade.php",
-				"resources/views/layouts/web/partials/footer.blade.php"
-			],
-			[
-				"style.d",
-				"public/bower_components/admin-lte/dist/css/style.default.css"
-			],
-			[
-				"side",
-				"resources/views/layouts/web/partials/sidebar.blade.php"
-			],
-			[
-				"servicewe",
-				"app/Http/Controllers/Service/ServiceWebController.php"
-			],
-			[
-				"smsc",
-				"app/Http/Controllers/Sms/SmsController.php"
-			],
-			[
-				"apire",
-				"app/Traits/ApiResponser.php"
+				"usercotr",
+				"app/Http/Controllers/User/UserController.php"
 			],
 			[
 				"sms",
 				"app/Http/Controllers/Sms/SmsController.php"
 			],
 			[
-				"passwordbro",
-				"vendor/laravel/framework/src/Illuminate/Auth/Passwords/PasswordBroker.php"
+				"userwebco",
+				"app/Http/Controllers/User/UserWebController.php"
 			],
 			[
-				"apps",
+				"others",
+				"database/migrations/2017_07_14_093734_create_others_table.php"
+			],
+			[
+				"other",
+				"app/Other.php"
+			],
+			[
+				"payment",
+				"app/Payment.php"
+			],
+			[
+				"bank",
+				"app/Bank.php"
+			],
+			[
+				"paymen",
+				"app/Http/Controllers/Payment/PaymentController.php"
+			],
+			[
+				"paymenw",
+				"app/Http/Controllers/Payment/PaymentWebController.php"
+			],
+			[
+				"servicecon",
+				"app/Http/Controllers/Service/ServiceController.php"
+			],
+			[
+				"favorite",
+				"app/Http/Controllers/Favorite/FavoriteController.php"
+			],
+			[
+				"message.p",
+				"app/Message.php"
+			],
+			[
+				"messagedet",
+				"app/Http/Controllers/MessageDetail/MessageDetailController.php"
+			],
+			[
+				"messagecon",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"userco",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"servicecontro",
+				"app/Http/Controllers/Service/ServiceController.php"
+			],
+			[
+				"usercontrol",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"checkex",
+				"app/Http/Middleware/CheckExpiredUser.php"
+			],
+			[
+				"kernel",
+				"app/Http/Kernel.php"
+			],
+			[
+				"chec",
+				"app/Http/Middleware/CheckExpiredUser.php"
+			],
+			[
+				"provin",
+				"app/Http/Controllers/Province/ProvinceController.php"
+			],
+			[
+				"citycontro",
+				"app/Http/Controllers/City/CityController.php"
+			],
+			[
+				"adver",
+				"app/Http/Controllers/Advertisement/AdvertisementController.php"
+			],
+			[
+				"fcmc",
+				"app/Http/Controllers/FCM/FCMController.php"
+			],
+			[
+				"adve",
+				"app/Http/Controllers/Advertisement/AdvertisementController.php"
+			],
+			[
+				"otherc",
+				"app/Http/Controllers/Other/OtherController.php"
+			],
+			[
+				"apire",
+				"app/Traits/ApiResponser.php"
+			],
+			[
+				"payments",
+				"database/migrations/2017_08_30_003657_create_payments_table.php"
+			],
+			[
+				"transac",
+				"app/Http/Controllers/Transaction/TransactionController.php"
+			],
+			[
+				"usercontr",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"kerne",
+				"app/Http/Kernel.php"
+			],
+			[
+				"kern",
+				"app/Http/Kernel.php"
+			],
+			[
+				"mainser",
+				"app/Http/Controllers/MainService/MainServiceController.php"
+			],
+			[
+				"servicewe",
+				"app/Http/Controllers/Service/ServiceWebController.php"
+			],
+			[
+				"servicec",
+				"app/Http/Controllers/Service/ServiceController.php"
+			],
+			[
+				"main",
+				"app/MainService.php"
+			],
+			[
+				"mainservice",
+				"app/Http/Controllers/MainService/MainServiceWebController.php"
+			],
+			[
+				"mainservi",
+				"app/Http/Controllers/MainService/MainServiceController.php"
+			],
+			[
+				"sideba",
+				"resources/views/layouts/web/partials/sidebar.blade.php"
+			],
+			[
+				"armadas",
+				"database/migrations/2017_07_11_214823_create_armadas_table.php"
+			],
+			[
+				"armad",
+				"app/Armada.php"
+			],
+			[
+				"sidebar",
+				"resources/views/layouts/web/partials/sidebar.blade.php"
+			],
+			[
+				"arma",
+				"app/Http/Controllers/Armada/ArmadaWebController.php"
+			],
+			[
+				"buyer",
+				"app/Buyer.php"
+			],
+			[
+				"provinces",
+				"database/migrations/2014_10_12_000000_create_provinces_table.php"
+			],
+			[
+				"province",
+				"app/Http/Controllers/Province/ProvinceWebController.php"
+			],
+			[
+				"payme",
+				"app/Payment.php"
+			],
+			[
+				"paymentwe",
+				"app/Http/Controllers/Payment/PaymentWebController.php"
+			],
+			[
+				"messagedeta",
+				"app/MessageDetail.php"
+			],
+			[
+				"messageweb",
+				"app/Http/Controllers/Message/MessageWebController.php"
+			],
+			[
+				"messagecontroller",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"messagedetailc",
+				"app/Http/Controllers/MessageDetail/MessageDetailController.php"
+			],
+			[
+				"messa",
+				"app/Message.php"
+			],
+			[
+				"mes",
+				"app/MessageDetail.php"
+			],
+			[
+				"message",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"admin",
+				"app/Events/AdminNotificationEvent.php"
+			],
+			[
+				"adminno",
+				"app/Notifications/AdminNotification.php"
+			],
+			[
+				"notification.v",
+				"resources/assets/js/components/Notification.vue"
+			],
+			[
+				"message.php",
+				"app/Message.php"
+			],
+			[
+				"app",
 				"app/Providers/AppServiceProvider.php"
 			],
 			[
-				"create.blade.php",
-				"resources/views/layouts/web/user/create.blade.php"
+				"messagewebco",
+				"app/Http/Controllers/Message/MessageWebController.php"
 			],
 			[
-				"userwe",
-				"app/Http/Controllers/User/UserWebController.php"
+				"messagecontr",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"channels",
+				"routes/channels.php"
+			],
+			[
+				"bootsra",
+				"resources/assets/js/bootstrap.js"
+			],
+			[
+				"app.js",
+				"resources/assets/js/app.js"
+			],
+			[
+				"messagcon",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"messaged",
+				"app/MessageDetail.php"
+			],
+			[
+				"login.bl",
+				"resources/views/layouts/web/login.blade.php"
+			],
+			[
+				"mode",
+				"database/factories/ModelFactory.php"
+			],
+			[
+				"message_details",
+				"database/migrations/2017_07_12_112037_create_message_details_table.php"
+			],
+			[
+				"message_detail",
+				"database/migrations/2017_07_12_112037_create_message_details_table.php"
+			],
+			[
+				"smsco",
+				"app/Http/Controllers/Sms/SmsController.php"
+			],
+			[
+				"messageconto",
+				"app/Http/Controllers/Message/MessageController.php"
+			],
+			[
+				"usercont",
+				"app/Http/Controllers/User/UserController.php"
+			],
+			[
+				"api",
+				"app/Traits/ApiResponser.php"
+			],
+			[
+				"user.php",
+				"app/User.php"
+			],
+			[
+				"catgeorywe",
+				"app/Http/Controllers/Category/CategoryWebController.php"
+			],
+			[
+				"cate",
+				"app/Http/Controllers/Category/CategoryController.php"
+			],
+			[
+				"fav",
+				"app/Favorite.php"
+			],
+			[
+				"data",
+				"database/seeds/DatabaseSeeder.php"
+			],
+			[
+				"databs",
+				"database/seeds/DatabaseSeeder.php"
+			],
+			[
+				"mod",
+				"database/factories/ModelFactory.php"
+			],
+			[
+				"transactions",
+				"database/migrations/2017_06_06_012702_create_transactions_table.php"
+			],
+			[
+				"city",
+				"app/City.php"
+			],
+			[
+				"provinc",
+				"app/Province.php"
+			],
+			[
+				"graph",
+				"app/Http/Controllers/Graph/GraphWebController.php"
 			]
 		],
 		"width": 0.0
@@ -1735,11 +2086,11 @@
 	"settings":
 	{
 	},
-	"show_minimap": false,
+	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 188.0,
+	"side_bar_width": 204.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -16,14 +16,12 @@ class CategoryWebController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
-        $notifs = request()->get('notifs');
-        return view('layouts.web.category.index')->with('categories', $categories)->with('notifs', $notifs);
+        return view('layouts.web.category.index')->with('categories', $categories);
     }
 
     public function create()
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.category.create')->with('notifs', $notifs);
+        return view('layouts.web.category.create');
     }
 
     public function store(Request $request)
@@ -142,26 +140,25 @@ class CategoryWebController extends Controller
         }
 
         if ($validator->fails()) {
-            $valid = false;
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
         $data = $request->all();
-        Category::create($data);            
-        $notifs = request()->get('notifs');
-        flash('Your data category created successfully')->success()->important();
-        return redirect()->route('create-categories')->with('notifs', $notifs);
-    }
+        $data['admin_created'] = auth()->user()->id;
+        $data['admin_updated'] = auth()->user()->id;
 
-    public function show($id)
-    {
-        //
+        if($valid == true) {
+            $category = Category::create($data);            
+            flash('Your data category created successfully')->success()->important();
+        }
+        return redirect()->route('create-categories');
     }
 
     public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('layouts.web.category.edit')->with('category', $category);
     }
 
     public function update(Request $request, $id)
@@ -172,13 +169,15 @@ class CategoryWebController extends Controller
         } else {
             $find = Category::where('category_type', $request->category_type)->first();
         }
+
         if ($find != null) {
             $findCatSub = $find->id;
         }
+
         $findCatSub = null;
 
         $valid = true;
-        if ($findCatSub != $id) {
+        if ($findCatSub != $id && $findCatSub != null) {
             switch($lower = Str::lower($request->category_type))
             {
                 case 'bemo':
@@ -212,7 +211,7 @@ class CategoryWebController extends Controller
                         return redirect()->back();
                     }
             }
-        } else { // klo category yg d cari == id yg d inputin
+        } elseif($findCatSub == $id) { // klo category yg d cari == id yg d inputin
             if ($request->subcategory_type != null) {
                 switch($lower = Str::lower($request->category_type))
                 {
@@ -261,41 +260,43 @@ class CategoryWebController extends Controller
                 }
 
             }
-        }
-
-        if ($request->subcategory_type == null ) {
-            $validator = Validator::make($request->all(), [
-                'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
-            ]);            
         } else {
-            $validator = Validator::make($request->all(), [
-                'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
-                'subcategory_type' => 'regex:/^[a-zA-Z ]+$/',
-            ]);
-        }
-
-        if ($validator->fails()) {
-            $valid = false;           
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
-        if ($valid == true) {
             if ($request->subcategory_type == null ) {
-                $findById['type'] = $request['type'];
-                $findById['category_type'] = $request['category_type'];
-                $findById->save();            
+                $validator = Validator::make($request->all(), [
+                    'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
+                ]);            
             } else {
-                $findById['type'] = $request['type'];
-                $findById['category_type'] = $request['category_type'];
-                $findById['subcategory_type'] = $request['subcategory_type'];
-                $findById->save();            
+                $validator = Validator::make($request->all(), [
+                    'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
+                    'subcategory_type' => 'regex:/^[a-zA-Z ]+$/',
+                ]);
             }
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            if ($valid == true) {
+                if ($request->subcategory_type == null ) {
+                    $findById['type'] = $request['type'];
+                    $findById['category_type'] = $request['category_type'];
+                    $findById['subcategory_type'] = null;
+                    $findById['admin_updated'] = auth()->user()->id;
+                    $findById->save();            
+                } else {
+                    $findById['type'] = $request['type'];
+                    $findById['category_type'] = $request['category_type'];
+                    $findById['subcategory_type'] = $request['subcategory_type'];
+                    $findById['admin_updated'] = auth()->user()->id;
+                    $findById->save();            
+                }
+            }
+            flash('Success updated your category')->success()->important();
         }
-        $notifs = request()->get('notifs');
-        flash('Success updated your category')->success()->important();
-        return redirect()->route('view-categories')->with('notifs', $notifs);
+
+        return redirect()->route('view-categories');
     }
 
     public function destroy($id)
@@ -321,7 +322,6 @@ class CategoryWebController extends Controller
 
         $categories->delete();
         flash('The category success deleted')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->back()->with('notifs', $notifs);
+        return redirect()->back();
     }
 }

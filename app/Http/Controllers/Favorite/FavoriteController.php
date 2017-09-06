@@ -24,18 +24,6 @@ class FavoriteController extends ApiController
     }
     
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $favorites = Favorite::all();
-
-        return $this->showAll($favorites);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -43,63 +31,64 @@ class FavoriteController extends ApiController
      */
     public function store(Request $request)
     {
-        $user = Auth::user();
-        if($user->id != $request->buyer_id) {
-            return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
+        $user = auth()->user()->id;
+        $errors = array();
+        $buyer = MainService::has('service')->where('id', $user)->first();
+        if($buyer != null) {
+            $errors['buyer_id'] = 'You\'re insert a wrong buyer id';
         }
-        $buyer = Service::where('main_service_id', $request->buyer_id)->first();
-        $service = Service::where('main_service_id', $request->main_service_id)->first();
-        $mainServices = MainService::findOrFail($request->main_service_id);
-        $favoriteOwn = Favorite::where('buyer_id', $request->buyer_id)->where('main_service_id', $request->main_service_id)->first();
 
-        if ($request->has('main_service_id') && $request->has('buyer_id')) {
-            if ($favoriteOwn != null) {
-                return $this->errorResponse('Sorry your favorite already in the database', 409);                
+        $mainservice = MainService::has('service')->where('id', $request->main_service_id)->first();
+        if($mainservice == null) {
+            $errors['service_id'] = 'You\'re insert a wrong service id';
+        }
+
+        if($request->main_service_id == $request->buyer_id) {
+            $errors['same_id'] = 'Buyer id and main service id can\'t be same';
+        }
+
+        if(auth()->user()->id == $request->main_service_id) {
+            $errors['forbidden'] = 'You can\'t favorite your self';
+        }
+
+        $service = Service::where('main_service_id', $request->main_service_id)->first(); //find service
+        $favoriteOwn = Favorite::where('buyer_id', $user)->where('main_service_id', $request->main_service_id)->first();
+
+        if ($favoriteOwn != null) {
+            $errors['duplicate'] = 'Sorry your favorite already in the database';
+        }
+
+        if ($service == null) {
+            $errors['not_found'] = 'Sorry we can\'t find your main service id';
+        } else {
+            if ($request->category_id != ($service->category_id)) {
+                $errors['duplicate'] = 'Sorry your service category didn\'t match with our data please check it again';
             }
         }
 
-        if ($request->category_id != ($service->category_id)) {
-            return $this->errorResponse('Sorry your service category didn\'t match with our data please check it again', 422);
+
+        if($errors != null) {
+            return response()->json([
+                    'errors' => $errors,
+                ], 409);
         }
 
         if ($buyer == null && $service !=null) {
             $rules = [
-                'buyer_id' => 'required|numeric',
+                // 'buyer_id' => 'required|numeric',
                 'main_service_id' => 'required|numeric',
                 'category_id' => 'required|numeric',
             ];
             $this->validate($request, $rules);
 
             $data = $request->all();
+            $data['buyer_id'] = $user;
             $favorite = Favorite::create($data);
         }
 
         return $this->showOne($favorite, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $favorites = Favorite::find($id);
-        if($favorite == null) {
-            return $this->errorResponse('Sorry you don\'t have any favorite service', 404);
-        }
-
-        return $this->showAll($favorites);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $user = Auth::user();
@@ -176,7 +165,7 @@ class FavoriteController extends ApiController
         return $this->showOne($favorite);
     }
 
-    public function getFavoriteById() {
+    public function getFavoriteById() { //testing
         $user = Auth::user()->id;
         $faves = Favorite::where('buyer_id', $user)->with('mainservices')->with('mainservices.service.category')->paginate(10);
         return response()->json([

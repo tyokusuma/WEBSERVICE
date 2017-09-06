@@ -58,7 +58,7 @@ class LoginController extends Controller
                 ?  : redirect()->intended($this->redirectPath());
         } elseif (($adminstatus->admin == '1' || $adminstatus->admin == '2') && $adminstatus->verified == '0') {
             $request->session()->invalidate();
-            flash('Sorry you\'re not verify your email, please verify it first')->error()->important();
+            flash('Sorry you\'re not verify your account, please verify it first')->error()->important();
             return redirect()->route('login');
         } else {
             $request->session()->invalidate();

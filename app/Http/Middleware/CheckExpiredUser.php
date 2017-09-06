@@ -22,7 +22,7 @@ class CheckExpiredUser
         if($expired != null) {
             $expired_at = $expired->toDateString();
             $now = Carbon::now()->toDateString();
-            if($now === $expired_at) {
+            if($now >= $expired_at) {
                 return response()->json([
                         'status' => 'expired'
                     ]);

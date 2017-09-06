@@ -15,16 +15,18 @@ class CreateMessageDetailsTable extends Migration
     {
         Schema::create('message_details', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('message_id')->unsigned();
-            $table->integer('sender_id')->unsigned();
-            $table->integer('receiver_id')->unsigned();
-            $table->longText('content');
+            $table->unsignedInteger('message_id');
+            $table->unsignedInteger('admin_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->longText('content')->nullable();
+            $table->string('image')->nullable();
             $table->string('read_admin', 1);
             $table->string('read_user', 1);
+            $table->unsignedInteger('deleted_by_admin')->nullable();
             $table->timestamp('deleted_by_user')->nullable();
-            $table->timestamp('deleted_by_admin')->nullable();
             $table->timestamps();
             
+            $table->softDeletes();
             $table->foreign('message_id')->references('id')->on('messages');
         });
     }

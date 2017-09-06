@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSmsTable extends Migration
+class CreateFCMsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateSmsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sms', function (Blueprint $table) {
+        Schema::create('f_c_ms', function (Blueprint $table) {
             $table->increments('id');
-            $table->longText('message');
-            $table->string('phone_receiver');
-            $table->string('name_receiver');
+            $table->string('fcm_registration_token')->unique();
+            $table->unsignedInteger('user_id')->unique();
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +31,6 @@ class CreateSmsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sms');
+        Schema::dropIfExists('f_c_ms');
     }
 }

@@ -12,14 +12,12 @@ class ArmadaWebController extends Controller
     public function index()
     {
     	$armadas = Armada::paginate(10);
-        $notifs = request()->get('notifs');
-        return view('layouts.web.armada.index')->with('armadas', $armadas)->with('notifs', $notifs);
+        return view('layouts.web.armada.index')->with('armadas', $armadas);
     }
 
     public function create()
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.armada.create')->with('notifs', $notifs);
+        return view('layouts.web.armada.create');
     }
 
     public function store(Request $request)
@@ -40,18 +38,13 @@ class ArmadaWebController extends Controller
         $data = $request->all();
         $armada = Armada::create($data);
         flash('Your data armada created successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('create-armadas')->with('notifs', $notifs);
-    }
-
-    public function show($id)
-    {
-        //
+        return redirect()->route('create-armadas');
     }
 
     public function edit($id)
     {
-        //
+        $armada = Armada::findOrFail($id);
+        return view('layouts.web.armada.edit')->with('armada', $armada);
     }
 
     public function update(Request $request, $id)
@@ -77,8 +70,7 @@ class ArmadaWebController extends Controller
         
         $find->save();
         flash('Your data armada updated successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-armadas')->with('notifs', $notifs);
+        return redirect()->route('view-armadas');
     }
 
     public function destroy($id)
@@ -88,7 +80,6 @@ class ArmadaWebController extends Controller
         $armada->delete();
 
         flash('Your data successfully deleted')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-armadas')->with('notifs', $notifs);
+        return redirect()->route('view-armadas');
     }
 }

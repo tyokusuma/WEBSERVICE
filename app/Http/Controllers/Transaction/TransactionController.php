@@ -6,6 +6,7 @@ use App\Category;
 use App\Events\AdminNotificationEvent;
 use App\Graphic;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\FCM\FCMController;
 use App\MainService;
 use App\Notifications\AdminNotification;
 use App\Notifications\UserNotification;
@@ -25,7 +26,8 @@ class TransactionController extends ApiController
 {
     public function __construct() {
         Parent::__construct();
-        $this->admin = User::where('admin', User::ADMIN_USER)->get();
+        $this->admin = User::where('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->get();
+
         // $this->middleware('client.credentials')->only(['index', 'show', 'update', 'destroy']);
     }
 
@@ -60,6 +62,11 @@ class TransactionController extends ApiController
         return response()->json([
             'data' => $transactions,
         ], 200);
+    }
+
+    public function channel($id) {
+        $channel = 'App'.$id;
+        return $channel;
     }
 
     /**
@@ -122,7 +129,7 @@ class TransactionController extends ApiController
 
         //check untuk  untuk kategory service kendaraan
         //1. Cari semua transaction untuk service itu pada tanggal sesuai booking urutkan berdasarkan order_time
-        //2. 
+        
 
 
 
@@ -138,16 +145,18 @@ class TransactionController extends ApiController
 
         // Create notification for service about new order
         $service = User::findOrFail($request->main_service_id);
-        $msgService = 'You have a new order, please confirm it';
-        $service->notify(new UserNotification($msgService));
+        $channelservice = 'User'.$this->channel($service->id);
+        $service->notify(new UserNotification(Transaction::TRANSACTION_SERVICE_CONFIRMATION)); //simpan ke database
+        $pushService = FCMController::sendAndroidNotification($service, Transaction::TRANSACTION_CREATED, Transaction::TRANSACTION_SERVICE_CONFIRMATION, TRANSACTION_TAG_CREATED, $channelservice);
 
         // Create notification for buyer about new order
         $buyer = User::findOrFail($request->buyer_id);
-        $msgBuyer = 'Your order is waiting confirmation from service';
-        $buyer->notify(new UserNotification($msgBuyer));
-        
+        $channelbuyer = 'User'.$this->channel($buyer->id);
+        $buyer->notify(new UserNotification(Transaction::TRANSACTION_USER));
+        $pushBuyer = FCMController::sendAndroidNotification($buyer, Transaction::TRANSACTION_CREATED, ucfirst($request->status_order), TRANSACTION_TAG_CREATED, $channelbuyer);
+
         // Create notification for admin
-        $msgAdmin = 'New transaction created with code '.$data['order_code'];
+        $msgAdmin = TRANSACTION_CREATED_ADMIN.$data['order_code'];
         event(new AdminNotificationEvent($msgAdmin));
         foreach($this->admin as $admin) {
             $admin->notify(new AdminNotification($msgAdmin));
@@ -187,8 +196,6 @@ class TransactionController extends ApiController
             $findGraphic->save();
         }
 
-
-
         return $this->showOne($transaction, 201);
     }
 
@@ -219,7 +226,7 @@ class TransactionController extends ApiController
             'booking' => 'required|in:'.Transaction::BOOKING.','.Transaction::NOT_BOOKING,
             'order_date' => 'required|date_format:"Y-m-d"',
             'order_time' => 'required|date_format:"H:i:s"',
-            'status_order' => 'required|in:'.Transaction::TRANSACTION_STATUS_1.','.Transaction::TRANSACTION_STATUS_2.','.Transaction::TRANSACTION_STATUS_3.','.Transaction::TRANSACTION_STATUS_4.','.Transaction::TRANSACTION_STATUS_5.','.Transaction::TRANSACTION_STATUS_6.','.Transaction::TRANSACTION_STATUS_7.','.Transaction::TRANSACTION_STATUS_8,
+            'status_order' => 'required|in:'.Transaction::TRANSACTION_STATUS_2.','.Transaction::TRANSACTION_STATUS_3.','.Transaction::TRANSACTION_STATUS_4.','.Transaction::TRANSACTION_STATUS_5.','.Transaction::TRANSACTION_STATUS_6.','.Transaction::TRANSACTION_STATUS_7.','.Transaction::TRANSACTION_STATUS_8,
             'satisfaction_level' => 'in:'.Transaction::SATISFACTION_LEVEL_1.','.Transaction::SATISFACTION_LEVEL_2.','.Transaction::SATISFACTION_LEVEL_3.','.Transaction::SATISFACTION_LEVEL_4.','.Transaction::SATISFACTION_LEVEL_5,
         ]; 
 
@@ -276,22 +283,24 @@ class TransactionController extends ApiController
         $transaction->save();
 
         // Create notification for service about new order
-        $service = User::findOrFail($request->main_service_id);
-        $msgService = 'You have a new order, please confirm it';
-        $service->notify(new UserNotification($msgService));
+        // $service = User::findOrFail($request->main_service_id);
+        // $service->notify(new UserNotification($msgService));
+        // $pushService = FCMController::sendAndroidNotification($service, Transaction::TRANSACTION_UPDATED, Transaction::TRANSACTION, TRANSACTION_TAG_UPDATED);
 
-        // Create notification for buyer about new order
-        $buyer = User::findOrFail($request->buyer_id);
-        $msgBuyer = 'Your order is waiting confirmation from service';
-        $buyer->notify(new UserNotification($msgBuyer));
-        
-        // Create notification for admin
-        $msgAdmin = 'New transaction created with code '.$data['order_code'];
-        event(new AdminNotificationEvent($msgAdmin));
-        foreach($this->admin as $admin) {
-            $admin->notify(new AdminNotification($msgAdmin));
-        }   
+        if ($request->has('status_order')) {
+            // Create notification for buyer about UPDATE order
+            $buyer = User::findOrFail($request->buyer_id);
+            $channelbuyer = 'User'.$this->channel($buyer->id);
+            $buyer->notify(new UserNotification($msgBuyer));
+            $pushBuyer = FCMController::sendAndroidNotification($buyer, Transaction::TRANSACTION_UPDATED, ucfirst($request->status_order), TRANSACTION_TAG_UPDATED, $channelbuyer);
 
+            // Create notification for admin
+            $msgAdmin = 'Updated transaction with code '.$data['order_code'].', status'.$request->status_order;
+            event(new AdminNotificationEvent($msgAdmin));
+            foreach($this->admin as $admin) {
+                $admin->notify(new AdminNotification($msgAdmin));
+            }   
+        }
         return $this->showOne($transaction);
     }
 
@@ -309,13 +318,13 @@ class TransactionController extends ApiController
             ], 200);
     }
 
-    public function destroy($id)
-    {
-        $transaction = Transaction::findOrFail($id);
-        $transaction->delete();
+    // public function destroy($id)
+    // {
+    //     $transaction = Transaction::findOrFail($id);
+    //     $transaction->delete();
 
-        return $this->showOne($transaction);
-    }
+    //     return $this->showOne($transaction);
+    // }
 
     public function getByIdBookingBuyers() {
         $buyerid = Auth::user()->id;

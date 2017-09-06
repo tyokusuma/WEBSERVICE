@@ -25,7 +25,6 @@ class CreateUsersTable extends Migration
             $table->string('phone');
             $table->unsignedInteger('city_id');
             $table->unsignedInteger('province_id');
-            // $table->bigInteger('phone')->unsigned();
             $table->double('gps_latitude', 11,6)->nullable(); 
             $table->double('gps_longitude', 11,6)->nullable();
             $table->string('profile_image', 255);
@@ -34,11 +33,16 @@ class CreateUsersTable extends Migration
             $table->string('verified', 1)->default(User::UNVERIFIED_USER);
             $table->string('admin', 1)->default(User::REGULER_USER);
             $table->integer('invite_friends')->unsigned()->nullable();
-            $table->timestamp('expired_at'); //buat dapetin token password nanti diganti pake
+            $table->dateTime('expired_at')->nullable(); //buat dapetin token password nanti diganti pake
+            $table->dateTime('old_expired_at')->nullable();
             $table->string('payment'); //new field
-            $table->string('status');
+            // $table->string('status');
             $table->unsignedInteger('admin_created')->nullable();
             $table->unsignedInteger('admin_updated')->nullable();
+            //new field
+            $table->mediumText('share_newfriends')->nullable();
+            $table->mediumText('already_hadfriends')->nullable();
+            // --------------
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -56,6 +60,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        // DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('users');
+        // DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

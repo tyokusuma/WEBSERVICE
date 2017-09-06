@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\MainService;
 use Illuminate\Database\Eloquent\Model;
 
 class City extends Model
@@ -33,5 +34,9 @@ class City extends Model
 
     public function user() {
         return $this->hasMany(User::class);
+    }
+
+    public function mainservice() {
+        return $this->hasMany(MainService::class);
     }
 }

@@ -13,9 +13,11 @@
             <div class="rTableCell"><b>Gender</b></div>
             <div class="rTableCell"><b>Phone</b></div>
             <div class="rTableCell"><b>Category Service</b></div>
-            <div class="rTableCell"><b>Email Verify</b></div>
+            <div class="rTableCell"><b>Verified</b></div>
+            <div class="rTableCell"><b>Suspend</b></div>
             <div class="rTableCell"><b>Edit</b></div>
             <div class="rTableCell"><b>Delete</b></div>
+            <div class="rTableCell"><b></b></div>
             <div class="rTableCell"></div>
         </div>
         	<?php $i = 1; $skipped = ($servicedetails->currentPage() * $servicedetails->perPage()) - $servicedetails->perPage(); ?>
@@ -37,11 +39,35 @@
 			    @else 
 			    	<div class="rTableCell"><input type="checkbox" disabled/></div>
 			    @endif
+			    @if ($servicedetail->service->status == '0')
+			    	<div class="rTableCell"><input type="checkbox" disabled checked/></div>
+			    @else 
+			    	<div class="rTableCell"><input type="checkbox" disabled/></div>
+			    @endif
 	    		<div class="rTableCell">
 	    			<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit{{ $servicedetail->id }}" ><span class="glyphicon glyphicon-pencil"></span></button></p>	
 	    		</div>
 	    		<div class="rTableCell">
 	    			<p data-placement="top" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete{{ $servicedetail->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
+	    		</div>
+	    		<div class="rTableCell">
+	    			<p>
+	    			@if($servicedetail->service->status == '0')
+	    				<form action="{{ route('suspend-service', ['id' => $servicedetail->service->id]) }}" role="form" method="POST">
+	    					{{ csrf_field() }}
+	    					{{ method_field('PATCH') }}
+	    					<input type="text" class="hidden" name="status" value="1" />
+	    					<button clas="btn btn-info btn-xs"><span>Activate</span></button>
+	    				</form>
+	    			@else
+	    				<form action="{{ route('suspend-service', ['id' => $servicedetail->service->id]) }}" role="form" method="POST">
+	    					{{ csrf_field() }}
+	    					{{ method_field('PATCH') }}
+	    					<input type="text" class="hidden" name="status" value="0" />
+	    					<button clas="btn btn-info btn-xs"><span>Suspend</span></button>
+	    				</form>
+	    			@endif
+	    			</p>
 	    		</div>
 			@if($servicedetail->service->ktp_image != null)
 		    <div class="rTableCell">

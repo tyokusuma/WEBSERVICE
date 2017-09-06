@@ -39,8 +39,10 @@ class ServiceWebController extends Controller
     {
         $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
         $categories = Category::all();
-        $notifs = request()->get('notifs');
-        return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories, 'notifs' => $notifs]);
+        // return response()->json([
+        //         'data' => $servicedetails
+        //     ]);
+        return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
     }
 
     /**
@@ -53,8 +55,7 @@ class ServiceWebController extends Controller
         $users = User::all()->sortBy('full_name');
         $categories = Category::all()->sortBy('subcategory_type');
         $lists = Category::all()->groupBy('category_type');
-        $notifs = request()->get('notifs');
-        return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists)->with('notifs', $notifs);
+        return view('layouts.web.service.create')->with('users', $users)->with('categories', $categories)->with('lists', $lists);
     }
 
     /**
@@ -200,9 +201,8 @@ class ServiceWebController extends Controller
         }
 
         $service = Service::create($data);
-        $notifs = request()->get('notifs');
         flash('Your data service detail created successfully')->success()->important();
-        return redirect()->route('view-create-servicedetails')->with('notifs', $notifs);
+        return redirect()->route('view-create-servicedetails');
     }
 
     /**
@@ -271,11 +271,22 @@ class ServiceWebController extends Controller
         }
 
 
-        if($request->verified_service == '1') {
-            $service->verified_service = '1';            
+        if($request->verified_service == Service::VERIFIED_SERVICE) {
+            $service->verified_service = Service::VERIFIED_SERVICE;            
         } else {
-            $service->verified_service = '0';            
+            $service->verified_service = Service::UNVERIFIED_SERVICE;            
         }
+
+        $service->setting_mode = Service::ONLINE_STATUS;
+        $service->available = Service::UNAVAILABLE_SERVICE;
+        if($request->has('status')) {
+            $service->status = Service::AVAILABLE_SERVICE;
+        }
+
+        if($mainservice->setting_mode == Service::ONLINE_STATUS && $mainservice->verified_service == Service::VERIFIED_SERVICE && $mainservice->status == Service::ACTIVE_SERVICE) {
+            $mainservice['available'] = Service::AVAILABLE_SERVICE;
+        }
+
 
         if($request->has('main_service_id')) {
             $service->main_service_id = $request->main_service_id;             
@@ -341,10 +352,10 @@ class ServiceWebController extends Controller
             $mainservice->email = $request->email;
         }
 
-        if($request->verified == '1') {
-            $mainservice->verified = '1';            
+        if($request->verified_service == '1') {
+            $mainservice->verified_service = '1';            
         } else {
-            $mainservice->verified = '0';                        
+            $mainservice->verified_service = '0';                        
         }
 
         if($request->has('full_name')) {
@@ -377,8 +388,7 @@ class ServiceWebController extends Controller
 
         $mainservice->save();
         flash('Your main service data updated successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-servicedetails')->with('notifs', $notifs);
+        return redirect()->route('view-servicedetails');
     }
 
     /**
@@ -390,9 +400,7 @@ class ServiceWebController extends Controller
     public function destroy($id)
     {
         $find = Service::findOrFail($id);   
-        // dd($find);
         $findCategory = Category::where('id', $find->category_id); 
-        // dd($findCategory);
         $find->delete();
     }
 
@@ -402,5 +410,24 @@ class ServiceWebController extends Controller
         // $images = Input::all();
         // $notifs = request()->get('notifs');
         // return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
+    }
+
+    public function suspend(Request $request, $id)
+    {
+        // dd($id);
+        $service = Service::findOrFail($id);
+
+        if($request->status == Service::SUSPEND_SERVICE) {
+            $service['status'] = Service::SUSPEND_SERVICE;
+            $service['available'] = Service::UNAVAILABLE_SERVICE;
+        } elseif($request->status == Service::ACTIVE_SERVICE) {
+            $service['status'] = Service::ACTIVE_SERVICE;
+            if($service['verified_service'] == Service::VERIFIED_SERVICE) {
+                $service['available'] = Service::AVAILABLE_SERVICE;
+            } 
+        }
+        $service->save();
+
+        return redirect()->back();
     }
 }

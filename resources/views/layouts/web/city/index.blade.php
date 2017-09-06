@@ -3,6 +3,7 @@
 @section('content-subheader', 'List Provinces and City')
 @section('main-content')
     @include ('flash::message')
+    <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-cities') }}"><span>  Add</span></a></div>
 	<table id="province" class="table table-bordred table-striped">
 	    <thead>
            	<th>No</th>
@@ -14,64 +15,16 @@
     		@foreach($cities as $city)
 				<tr>
 				    <td>{{ $skipped + $i }}</td>
-				    <td>{{ $city->name_city }}</td>
 				    <td>{{ $city->province->name_province }}</td>
+				    <td>{{ $city->name_city }}</td>
 					<td>
-						<p data-placement="top" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit-{{ $city->id }}"><span class="glyphicon glyphicon-pencil"></span></button></p>
+						<p><a href="{{ route('view-update-cities', ['id' => $city->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
 					</td>
 				    <td>
 				    	<p data-placement="top" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $city->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
 				    </td>
 				    <td>
 				</tr>
-
-				<!-- Form edit -->
-				<form action="{{ route('update-cities', ['id' => $city->id]) }}" id="update{{ $city->id }}" method="post" role="form">
-				{{ csrf_field() }}
-			   	{{ method_field('PATCH') }}
-					<div class="modal fade" id="edit-{{ $city->id }}" role="dialog" aria-labelledby="edit" aria-hidden="true">
-					    <div class="modal-dialog">
-					    	<div class="modal-content">
-					    		<input class="form-control hidden" type="text" name="id" value="{{ $city->id }}" disabled>
-					        	<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-					        			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					        		</button>
-					        		<h4 class="modal-title custom_align" id="Heading">Edit Province</h4>
-					      		</div>
-					        	<div class="modal-body">
-					        		<div class="form-group {{ $errors->has('name_city') ? ' has-error' : '' }}">
-						        		<label>City Name</label>
-					        			<input class="form-control" type="text" name="name_city" value="{{ $city->name_city }}">
-				        				@if ($errors->has('name_city'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('name_city') }}</strong>
-				        			    	</span>
-				        				@endif	   
-					        		</div>
-					          		<div class="form-group {{ $errors->has('name_province') ? ' has-error' : '' }}">
-						        		<label class="spasi">Province Name</label>
-					        			<!-- <input class="form-control" type="text" name="name_province" value="{{ $city->province->name_province }}" disabled> -->
-	        		        			<select id="province_id" name="province_id" class="form-control chosen-select mySelect" style="margin-left: 1%; width:50%;" placeholder="{{ $city->province->name_province }}" required>
-	        		                	@foreach($provinces as $province)
-	        		                     	<option value="{{ $province->id }}">{{ $province->name_province }}</option>
-	        			                @endforeach
-					                  	</select>
-
-				        				@if ($errors->has('name_province'))
-				        			 	<span class="help-block">
-				        			     	<strong>{{ $errors->first('name_province') }}</strong>
-				        			    	</span>
-				        				@endif	   
-					        		</div>
-					      		</div>
-					          	<div class="modal-footer ">
-					        		<button type="submit" form="update{{ $city->id }}" class="btn btn-warning btn-lg btn-update"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-					      		</div>
-					        </div>
-					  	</div>    
-					</div>
-				</form>
 
 				<!-- Form delete -->
 	    		<form action="{{ route('delete-cities', ['id' => $city->id]) }}" id="delete{{ $city->id }}" method="post" role="form">

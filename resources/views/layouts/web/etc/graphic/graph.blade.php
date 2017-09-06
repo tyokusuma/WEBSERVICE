@@ -2,6 +2,7 @@
 @section('pageTitle', 'View Graphic')
 @section('content-subheader', 'List Graphic')
 @section('main-content')
+  @include('flash::message')
     <div>
         <div class="box-header with-border">
           <h3 class="box-title">Statistik transaksi dari {{ $full_name }} pada {{ $date }}</h3>

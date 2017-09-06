@@ -2,40 +2,70 @@
 
 namespace App\Http\Controllers\MessageDetail;
 
+use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FCM\FCMController;
+use App\Message;
 use App\MessageDetail;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MessageDetailWebController extends Controller
 {
     public function store(Request $request)
     {
-        // dd($request);
-        $rules = [
+        $validator = Validator::make($request->all(), [
             'message_id' => 'required|numeric',
-            'sender_id' => 'required|numeric',
-            'receiver_id' => 'required|numeric',
-            'content' => 'required|string',
-            'read_admin' => 'required|in:'.MessageDetail::UNREAD_MESSAGEDETAILS,
-            'read_user'=> 'required|in:'.MessageDetail::UNREAD_MESSAGEDETAILS,
-        ];
+            'user_id' => 'required|numeric',
+            'content' => 'nullable|string',
+            'image' => 'nullable|image',
+        ]);
+        if($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        $this->validate($request, $rules);
+        $msg = Message::findOrFail($request->message_id);
+        if($msg->deleted_by_user != null) {
+            $msg['deleted_by_user'] = null;
+            $msg->save();
+        }
 
         $data = $request->all();
+        if($request->hasFile('image')) {
+            $data['image'] = $request->image->store('');
+        }
+
+        $data['admin_id'] = null;
+        $data['read_admin'] = MessageDetail::READ_MESSAGEDETAILS;
+        $data['read_user'] = MessageDetail::UNREAD_MESSAGEDETAILS;
+
         $messageDetail = MessageDetail::create($data);
-        $notifs = request()->get('notifs');
-        // return redirect()->route('view-inbox-details', ['id', $request->message_id]);
-        return redirect()->back()->with('notifs', $notifs);
+
+        //create notification for other admin
+        $msgAdmin = "Admin replied to message with title ".$msg->title;
+        event(new AdminNotificationEvent($msgAdmin));
+
+        //notifikasi user
+        $msgUser = 'New reply from admin at your message title "'.$msg['title'].'"';
+        $user = User::findOrFail($request->user_id);
+        $notifUser = new FCMController();
+        // $notifUser->sendAndroidNotification($user, ucwords(MessageDetail::TITLE_MSG_DETAIL), $msgUser, MessageDetail::TAG_MSG_DETAIL);
+
+        return redirect()->back();
 
     }
 
-    public function getDetail($id, $user_id, $full_name) {
-        $messages = MessageDetail::where('message_id', $id)->get();
+    public function getDetail($id_message, $user_id, $full_name) {
+        $read = Message::findOrFail($id_message);
+        $read['read_admin'] = Message::READ_MESSAGE;
+        $read->save();
+
+        $messages = MessageDetail::where('message_id', $id_message)->get();
         $pp = User::where('id', $user_id)->first()->profile_image;
-        $notifs = request()->get('notifs');
-        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id)->with('user_id', $user_id)->with('full_name', $full_name)->with('notifs', $notifs)->with('profile_image', $pp);
+        return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id_message)->with('user_id', $user_id)->with('full_name', $full_name)->with('profile_image', $pp);
 
     }
 }

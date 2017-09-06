@@ -60,7 +60,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cors' => \Barryvdh\Cors\HandleCors::class,
-        'notif' => \App\Http\Middleware\UserNotificationMiddleware::class,
-        'expired' => \App\Http\Middleware\CheckExpiredUser::class,
+        'user_expired' => \App\Http\Middleware\CheckExpiredUser::class,
+        'provider_expired' => \App\Http\Middleware\CheckExpiredService::class,
     ];
 }

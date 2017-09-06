@@ -8,6 +8,7 @@
            	<th>ID</th>
             <th>Profile Image</th>
             <th>Full Name</th>
+            <th>User Code</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Gender</th>
@@ -19,6 +20,7 @@
 				    <td>{{ $skipped + $i }}</td>
 				    <td><img src="{{ URL::asset('img/'.$buyer->profile_image) }}" alt="{{ $buyer->profile_image }}" style="width:64px; height:64px" /></td>
 				    <td>{{ $buyer->full_name }}</td>
+				    <td>{{ $buyer->user_code }}</td>
 				    <td>{{ $buyer->email }}</td>
 				    <td>{{ $buyer->phone }}</td>
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ProvinceWebController extends Controller
 {
@@ -17,12 +18,8 @@ class ProvinceWebController extends Controller
      */
     public function index()
     {
-        $provinces = Province::with('city')->paginate(10);
-        $notifs = request()->get('notifs');
-        return view('layouts.web.province.index')->with('provinces', $provinces)->with('notifs', $notifs);
-        // return response()->json([
-        //         'data' => $provinces,
-        //     ]);
+        $provinces = Province::paginate(10);
+        return view('layouts.web.province.index')->with('provinces', $provinces);
     }
 
     /**
@@ -32,8 +29,7 @@ class ProvinceWebController extends Controller
      */
     public function create()
     {
-        $notifs = request()->get('notifs');
-        return view('layouts.web.province.create')->with('notifs', $notifs);
+        return view('layouts.web.province.create');
     }
 
     /**
@@ -57,8 +53,7 @@ class ProvinceWebController extends Controller
         $data = $request->all();
         $province = Province::create($data);
         flash('Your new province created successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('create-provinces')->with('notifs', $notifs);
+        return redirect()->route('create-provinces');
     }
 
     /**
@@ -69,7 +64,7 @@ class ProvinceWebController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -80,7 +75,8 @@ class ProvinceWebController extends Controller
      */
     public function edit($id)
     {
-        //
+        $province = Province::where('id', $id)->first();
+        return view('layouts.web.province.edit')->with('province', $province);
     }
 
     /**
@@ -92,7 +88,6 @@ class ProvinceWebController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
         $validator = Validator::make($request->all(), [
             'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
         ]);
@@ -103,13 +98,17 @@ class ProvinceWebController extends Controller
                 ->withInput();
         }
 
-        $find = Province::findOrFail($id);
-        $find['name_province'] = $request->name_province;
+        $exists = Province::where('name_province', Str::lower($request->name_province))->first();
+        if($exists != null) {
+            flash('Your province already exist')->error()->important();
+        } else {
+            $find = Province::findOrFail($id);
+            $find['name_province'] = $request->name_province;
+            $find->save();
+            flash('Your data province updated successfully')->success()->important();
+        }
         
-        $find->save();
-        flash('Your data province updated successfully')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-provinces')->with('notifs', $notifs);
+        return redirect()->route('view-provinces');
     }
 
     /**
@@ -128,7 +127,6 @@ class ProvinceWebController extends Controller
             $city->delete();
         }
         flash('The province and related city data successfully deleted')->success()->important();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-provinces')->with('notifs', $notifs);
+        return redirect()->route('view-provinces');
     }
 }

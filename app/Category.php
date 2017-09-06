@@ -10,12 +10,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Model
 {
     use SoftDeletes;
-	
+    
+    const CATEGORY_KENDARAAN = 'kendaraan';
+    const CATEGORY_PEDAGANG = 'pedagang';
+
     protected $dates = ['deleted_at'];
     protected $fillable = [
     	'category_type',
     	'subcategory_type',
         'type',
+        'tags',
+        'admin_created',
+        'admin_updated',
     ];
 
     protected $hidden = [
@@ -23,6 +29,10 @@ class Category extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function setTagsAttribute($tags) {
+        $this->attributes['tags'] = strtolower($tags);
+    }
 
     public function setTypeAttribute($type) {
         $this->attributes['type'] = strtolower($type);

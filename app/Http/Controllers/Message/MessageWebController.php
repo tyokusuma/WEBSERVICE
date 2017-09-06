@@ -2,102 +2,105 @@
 
 namespace App\Http\Controllers\Message;
 
+use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\FCM\FCMController;
 use App\Message;
 use App\MessageDetail;
+use App\Notifications\AdminNotification;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class MessageWebController extends Controller
 {
+    public function __construct() {
+        $this->admin = User::where('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->get();
+    }
+
     public function index()
     {
         $messages = Message::where('deleted_by_admin', null)->with('users')->paginate(10);
         foreach($messages as $message) {
-            $count = MessageDetail::where('message_id', $message->id)->where('sender_id', $message->user_id)->where('read_admin', '0')->count();
+            $count = MessageDetail::where('message_id', $message->id)->where('admin_id', 0)->where('read_admin', '0')->count();
             $message['count'] = $count;
         }
-        $notifs = request()->get('notifs');
-        return view('layouts.web.message.index')->with('messages', $messages)->with('count', $count)->with('notifs', $notifs);
+        // return response()->json([
+        //         'data' => $messages
+        //     ]);
+        return view('layouts.web.message.index')->with('messages', $messages);
     }
 
     public function create()
     {
-        $notifs = request()->get('notifs');
-        $users = User::all()->sortBy('full_name');
-        return view('layouts.web.message.create')->with('users', $users)->with('notifs', $notifs);
+        $users = User::where('admin', User::REGULER_USER)->get()->sortBy('full_name');
+        return view('layouts.web.message.create')->with('users', $users);
     }
 
     public function store(Request $request)
     {
-        // dd($request);
         $data = $request->all();
-        $data['read_admin'] = '1';
-        $data['read_user'] = '0';
         $validator = Validator::make($data, [
             'user_id' => 'required|numeric',
             'title' => 'required|string',
-            'read_admin' => 'required|in:'.Message::READ_MESSAGE,
-            'read_user' => 'required|in:'.Message::UNREAD_MESSAGE,        
         ]); 
 
         if ($validator->fails()) {
-            if ($data->has('user_id')) {
-                flash('Sorry the receiver name is doesn\'t exist')->error()->important();
-            }
-
-            if ($data->has('title')) {
-                flash('Sorry the title need to be string')->error()->important();
-            }
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
 
-        Message::create($data);
+        $data['read_admin'] = '1';
+        $data['read_user'] = '0';
+        $data['admin_id'] = 0;
+        $data['admin_created'] = auth()->user()->id;
+        $data['admin_updated'] = auth()->user()->id;
 
-        $find = Message::all()->last();
-        $user = User::where('id', $find->user_id)->first();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-inbox-details', ['id' => $find->id, 'user_id' => $find->user_id, 'full_name' => $user->full_name])->with('notifs', $notifs);
+        $message = Message::create($data);
+
+        //notifikasi user
+        $msgUser = 'New reply from admin at your message title "'.$data['title'].'"';
+        $user = User::findOrFail($request->user_id);
+        $notifUser = new FCMController();
+        // $notifUser->sendAndroidNotification($user, ucwords(Message::TITLE_MESSAGE), $msgUser, Message::TAG_MESSAGE);
+
+        return redirect()->route('view-inbox-details', ['id' => $message->id, 'user_id' => $message->user_id, 'full_name' => $user->full_name]);
     }
 
-    public function update(Request $request, $id)
-    {
-        $details = MessageDetail::where('message_id', $id)->get();
-        foreach ($details as $detail) {
-            $detail->read_admin = '1';
-            $detail->save();
-        }
+    // public function update(Request $request, $id)
+    // {
+    //     $details = MessageDetail::where('message_id', $id)->get();
+    //     foreach ($details as $detail) {
+    //         $detail->read_admin = '1';
+    //         $detail->save();
+    //     }
 
-        $message = Message::where('id', $id)->first();
-        $message->read_admin = '1';
-        $message->save();
+    //     $message = Message::where('id', $id)->first();
+    //     $message->read_admin = '1';
+    //     $message->save();
 
-        $user = User::where('id', $message->user_id)->first();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-inbox-details', ['id' => $id, 'user_id' => $user->id, 'full_name' => $user->full_name, 'notifs' => $notifs]);
-    }
+    //     $user = User::where('id', $message->user_id)->first();
+    //     return redirect()->route('view-inbox-details', ['id' => $id, 'user_id' => $user->id, 'full_name' => $user->full_name]);
+    // }
 
     public function destroy($id)
     {
-        dd('HERE');
         $msg = Message::findOrFail($id);
 
         $msgDetails = MessageDetail::where('message_id', $id)->get();
         if($msgDetails != null) {
             foreach($msgDetails as $msgDetail) {
-                $msgDetail['deleted_by_user'] = Carbon::now();
+                $msgDetail['deleted_by_admin'] = auth()->user()->id;
                 $msgDetail->save();
             }
         }
         
-        $msg['deleted_by_user'] = Carbon::now();
+        $msg['deleted_by_admin'] = auth()->user()->id;
         $msg->save();
 
         flash('Your message successfully deleted')->success();
-        $notifs = request()->get('notifs');
-        return redirect()->route('view-inbox')->with('notifs', $notifs);
+        return redirect()->route('view-inbox');
     }
 }
