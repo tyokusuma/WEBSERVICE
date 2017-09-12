@@ -38,11 +38,10 @@ class ServiceWebController extends Controller
     public function index()
     {
         $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
-        $categories = Category::all();
         // return response()->json([
         //         'data' => $servicedetails
         //     ]);
-        return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
+        return view('layouts.web.service.index')->with('servicedetails', $servicedetails);
     }
 
     /**
@@ -206,17 +205,6 @@ class ServiceWebController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -224,7 +212,9 @@ class ServiceWebController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service = Service::findOrFail($id);
+        $mainservice = MainService::with('services')->findOrFail($service->main_service_id);
+        return view('layouts.web.service.edit');
     }
 
     /**
@@ -407,9 +397,9 @@ class ServiceWebController extends Controller
     public function getImages($images)
     {
         
-        // $images = Input::all();
-        // $notifs = request()->get('notifs');
-        // return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
+        $images = Input::all();
+        $notifs = request()->get('notifs');
+        return view('layouts.web.service.slider')->with('ktp', $images['ktp'])->with('sim', $images['sim'])->with('stnk', $images['stnk'])->with('vehicle', $images['vehicle'])->with('notifs', $notifs);
     }
 
     public function suspend(Request $request, $id)

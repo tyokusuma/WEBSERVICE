@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Graphic extends Model
 {
+    const GRAPH_USER = 'user';
+    const GRAPH_SERVICE = 'service';
+    
     protected $table = 'graphics';
 
     protected $fillable = [
         'user_id',
         'date',
-        'count',
+        'count_created',
+        'count_cancel',
+        'count_success',
+        'type',
     ];
 
     protected $hidden = [

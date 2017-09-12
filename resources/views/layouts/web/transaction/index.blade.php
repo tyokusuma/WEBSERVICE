@@ -9,6 +9,7 @@
            	<th>Buyer Name</th>
             <th>Service Name</th>
             <th>Order Date</th>
+            <th>Status Order</th>
             <th>Tracking</th>
         </thead>
     	<tbody>
@@ -19,13 +20,16 @@
 				    <td>{{ $transaction->mainservices->full_name }}</td>
 				    <td>{{ $transaction->buyers->full_name }}</td>
 				    <td>{{ $transaction->order_date }}</td>
+				    <td>{{ $transaction->status_order }}</td>
 				    <td>
-				    	@if(strtolower($transaction->mainservices->service->category->type) == 'kendaraan' && ($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu'))
+				    	@if(strtolower($transaction->mainservices->service->category->type) == 'kendaraan')
 				    		@if($transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu')
 						    	<a href="{{ route('tracking-map', ['current_lat' => $transaction->mainservices->gps_latitude, 'current_lng' => $transaction->mainservices->gps_longitude, 'last_lat' => $transaction->buyers->gps_latitude, 'last_lng' => $transaction->buyers->gps_longitude]) }}"><p><button class="btn btn-warning btn-xs"><span class="fa fa-map-marker" aria-hidden="true"></span></button></p></a>
 					    	@elseif($transaction->status_order == 'perjalanan ke tujuan bersama anda')
 						    	<a href="{{ route('tracking-map', ['current_lat' => $transaction->mainservices->gps_latitude, 'current_lng' => $transaction->mainservices->gps_longitude, 'last_lat' => $transaction->latitude_destination, 'last_lng' => $transaction->longitude_destination]) }}"><p><button class="btn btn-warning btn-xs"><span class="fa fa-map-marker" aria-hidden="true"></span></button></p></a>
 					    	@endif
+					    @elseif(strtolower($transaction->mainservices->location_abang) == '1' || $transaction->status_order == 'pesanan diterima' || $transaction->status_order == 'perjalanan ke tempatmu')
+					    	<a href="{{ route('tracking-map', ['current_lat' => $transaction->mainservices->gps_latitude, 'current_lng' => $transaction->mainservices->gps_longitude, 'last_lat' => $transaction->buyers->gps_latitude, 'last_lng' => $transaction->buyers->gps_longitude]) }}"><p><button class="btn btn-warning btn-xs"><span class="fa fa-map-marker" aria-hidden="true"></span></button></p></a>
 				    	@endif
 				    </td>
 				    <td>

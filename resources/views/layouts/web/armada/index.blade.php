@@ -25,6 +25,7 @@
 						<p><a href="{{ route('view-update-armadas', ['id' => $armada->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
 					</td>
 				    <td>
+				    	@if(auth()->user()->admin == "2")
 				    	<p>
 				    		<form action="{{ route('delete-armadas', ['id' => $armada->id]) }}" method="POST" role="form">
 				    			{{ csrf_field() }}
@@ -32,6 +33,7 @@
 				    			<button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button>
 				    		</form>
 				    	</p>
+				    	@endif
 				    </td>
 				    <td>
 				</tr>

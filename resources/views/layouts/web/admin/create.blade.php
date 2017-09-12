@@ -1,11 +1,11 @@
 @extends('layouts/web/master_admin')
-@section('pageTitle', 'New User')
-@section('content-subheader', 'Create new user')
+@section('pageTitle', 'New Admin')
+@section('content-subheader', 'Create new Admin')
 @section('main-content')
 <div class="contentpanel cs_df">
     @include ('flash::message')
 	<div class="row">
-   			<form action="{{ route('create-users') }}" method="post" role="form" enctype="multipart/form-data">
+   			<form action="{{ route('create-admin') }}" method="post" role="form" enctype="multipart/form-data">
 	       	{{ csrf_field() }}
 	       	
 	       	<div class="form-group {{ $errors->has('full_name') ? ' has-error' : '' }}">
@@ -89,8 +89,13 @@
 	       	<div class="form-group {{ $errors->has('admin') ? ' has-error' : '' }}">
                 <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
                 <div class="col-sm-6 col-sm-offset-1 form-style">
-                	<input type="text" name="admin" value="0" placeholder="Regular user" class="form-control" disabled readonly/>
-                  	
+                  	<select id="admin" name="admin" class="form-control chosen-select" required>
+                     	<option value="0">Regular User</option>
+                     	<option value="1">Admin</option>
+                     	@if(auth()->user()->admin == '2')
+                     	<option value="2">Superadmin</option>
+                     	@endif
+                  	</select>
 	                @if ($errors->has('admin'))
 		               	<span class="help-block">
 		                   	<strong>{{ $errors->first('admin') }}</strong>
@@ -143,6 +148,12 @@
 <script>
 	$('.mySelect').select2();
 
+  //   if (performance.navigation.type == 1) {
+		// document.getElementById("profile_image_show").value = "";
+  //   } else {
+		// document.getElementById("profile_image_show").value = "";
+  //   }
+    
 	document.getElementById('profile_image').onchange = uploadOnChange;
 
 	function uploadOnChange() {

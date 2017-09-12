@@ -19,35 +19,44 @@
         <!-- Messages -->
         <li class="active"><a href="{{ route('view-inbox') }}"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Messages</span></a></li>
 
-        <!-- User menu -->
+        <!-- User, Admin, Buyer, Service menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-users" aria-hidden="true"></i> <span>User</span>
+          <a href="#"><i class="fa fa-list-alt"></i> <span>Admin, User, Buyer, Service </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-users') }}"><i class="fa fa-plus" aria-hidden="true"></i><span class="dropdown">Add new user</span></a></li>
-            <li class="treeview"><a href="{{ route('view-users') }}"><i class="fa fa-eye" aria-hidden="true"></i><span class="dropdown">View all users data</span></a></li>
+            <li class="treeview"><a href="{{ route('view-admins') }}"><i class="fa fa-users" aria-hidden="true"></i><span>Admin</span></a></li>
+            <li class="treeview"><a href="{{ route('view-users') }}"><i class="fa fa-users" aria-hidden="true"></i><span>User</span></a></li>
+            <li class="treeview"><a href="{{ route('view-buyers') }}"><i class="fa fa-users" aria-hidden="true"></i><span>Buyer</span></a></li>
+            <li class="treeview"><a href="{{ route('view-servicedetails') }}"><i class="fa fa-users" aria-hidden="true"></i><span>Service</span></a></li>
           </ul>
         </li>
 
+        <!-- Admi menu -->
+        <!-- <li class="treeview">
+          <a href="{{ route('view-admins') }}"><i class="fa fa-users" aria-hidden="true"></i> <span>Admin</span></a>
+        </li> -->
+
+        <!-- User menu -->
+        <!-- <li class="treeview">
+          <a href="{{ route('view-users') }}"><i class="fa fa-users" aria-hidden="true"></i> <span>User</span></a>
+        </li> -->
+
         <!-- Buyer menu -->
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="{{ route('view-buyers') }}"><i class="fa fa-users"></i> <span>Buyer</span></a>
-        </li>
+        </li> -->
         
         <!-- Service detail menu -->
+        <!-- <li class="treeview">
+          <a href="{{ route('view-servicedetails') }}"><i class="fa fa-taxi"></i> <span>Service</span></a>
+        </li> -->
+
+        <!-- Tag menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-taxi"></i> <span>Service</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-create-servicedetails') }}"><i class="fa fa-plus" aria-hidden="true"></i><span>Add new service detail</span></a></li>
-            <li class="treeview"><a href="{{ route('view-servicedetails') }}"><i class="fa fa-eye" aria-hidden="true"></i><span>View all services and details</span></a></li>
-          </ul>
+          <a href="{{ route('view-tags') }}"><i class="fa fa-tags" aria-hidden="true"></i> <span>Tag for Category</span></a>
         </li>
 
         <!-- Category menu -->

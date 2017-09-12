@@ -49,6 +49,12 @@ Route::prefix('adminpanel')->group(function () {
 		Route::get('users/update/{id}', 'User\UserWebController@edit')->name('view-update-users');
 		Route::patch('users/update/{id}', 'User\UserWebController@update')->name('update-users');
 
+		Route::get('admins', 'User\UserWebController@indexAdmin')->name('view-admins');
+		Route::get('admins/add', 'User\UserWebController@createAdmin')->name('view-create-admins');
+		Route::post('admins/add', 'User\User\UserWebController@storeAdmin')->name('create-admins');
+		Route::get('admins/update/{id}', 'User\UserWebController@editAdmin')->name('view-update-admins');
+		Route::patch('admins/update/{id}', 'User\UserWebController@updateAdmin')->name('update-admins');
+		Route::delete('admins/delete/{id}', 'User\UserWebController@destroyAdmin')->name('delete-admins');
 
 		// Route::resource('servicedetails', 'Service\ServiceWebController', ['names' => [
 		// 		'index' => 'view-servicedetails',
@@ -60,8 +66,10 @@ Route::prefix('adminpanel')->group(function () {
 		Route::get('servicedetails/add', 'Service\ServiceWebController@create')->name('view-create-servicedetails');
 		Route::get('servicedetails/{id}', 'Service\ServiceWebController@getImages')->name('get-images');
 		Route::post('servicedetails/add', 'Service\ServiceWebController@store')->name('create-servicedetails');
+		Route::get('servicedetails/update/{id}', 'Service\ServiceWebController@edit')->name('view-update-servicedetails');
 		Route::patch('servicedetails/update/{id}', 'Service\ServiceWebController@update')->name('update-servicedetails');
 		Route::patch('servicedetails/suspend/{id}', 'Service\ServiceWebController@suspend')->name('suspend-service');
+		Route::delete('servicedetails/delete/{id}', 'Service\ServiceWebController@destroy')->name('delete-servicedetails');
 
 		Route::get('tags', 'Tag\TagController@index')->name('view-tags');
 		Route::get('tags/add', 'Tag\TagController@create')->name('view-create-tags');

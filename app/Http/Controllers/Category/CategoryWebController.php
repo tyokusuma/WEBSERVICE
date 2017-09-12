@@ -6,6 +6,7 @@ use App\Category;
 use App\Favorite;
 use App\Http\Controllers\Controller;
 use App\Service;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +22,8 @@ class CategoryWebController extends Controller
 
     public function create()
     {
-        return view('layouts.web.category.create');
+        $tags = Tag::all();
+        return view('layouts.web.category.create')->with('tags', $tags);
     }
 
     public function store(Request $request)
@@ -130,12 +132,14 @@ class CategoryWebController extends Controller
             $validator = Validator::make($request->all(), [
                 'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
                 'type' => 'required|regex:/^[a-zA-Z ]+$/',
+                'tags' => 'required'
             ]);            
         } else {
             $validator = Validator::make($request->all(), [
                 'category_type' => 'required|regex:/^[a-zA-Z ]+$/',
                 'subcategory_type' => 'regex:/^[a-zA-Z ]+$/',
                 'type' => 'required|regex:/^[a-zA-Z ]+$/',
+                'tags' => 'required'
             ]);
         }
 
@@ -145,6 +149,7 @@ class CategoryWebController extends Controller
                 ->withInput();
         }
         $data = $request->all();
+        $data['tags'] = implode(', ', $request->tags);
         $data['admin_created'] = auth()->user()->id;
         $data['admin_updated'] = auth()->user()->id;
 
@@ -152,13 +157,14 @@ class CategoryWebController extends Controller
             $category = Category::create($data);            
             flash('Your data category created successfully')->success()->important();
         }
-        return redirect()->route('create-categories');
+        return redirect()->route('view-categories');
     }
 
     public function edit($id)
     {
+        $tags = Tag::all();
         $category = Category::findOrFail($id);
-        return view('layouts.web.category.edit')->with('category', $category);
+        return view('layouts.web.category.edit')->with('category', $category)->with('tags', $tags);
     }
 
     public function update(Request $request, $id)
@@ -284,12 +290,18 @@ class CategoryWebController extends Controller
                     $findById['category_type'] = $request['category_type'];
                     $findById['subcategory_type'] = null;
                     $findById['admin_updated'] = auth()->user()->id;
+                    if($request->has('tags')) {
+                        $findById['tags'] = implode(', ', $request->tags);
+                    }
                     $findById->save();            
                 } else {
                     $findById['type'] = $request['type'];
                     $findById['category_type'] = $request['category_type'];
                     $findById['subcategory_type'] = $request['subcategory_type'];
                     $findById['admin_updated'] = auth()->user()->id;
+                    if($request->has('tags')) {
+                        $findById['tags'] = implode(', ', $request->tags);
+                    }
                     $findById->save();            
                 }
             }

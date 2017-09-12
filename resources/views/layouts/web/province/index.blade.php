@@ -3,7 +3,7 @@
 @section('content-subheader', 'List Provinces')
 @section('main-content')
     @include ('flash::message')
-    <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-provinces') }}"><span>  Add</span></a></div>
+    <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-servicedetails') }}"><span>  Add</span></a></div>
 	<table id="province" class="table table-bordred table-striped">
 	    <thead>
            	<th>No</th>

@@ -12,6 +12,7 @@ return [
     */
     'fcm' => env('FCM_SERVER_KEY', null),
     'googlemap' => env('MAP_GOOGLE_API', null),
+    'googlemaplang' => env('MAP_GOOGLE_LANG', null),
 
     /*
     |--------------------------------------------------------------------------

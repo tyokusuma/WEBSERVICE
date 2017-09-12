@@ -35,6 +35,7 @@ class CreateServicesTable extends Migration
             $table->double('rating_total', 11, 6)->default(0); //new field
             $table->double('rating_transactions_total', 11, 6)->default(0); //new field
             $table->string('location_abang', 1)->nullable();//new field, lokasi abang bangunan ato gerobak
+            $table->string('status_shop', 1);
             $table->unsignedInteger('admin_created')->nullable();
             $table->unsignedInteger('admin_updated')->nullable();
             $table->dateTime('expired_at')->nullable(); 

@@ -29,13 +29,13 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         User::created(function($user) {
-            $sms = new SmsController();
-            $phone = $user->phone;
-            $name = $user->full_name;
-            $verification_code = $user->verification_link;
-            $sms->sendVerificationPhone($phone, $name, $verification_code);
-            
+            // $this->sendVerificationPhone($user->phone, $user->name, $user->verification_link);
+            // retry(3, function() {
+            //     $this->sendVerificationPhone($user->phone, $user->name, $user->verification_link);
+            // }, 350);
+
             // Mail::to($user->email)->send(new UserCreated($user));
+
             // $data['user_id'] = $user->id;
             // $data['title'] = 'New User';
             // $data['content'] = 'A new user with name '.$user->full_name.', and email '.$user->email.' successfully created';
@@ -44,23 +44,18 @@ class AppServiceProvider extends ServiceProvider
         });
 
         User::updated(function($user) {
-            if($user->isDirty('phone')) {
-                $sms = new SmsController();
-                $phone = $user->phone;
-                $name = $user->full_name;
-                $verification_code = $user->verification_link;
-                $sms->sendVerificationPhone($phone, $name, $verification_code);
-            }
-                // retry(5, function() use ($user) {
-                //     Mail::to($user)->send(new UserMailChanged($user));
-                // }, 100);
+            //     Mail::to($user)->send(new UserMailChanged($user));
+            // retry(5, function() use ($user) {
+            //     Mail::to($user)->send(new UserMailChanged($user));
+            // }, 350);
         });
 
         Service::updated(function($service) {
-            $find = User::find($service->main_service_id)->first();
-            if($service->verified == '1') {
+            // $find = User::find($service->main_service_id)->first();
+            // if($service->verified == '1') {
                 // Mail::to($find)->send(new ServiceVerified($find));
-            }
+            // }, 100);
+            // }
         });
 
         Transaction::created(function($transaction) {

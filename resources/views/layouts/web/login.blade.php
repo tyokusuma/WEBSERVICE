@@ -60,9 +60,8 @@
                             </div>
                             <div class="form-group">
                                 <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} /> Remember Me
-                                    </label>                                    
+                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} />
+                                    <label> Remember Me</label>                                    
                                 </div>
                             </div>
                             <button class="btn btn-success btn-block">

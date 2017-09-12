@@ -10,6 +10,7 @@
            	<th>Type</th>
             <th>Category Type</th>
             <th>Subcategory Type</th>
+            <th>Tags</th>
         </thead>
     	<tbody>	
     		<?php $i = 1; $skipped = ($categories->currentPage() * $categories->perPage()) - $categories->perPage(); ?>
@@ -19,42 +20,19 @@
 				    <td>{{ $category->type }}</td>
 				    <td>{{ $category->category_type }}</td>
 				    <td>{{ $category->subcategory_type }}</td>
-				    
+				    <td>{{ $category->tags }}</td>
 					<td>
 				    	<p><a href="{{ route('view-update-categories', ['id' => $category->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>
 				    </td>
 				    <td>
-				    	<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete-{{ $category->id }}" ><span class="glyphicon glyphicon-trash"></span></button></p>
+				    	<form action="{{ route('delete-categories', ['id' => $category->id]) }}" role="form" method="POST">
+				    		{{ csrf_field() }}
+				    		{{ method_field('DELETE') }}
+					    	<p><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button></p>
+					    </form>
 				    </td>
 				</tr>
 
-				<!-- Form delete -->
-				<form action="{{ route('delete-categories', ['id' => $category->id]) }}" id="delete{{ $category->id }}" method="post" role="form">
-	       		{{ csrf_field() }}
-		       	{{ method_field('DELETE') }}
-					<div class="modal fade" id="delete-{{ $category->id }}" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-					    <div class="modal-dialog">
-					    	<div class="modal-content">
-					          	<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-					        		<h4 class="modal-title custom_align" id="Heading">Delete this entry</h4>
-					      		</div>
-						        <div class="modal-body">
-						       		<div class="alert alert-danger"> <span class="glyphicon glyphicon-warning-sign"></span> Are you sure you want to delete this Record?</div>
-						      	</div>
-						        <div class="modal-footer ">
-					      			<input type="hidden" name="action" value="delete{{ $category->id }}" />
-						        	<button type="submit" class="btn btn-success" form="delete{{ $category->id }}">
-						        		<span class="glyphicon glyphicon-ok-sign"></span>  Yes
-						        	</button>
-						        	<button type="button" class="btn btn-default" data-dismiss="modal">
-						        		<span class="glyphicon glyphicon-remove"></span>  No
-						        	</button>
-						      	</div>
-					    	</div>
-						</div>
-					</div>
-				</form>
 				<?php $i++; ?>
 		    @endforeach
 	    </tbody>	        

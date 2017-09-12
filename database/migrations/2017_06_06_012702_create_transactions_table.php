@@ -32,10 +32,10 @@ class CreateTransactionsTable extends Migration
             $table->double('latitude_destination', 11,6);
             $table->double('longitude_destination', 11,6);
             $table->integer('priority')->nullable(); //new field
-            $table->decimal('distance', 5, 2);
-            $table->unsignedInteger('traveling_time');//in minute
-            $table->time('estimation_time_start');
-            $table->time('estimation_time_end');
+            $table->string('distance')->nullable();
+            $table->string('traveling_time')->nullable();//in minute
+            $table->time('estimation_time_start')->nullable();
+            $table->time('estimation_time_end')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

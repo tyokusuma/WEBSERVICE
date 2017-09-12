@@ -18,11 +18,7 @@ class OtherController extends ApiController
 
         return $setting;        
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function termsApp()
     {
         //

@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Service extends Model
 { 	
     use SoftDeletes;
+    //Rating
+    const RATING_BURUK = 1;
+    const RATING_KURANG = 2;
+    const RATING_BIASA = 3;
+    const RATING_CAKEP = 4;
+    const RATING_MANTAP = 5;
 
     const RADIUS_KM = 2;
 
@@ -69,8 +75,8 @@ class Service extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-        'rating_total',
-        'rating_transactions_total',
+        // 'rating_total',
+        // 'rating_transactions_total',
     ];
 
     public function category() {
@@ -78,6 +84,6 @@ class Service extends Model
     }
 
     public function mainservice() {
-        return $this->belongsTo(MainService::class, 'id', 'main_service_id');
+        return $this->belongsTo(MainService::class, 'main_service_id', 'id');
     }
 }

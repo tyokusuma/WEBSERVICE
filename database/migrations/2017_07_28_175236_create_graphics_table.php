@@ -16,8 +16,11 @@ class CreateGraphicsTable extends Migration
         Schema::create('graphics', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('date');
-            $table->integer('count');
+            $table->date('date');
+            $table->unsignedInteger('count_created');
+            $table->unsignedInteger('count_cancel');
+            $table->unsignedInteger('count_success');
+            $table->string('type'); //type user service/user
 
             $table->timestamps();
             $table->softDeletes();

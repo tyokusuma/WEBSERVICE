@@ -5,14 +5,14 @@ namespace App\Http\Controllers\User;
 use App\City;
 use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\FCM\FCMController;
 use App\Http\Controllers\Other\OtherController;
-use App\Http\Controllers\Sms\SmsController;
 use App\Mail\ForgotPassword;
 use App\Notifications\AdminNotification;
 use App\Other;
 use App\Province;
 use App\Service;
+use App\Traits\FcmTrait;
+use App\Traits\SmsTrait;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class UserController extends ApiController
 {
-    use ResetsPasswords;
+    use FcmTrait, ResetsPasswords, SmsTrait;
 
     public function __construct() {
         // Parent::__construct();
@@ -66,12 +66,6 @@ class UserController extends ApiController
         return 'ADM'.sprintf('%03d', intval($number) + 1);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $rules = [
@@ -113,12 +107,11 @@ class UserController extends ApiController
         $data['payment'] = User::TRIAL_PAYMENT;
         $user = User::create($data);
 
-        //notifikasi handphone
-        // $sms = new SmsController();
-        // $phone = $user->phone;
-        // $name = $user->full_name;
-        // $verification_code = $user->verification_link;
-        // $sms->sendVerificationPhone($phone, $name, $verification_code);
+        //kirim verifikasi ke handphone
+        $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        retry(3, function() {
+            $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+            }, 350);
         
         // Create notification for admin
         $msgAdmin = 'New User created with ID User '.$data['user_code'].', email: '.$data['email'].', name:'.$data['full_name'];
@@ -126,19 +119,15 @@ class UserController extends ApiController
         // foreach($this->admin as $admin) {
         //     $admin->notify(new AdminNotification($msgAdmin));
         // }
-        // $fcm = new FCMController();
         // $message = 'Your account created, you\'ll need to verified your account first';
-        // $fcm->sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
+        // $this->sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
+        // retry(3, function() {
+        //     sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
+        //     }, 350);
 
         return $this->showOne($user, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show()
     {
         $user = User::where('id', auth()->user()->id)->with('city')->with('province')->get();
@@ -146,13 +135,6 @@ class UserController extends ApiController
         return $this->showAll($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         //For payment by share we put inside contactCheck function in this controller
@@ -174,18 +156,6 @@ class UserController extends ApiController
             return $this->errorResponse('Sorry, you can\'t edit the user password using these api', 409);
         }
 
-        // if ($request->has('user_code')) {
-        //     return $this->errorResponse('Sorry, you can\'t edit the user code', 409);
-        // }
-
-        // if ($request->has('admin_code')) {
-        //     return $this->errorResponse('Sorry, you can\'t edit the admin code', 409);
-        // }
-
-        // if ($request->has('admin')) {
-        //     return $this->errorResponse('Sorry, you can\'t edit the admin status', 409);
-        // }
-
         if ($request->hasFile('profile_image')) {
             Storage::delete($user->profile_image);
 
@@ -200,6 +170,7 @@ class UserController extends ApiController
             $user['verified'] = User::UNVERIFIED_USER;
             $user['verification_link'] = User::generateVerificationPhone();
             $user['phone'] = $request->phone;
+
         }
 
         if ($request->has('full_name')) {
@@ -215,30 +186,20 @@ class UserController extends ApiController
             $user['province_id'] = $request->province_id;
         }
 
-        // if ($request->has('province_id')) {
-        //     $id = Province::findOrFail($request->province_id);
-        //     $province_city_user = City::findOrFail($user['city_id']);
-        //     if ($province_city_user->province_id != $request->province_id) {
-        //         return $this->errorResponse('Sorry your province data is invalid with user data', 409);
-        //     } 
-        //     $user['province_id'] = $request->province_id;
-        // }
-
-        // if ($request->has('invite_friends')) {
-        //     if ($user['invite_friends'] == $request->invite_friends) {
-        //         $user['invite_friends'] = $request->invite_friends;
-        //     }
-        // }
         if ($request->has('gps_latitude') || $request->has('gps_longitude')) {
             $user['gps_latitude'] = $request->gps_latitude;
             $user['gps_longitude'] = $request->gps_longitude;
         }
 
-        // if ($user->isClean()) {
-        //     return $this->errorResponse('Sorry, you need to change some field', 409);
-        // }
-
         $user->save();
+        if($user->isDirty('phone')) {
+            //send verification again
+            $this->sendVerificationPhone($phone, $name, $verification_code);
+            retry(3, function() {
+                $this->sendVerificationPhone($phone, $name, $verification_code);
+                }, 350);
+        }
+
         return $this->showOne($user);
     }
 
@@ -252,14 +213,10 @@ class UserController extends ApiController
         $user->verification_link = User::generateVerificationPhone();
         $user->save();
 
-        $sms = new SmsController();
-        $phone = $user->phone;
-        $name = $user->full_name;
-        $verification_code = $user->verification_link;
-        $sms->sendVerificationPhone($phone, $name, $verification_code);
-        // retry(5, function() use ($user) {
-                // Mail::to($user->email)->send(new UserCreated($user));
-            // }, 100);
+        $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        retry(3, function() {
+            $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+            }, 350);
 
         return $this->showMessage('The verification number has been resend to your phone');
     }
@@ -290,9 +247,10 @@ class UserController extends ApiController
     //     $user['expired_at'] = $expired;
     //     $user['reset_password'] = $verification_code;
     //     $user->save(); 
-    //     $sms = new SmsController();
-    //     $sms->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
-
+    //     $this->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
+    //     retry(3, function() {
+    //          $this->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
+    //     }, 350);
     //     return response()->json([
     //             'success' => 'We have send your password reset link, please check your phone'
     //         ], 200);
@@ -300,7 +258,6 @@ class UserController extends ApiController
 
     public function sendResetLinkEmail(Request $request) // required email
     {
-        // $expired = Carbon::now()->addHour()->format('Y-m-d H:i:s');
         $rules = [
             'email' => 'required|email',
         ];
@@ -308,12 +265,13 @@ class UserController extends ApiController
         $valid = $this->validate($request, $rules);
         $user = User::where('email', $request->email)->firstOrFail();
         $verification_code = User::generateResetPasswordEmail();
-        // $user['expired_at'] = $expired;
         $user['reset_password'] = $verification_code;
         $user->save(); 
-        // $sms = new SmsController();
-        // $sms->resetPasswordVerification($user->phone, $user->full_name, $verification_code);
         Mail::to($user)->send(new ForgotPassword($user));
+        retry(3, function() use ($user) {
+            Mail::to($user)->send(new ForgotPassword($user));
+            }, 350);
+
         return response()->json([
                 'success' => 'We have send your password reset link, please check your email'
             ], 200);
@@ -323,12 +281,6 @@ class UserController extends ApiController
         return view('layouts.web.forgotPassword')->with('reset', $reset);        
     }
 
-    /**
-     * Reset the given user's password.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function reset(Request $request, $reset) // email, password, password_confirmation, token,
     {
         $rules = [

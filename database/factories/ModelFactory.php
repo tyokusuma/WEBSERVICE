@@ -196,7 +196,7 @@ $factory->define(Transaction::class, function (Faker\Generator $faker) {
         'booking' => $faker->randomElement([Transaction::BOOKING, Transaction::NOT_BOOKING]),
         'order_date' => Carbon::now()->toDateString(),
         'order_time' => Carbon::now()->toTimeString(),
-        'status_order' => Transaction::TRANSACTION_STATUS_5, 
+        'status_order' => Transaction::TRANSACTION_STATUS_6, 
         'satisfaction_level' => null,
         'comment' => null,
         'current_destination' => $faker->streetAddress,

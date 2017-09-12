@@ -24,7 +24,7 @@ class ServiceController extends ApiController
 {
     public function __construct() {
         Parent::__construct();
-        $this->admin = User::where('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->get();
+        $this->admin = User::where('admin', User::SUPERADMIN_USER)->first();
         // $this->middleware('client.credentials')->only(['index', 'store', 'show', 'update', 'destroy']);
     }
     
@@ -52,15 +52,13 @@ class ServiceController extends ApiController
     public function store(Request $request)
     {
         $user = Auth::user();
-        if ($request->has('main_service_id')) {
-            $findMainService = Service::where('main_service_id', $request->main_service_id)->first();
+        $findMainService = Service::where('main_service_id', $user->id)->first();
             if ($findMainService != null) {
-                return $this->errorResponse('You already have an account', 409);
+                return $this->errorResponse('You already have a service account', 409);
             }
             // if($user != $request->main_service_id) {
             //     return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
             // }
-        }
 
         $find = Category::findOrFail($request->category_id);
         switch (strtolower($find->category_type)) {
@@ -181,15 +179,16 @@ class ServiceController extends ApiController
 
         $msgAdmin = 'New Service created with ID Service '.$data['service_code'].', category: '.$find->category_type;
         event(new AdminNotificationEvent($msgAdmin));
-        // foreach($this->admin as $admin) {
-        //     $admin->notify(new AdminNotification($msgAdmin));
-        // }
+        $admin->notify(new AdminNotification($msgAdmin));
         $title = Service::SERVICE_TITLE_CREATED;
         $message = 'Admin will verified your account before you can use the apps';
         $tag = Service::SERVICE_TAG_CREATED;
-        $fcm = new FCMController();
-        $fcm = $fcm->sendAndroidNotification($user, $title, $message, $tag);
-
+        $this->sendAndroidNotification($user, $title, $message, $tag);
+        //retry if fail
+        retry(3, function() use ($user, $title, $message, $tag) {
+            $this->sendAndroidNotification($user, $title, $message, $tag);
+        });
+        //------------------------------------
         return $this->showOne($service, 201);
     }
 
@@ -292,7 +291,7 @@ class ServiceController extends ApiController
 
                 $this->validate($request, $rules);
 
-                if($request->filled('id_driver')) {
+                if($request->has('id_driver')) {
                     $armada = Armada::where('id_driver', $request->id_driver)->first();
                     if($armada == null) {
                         $request->armada = Service::NOT_IN_ARMADA;
@@ -305,7 +304,7 @@ class ServiceController extends ApiController
                     $service->license_platenumber = $request->license_platenumber;
                 }
 
-                if($request->filled('vehicle_type')) {
+                if($request->has('vehicle_type')) {
                     $service->vehicle_type = $request->vehicle_type;
                 }
 
@@ -390,20 +389,6 @@ class ServiceController extends ApiController
         $service->save();
 
         return $this->showOne($service);
-    }
-
-    public function index()
-    {
-        // $servicedetails = MainService::has('service')->with(['service.category'])->get();
-        // // $servicedetails = Service::all();
-        // // $servicedetails = Category::all()->groupBy('category_type');
-
-        // // return view('layouts.web.service.index')->with(['servicedetails' => $servicedetails, 'categories' => $categories]);
-        // return response()->json([
-        //         'data'=> $servicedetails,
-        //         'count' => $servicedetails->count(),
-        //     ]);
-
     }
 
     public function findTaksi(Request $request)

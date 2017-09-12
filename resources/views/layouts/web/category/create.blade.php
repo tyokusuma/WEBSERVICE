@@ -60,6 +60,24 @@
                 </div>
             </div>
 
+            <div class="form-group {{ $errors->has('tags') ? ' has-error' : '' }}">
+            	<label class="col-sm-3 control-label">Tags <span class="asterisk">*</span></label>
+            	<div class="col-sm-6 col-sm-offset-1 form-style">
+            		<select name="tags[]" class="form-control select2" multiple="multiple" data-placeholder="You can insert multiple tags"/>
+            			<option></option>
+            			@forelse($tags as $tag)
+	            			<option value="{{ $tag->keyword }}">{{ $tag->keyword }}</option>
+            			@empty
+    	        			<option></option>
+            			@endforelse
+            		</select>
+            		@if($errors->has('tags'))
+            			<span class="help-block">
+	            			<strong>{{ $errors->first('tags') }}</strong>
+            			</span>
+            		@endif
+            	</div>
+            </div>
             <div class="col-sm-6 col-sm-offset-3">
 		       	<button class="btn btn-success btn-block custom-btn">
 		           Register
@@ -70,4 +88,10 @@
 	</div>
 </div>				    
 @include('layouts.web.partials.footer')
+@endsection
+
+@section('script')
+<script>
+    $(".select2").select2();
+</script>
 @endsection
