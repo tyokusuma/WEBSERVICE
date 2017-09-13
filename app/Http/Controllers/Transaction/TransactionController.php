@@ -58,29 +58,8 @@ class TransactionController extends ApiController
         $now = Carbon::now();
         $findService = MainService::where('id', $request->main_service_id)->with('service.category')->first();
 
-        //Check transaksi buyer sesuai dengan tgl order_date trus d cari apa ada yg bentrok jamnya 
-        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_7, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
-        foreach($findTransactions as $transaction) {
-            if(strtolower($transaction->mainservices->service->category->type) == Category::CATEGORY_KENDARAAN) {
-                $errors['limit'] = 'You had unfinished transaction for category type '.Category::CATEGORY_KENDARAAN;
-            }
-
-            $estimate_start = Carbon::createFromFormat('H:i:s', $transaction->order_time)->subMinutes(30);
-            $estimate_end = Carbon::createFromFormat('H:i:s', $transaction->order_time)->addMinutes(20);
-            $order_time = Carbon::createFromFormat('H:i:s', $transaction->order_time);
-            if($order_time->between($estimate_start, $estimate_end)) {
-                $errors['conflict'] = 'You already had a transaction between time '.$estimate_start->toTimeString().'-'.$estimate_end->toTimeString();
-            }
-
-            if($errors != null) {
-                return $this->errorResponse($errors, 409);
-            }
-        }
-
-        $order_time = Carbon::createFromFormat('H:i:s', $request->order_time);
-        if($now->diffInMinutes($order_time, false) <= Transaction::TRANSACTION_MAX_RANGE) {
-            $errors['max_time'] = 'Sorry your transaction time already take more than '.Transaction::TRANSACTION_MAX_RANGE.' minutes, please create a new transaction';
-        }
+        //Check transaksi buyer sesuai dengan tgl order_date trus d cari apa ada yg bentrok jamnya
+        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
 
         if($request->main_service_id == $user->id) { //buyer can't do transaction with their own sevrvice account
             $errors['unauthorize'] = 'You can\'t create transaction with service id of your own id';
@@ -117,16 +96,28 @@ class TransactionController extends ApiController
         $data['priority'] = null;
 
         $transactions = Transaction::where('main_service_id', $request->main_service_id)->where('order_date', $request->order_date)->whereNotIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_4])->get();
-        $distance = $this->distanceMatrix($data['latitude_current'], $data['longitude_current'], $data['latitude_destination'], $data['longitude_destination']);
-        //klo nga ketemu distance tampilin error & retry again
-        retry(3, function() use ($data) {
+        if($findService->service->category->type == Category::CATEGORY_PEDAGANG || $findService->service->category->category_type == Category::CATEGORY_SUB_BECAK) {
+            $distance = $this->distanceMatrixAbang($data['latitude_current'], $data['longitude_current'], $data['latitude_destination'], $data['longitude_destination']);
+        } else {
             $distance = $this->distanceMatrix($data['latitude_current'], $data['longitude_current'], $data['latitude_destination'], $data['longitude_destination']);
-        }, 350);
+        }
+        //klo nga ketemu distance tampilin error & retry again
+        // retry(3, function() use ($data) {
+        //     $distance = $this->distanceMatrix($data['latitude_current'], $data['longitude_current'], $data['latitude_destination'], $data['longitude_destination']);
+        // }, 350);
         //----------------------------------------------------
         $travel_time = $distance->rows[0]->elements[0]->duration->value;
         $distance_km = ceil(intval($distance->rows[0]->elements[0]->distance->value) / pow(10, 3));
-        if($distance_km > Transaction::TRANSACTION_MAX_KM) {
-            $errors['max_distance'] = 'Sorry our limit distance is '.Transaction::TRANSACTION_MAX_KM.' km';
+        if($findService->service->category->type == Category::CATEGORY_KENDARAAN) {
+            if($findService->service->category->category_type == Category::CATEGORY_SUB_BECAK && $distance_km > Transaction::TRANSACTION_MAX_KM_BECAK) {
+                $errors['max_distance'] = 'Sorry our limit distance for becak is '.Transaction::TRANSACTION_MAX_KM_BECAK.' km';
+            } elseif($distance_km > Transaction::TRANSACTION_MAX_KM) {
+                $errors['max_distance'] = 'Sorry our limit distance is '.Transaction::TRANSACTION_MAX_KM.' km';
+            }
+        } else { //untuk abang
+            if($findService->service->location_abang == Service::MOVEABLE_SHOP && $distance_km > Transaction::TRANSACTION_MAX_KM_ABANG) {
+                $errors['max_distance'] = 'Sorry our limit distance for abang is '.Transaction::TRANSACTION_MAX_KM_ABANG.' km';
+            }
         }
         
         //untuk check apa ada transaksi yg bentrok
@@ -140,15 +131,19 @@ class TransactionController extends ApiController
                                 $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
                                 $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
                                 //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                                $checkStart = $start->between($start_old, $end_old);
-                                $checkEnd = $end->between($start_old, $end_old);
-
-                                if($checkStart == true || $checkEnd == true) { //klo ada yg in between tampilin error
-                                    $errors['conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
+                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                                }
+                            }
+                            foreach($findTransactions as $ftrans) {
+                                $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
+                                $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
+                                //check
+                                if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                    $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                                 }
                             }
                         }
-
                         break;
                     default:
                         $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_MOBIL_MIN);
@@ -158,11 +153,16 @@ class TransactionController extends ApiController
                                 $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
                                 $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
                                 //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                                $checkStart = $start->between($start_old, $end_old);
-                                $checkEnd = $end->between($start_old, $end_old);
-
-                                if($checkStart == true || $checkEnd == true) { //klo ada yg in between tampilin error
-                                    $errors['conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
+                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                                }
+                            }
+                            foreach($findTransactions as $ftrans) {
+                                $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
+                                $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
+                                //check
+                                if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                    $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                                 }
                             }
                         }
@@ -182,11 +182,17 @@ class TransactionController extends ApiController
                             $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
                             $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
                             //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                            $checkStart = $start->between($start_old, $end_old);
-                            $checkEnd = $end->between($start_old, $end_old);
 
-                            if($checkStart == true || $checkEnd == true) { //klo ada yg in between tampilin error
-                                $errors['conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
+                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            }
+                        }
+                        foreach($findTransactions as $ftrans) {
+                            $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
+                            $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
+                            //check
+                            if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
                     }
@@ -202,11 +208,16 @@ class TransactionController extends ApiController
                             $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
                             $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
                             //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                            $checkStart = $start->between($start_old, $end_old);
-                            $checkEnd = $end->between($start_old, $end_old);
-
-                            if($checkStart == true || $checkEnd == true) { //klo ada yg in between tampilin error
-                                $errors['conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
+                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            }
+                        }
+                        foreach($findTransactions as $ftrans) {
+                            $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
+                            $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
+                            //check
+                            if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
                     }
@@ -226,12 +237,13 @@ class TransactionController extends ApiController
         $transaction = Transaction::create($data);
 
         // Create notification for service about new order
-        $service = User::with('fcm')->findOrFail($request->main_service_id);
-        $pushService = $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_SERVICE_CONFIRMATION), Transaction::TRANSACTION_TAG_CREATED);
+        // $service = User::with('fcm')->findOrFail($request->main_service_id);
+        // $pushService = $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_SERVICE_CONFIRMATION), Transaction::TRANSACTION_TAG_CREATED);
 
         // Create notification for buyer about new order
-        $buyer = User::with('fcm')->findOrFail(auth()->user()->id);
-        $pushBuyer = $this->sendAndroidNotification($buyer, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_USER), Transaction::TRANSACTION_TAG_CREATED);
+        $buyerGraph = User::with('fcm')->findOrFail(auth()->user()->id);
+        $serviceGraph = User::with('fcm')->findOrFail($request->main_service_id);
+        $pushBuyer = $this->sendAndroidNotification($buyerGraph, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_USER), Transaction::TRANSACTION_TAG_CREATED);
 
         // Create notification for admin, simpan ke db ke admin yg superadmin aja
         $msgAdmin = Transaction::TRANSACTION_CREATED_ADMIN.$data['order_code'];
@@ -239,10 +251,10 @@ class TransactionController extends ApiController
         $this->admin->notify(new AdminNotification($msgAdmin));
 
         // Find or create data graphics for buyer
-        $graphicBuyer = $this->add(Graphic::GRAPH_USER, $buyer);
+        $graphicBuyer = $this->add(Graphic::GRAPH_USER, $buyerGraph);
 
         // Find or create data for graphics for service
-        $graphicService = $this->add(Graphic::GRAPH_SERVICE, $service);
+        $graphicService = $this->add(Graphic::GRAPH_SERVICE, $serviceGraph);
 
         return $this->showOne($transaction, 201);
     }
@@ -258,7 +270,6 @@ class TransactionController extends ApiController
     {   
         $errors = array();
         $buyer = User::with('fcm')->findOrFail(auth()->user()->id); //buyer
-
         $transaction = Transaction::findOrFail($id_transaction);
         $mainservice = User::with('fcm')->findOrFail($transaction->main_service_id);
         $service = Service::where('main_service_id', $transaction->main_service_id)->first();
@@ -289,6 +300,8 @@ class TransactionController extends ApiController
                     $service['rating_total'] = $service['rating_total'] + 1;
                     $service['rating_transactions_total'] = $service['rating_transactions_total'] + $request->satisfaction_level;
                     $service['rating'] = $service['rating_transactions_total'] / $service['rating_total'];
+                    $service['satisfaction_level'] = $request->comment;
+                    $service['comment'] = $request->comment;
                 }
                 break;
             default:
@@ -303,6 +316,8 @@ class TransactionController extends ApiController
         $service->save();
         $buyer->save();
         $transaction->save();
+
+        return $this->showOne($transaction);
     }
 
     public function updateService(Request $request, $id_transaction) { //update status_order, batalin order, isi komentar dan rating 
@@ -331,10 +346,7 @@ class TransactionController extends ApiController
                 if($request->accepted == Transaction::ACCEPTED_TRANS) {
                     $transaction['status_order'] = Transaction::TRANSACTION_STATUS_6;
 
-                    //change availability of service using eager loading
                     $service = Service::where('main_service_id', $transaction->main_service_id)->first();
-                    $service['available'] = Service::UNAVAILABLE_SERVICE;
-                    $service->save();
 
                     if($mainservice->service->location_abang == Service::STAYED_SHOP) {
                         $transaction['status_order'] = Transaction::TRANSACTION_STATUS_7;
@@ -370,9 +382,9 @@ class TransactionController extends ApiController
                 break;
             case Transaction::TRANSACTION_STATUS_6:
                 //selain abang yg stayed, abang yg moveable, ojek, taksi, dkk
-                $distanceNew = $this->distanceMatrix($buyer->gps_latitude, $buyer->gps_longitude, $mainservice->gps_latitude, $mainservice->gps_longitude);
+                $distanceNew = $this->distanceMatrix($transaction->latitude_current, $transaction->longitude_current, $mainservice->gps_latitude, $mainservice->gps_longitude);
                 if($mainservice->service->category->type == Category::CATEGORY_PEDAGANG) {
-                    $distanceNew = $this->distanceMatrixAbang($buyer->gps_latitude, $buyer->gps_longitude, $mainservice->gps_latitude, $mainservice->gps_longitude);
+                    $distanceNew = $this->distanceMatrixAbang($transaction->latitude_current, $transaction->longitude_current, $mainservice->gps_latitude, $mainservice->gps_longitude);
                 }
 
                 // retry if fail
@@ -380,7 +392,7 @@ class TransactionController extends ApiController
                 //     $distanceNew = $this->distanceMatrix($buyer->gps_latitude, $buyer->gps_longitude, $mainservice->gps_latitude, $mainservice->gps_longitude);
                 // }, 350);
                 //--------------------
-                var_dump($distanceNew->rows[0]->elements[0]->distance->text);
+                // var_dump($distanceNew->rows[0]->elements[0]->distance->text);
                 if($distanceNew->status == 'OK' && $distanceNew->rows[0]->elements[0]->distance->value <= Transaction::TRANSACTION_MAX_DISTANCE) {
                     //untuk abang yg move
                     if($mainservice->service->location_abang == Service::MOVEABLE_SHOP) {
@@ -557,5 +569,27 @@ class TransactionController extends ApiController
             'data' => 'Success deleted transactions',
             'status' => 'OK',
             ], 200);
+    }
+
+    public function todayService() {
+        $now = Carbon::today()->toDateString();
+        $transactions = Transaction::where('main_service_id', auth()->user()->id)->where('order_date', $now)->paginate(10);
+        return $this->showAllNew($transactions);
+    }
+
+    public function todayBuyer() {
+        $now = Carbon::today()->toDateString();
+        $transactions = Transaction::where('buyer_id', auth()->user()->id)->where('order_date', $now)->paginate(10);
+        return $this->showAllNew($transactions);
+    }
+
+    public function historyService() {
+        $transactions = Transaction::where('main_service_id', auth()->user()->id)->paginate(10);
+        return $this->showAllNew($transactions);
+    }
+
+    public function historyBuyer() {
+        $transactions = Transaction::where('buyer_id', auth()->user()->id)->paginate(10);
+        return $this->showAllNew($transactions);
     }
 }

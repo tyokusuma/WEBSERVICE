@@ -51,7 +51,7 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('admins', 'User\UserWebController@indexAdmin')->name('view-admins');
 		Route::get('admins/add', 'User\UserWebController@createAdmin')->name('view-create-admins');
-		Route::post('admins/add', 'User\User\UserWebController@storeAdmin')->name('create-admins');
+		Route::post('admins/add', 'User\UserWebController@storeAdmin')->name('create-admins');
 		Route::get('admins/update/{id}', 'User\UserWebController@editAdmin')->name('view-update-admins');
 		Route::patch('admins/update/{id}', 'User\UserWebController@updateAdmin')->name('update-admins');
 		Route::delete('admins/delete/{id}', 'User\UserWebController@destroyAdmin')->name('delete-admins');

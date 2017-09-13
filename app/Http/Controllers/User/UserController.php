@@ -109,9 +109,9 @@ class UserController extends ApiController
 
         //kirim verifikasi ke handphone
         $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
-        retry(3, function() {
-            $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
-            }, 350);
+        // retry(3, function() use ($user)) {
+        //     $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        //     }, 350);
         
         // Create notification for admin
         $msgAdmin = 'New User created with ID User '.$data['user_code'].', email: '.$data['email'].', name:'.$data['full_name'];
@@ -121,7 +121,7 @@ class UserController extends ApiController
         // }
         // $message = 'Your account created, you\'ll need to verified your account first';
         // $this->sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
-        // retry(3, function() {
+        // retry(3, function() use ($user) {
         //     sendAndroidNotification($user, User::USER_TITLE_CREATED, $message, User::USER_TAG_CREATED);
         //     }, 350);
 

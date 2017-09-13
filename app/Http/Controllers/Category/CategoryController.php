@@ -18,28 +18,10 @@ class CategoryController extends ApiController
         // $this->middleware('client.credentials')->only(['index', 'store', 'show', 'update', 'destroy']);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $categories = Category::all();
 
         return $this->showAll($categories);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $category = Category::findOrFail($id);
-
-        return $this->showOne($category);
     }
 }

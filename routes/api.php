@@ -68,17 +68,10 @@ Route::group(['middleware' => ['auth:api']],function () {
 			Route::post('transactions', 'Transaction\TransactionController@store');
 			Route::patch('transactions/gps/{id_transaction}', 'Transaction\TransactionController@updateBuyer');
 			Route::delete('transactions/delete', 'Transaction\TransactionController@destroyBuyer');
-			// Route::get('buyers/transactions', 'Transaction\TransactionController@getByIdBuyers');
-			// Route::get('buyers/transactions/booking', 'Transaction\TransactionController@getByIdBookingBuyers');
-			// Route::get('buyers/transactions/non-booking', 'Transaction\TransactionController@getByIdNonBookingBuyers');
-
-			// Route::post('mainservices/available', 'MainService\MainServiceController@available');
-			
-			// Route::post('services/findTaksi', 'Service\ServiceController@findTaksi');
-			// Route::post('services/findAbang', 'Service\ServiceController@findAbang');
-
-
-			// Route::patch('transactions/{id}/cancel', 'Transaction\TransactionController@cancel');
+			Route::get('transactions/today', 'Transaction\TransactionController@todayBuyer');
+			Route::get('transactions/history', 'Transaction\TransactionController@historyBuyer');
+			Route::post('servicesAvailable', 'MainService\MainServiceController@available'); //untuk transaksi diitung radiusnya
+			Route::post('findService', 'MainService\MainServiceController@searchService'); //fitur search
 		});
 		
 	});
@@ -89,6 +82,7 @@ Route::group(['middleware' => ['auth:api']],function () {
 
 			Route::post('services', 'Service\ServiceController@store');
 			Route::patch('services', 'Service\ServiceController@update'); 
+			Route::patch('services/closed', 'Service\ServiceController@close');
 
 			Route::post('fcm', 'FCM\FCMController@store');
 			Route::patch('fcm/{user_id}', 'FCM\FCMController@update');
@@ -105,13 +99,11 @@ Route::group(['middleware' => ['auth:api']],function () {
 			Route::patch('transactions/{id}', 'Transaction\TransactionController@updateService');
 			Route::patch('transactions/gps/{id_transaction}', 'Transaction\TransactionController@updateService');
 			Route::delete('transactions/delete', 'Transaction\TransactionController@destroyService');
+			Route::get('transactions/today', 'Transaction\TransactionController@todayService');
+			Route::get('transactions/history', 'Transaction\TransactionController@historyService');
+			
 
-
-		// Route::get('mainservices/transactions', 'Transaction\TransactionController@getByIdServices');
-		// Route::get('mainservices/transactions/booking', 'Transaction\TransactionController@getByIdBookingServices');
-		// Route::get('mainservices/transactions/non-booking', 'Transaction\TransactionController@getByIdNonBookingServices');
-		// Route::get('mainservices/transactions/today', 'Transaction\TransactionController@getByIdandDateForService');
-		// Route::patch('mainservices/transactions/priority', 'Transaction\TransactionController@updatePriority');
+		// Route::patch('mainservices/transactions/priority', 'Transaction\TransactionController@updatePriority'); //Route ini ga akan dipake dulu krn klopun dikasi priority, jamnya beda2
 
 		});
 	});

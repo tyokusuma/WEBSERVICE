@@ -26,16 +26,15 @@ class CreateServicesTable extends Migration
             $table->string('verified_service', 1); 
             $table->string('vehicle_type', 255)->nullable(); 
             // $table->string('setting_mode', 1);
-            $table->string('status', 1);
-            $table->string('available', 1);
+            $table->string('status', 1); //status suspend/active
             $table->string('armada', 1)->nullable();
             $table->string('id_driver')->nullable();
             $table->integer('category_id')->unsigned();
-            $table->double('rating', 11, 6)->default(0); //new field
-            $table->double('rating_total', 11, 6)->default(0); //new field
-            $table->double('rating_transactions_total', 11, 6)->default(0); //new field
-            $table->string('location_abang', 1)->nullable();//new field, lokasi abang bangunan ato gerobak
-            $table->string('status_shop', 1);
+            $table->double('rating', 11, 6)->default(0); 
+            $table->double('rating_total', 11, 6)->default(0);
+            $table->double('rating_transactions_total', 11, 6)->default(0);
+            $table->string('location_abang', 1)->nullable();//lokasi abang bangunan ato gerobak
+            $table->string('status_shop', 1); //open/closed untuk semua kategory
             $table->unsignedInteger('admin_created')->nullable();
             $table->unsignedInteger('admin_updated')->nullable();
             $table->dateTime('expired_at')->nullable(); 

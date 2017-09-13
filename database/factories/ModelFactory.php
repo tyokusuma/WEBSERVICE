@@ -71,8 +71,8 @@ $factory->define(Service::class, function (Faker\Generator $faker) {
         'category_id' => $idCategory = Category::inRandomOrder()->first()->id,
         // 'setting_mode' => '1',
         'status' => '1', 
-        'available' => '1',
         'location_abang' => null,
+        'status_shop' => $faker->randomElement(['0', '1']),
         'expired_at' => Carbon::now()->addDays(60),
     ];
 });

@@ -17,22 +17,19 @@ class Service extends Model
     const RATING_CAKEP = 4;
     const RATING_MANTAP = 5;
 
-    const RADIUS_KM = 2;
+    const RADIUS_KM = 6;
 
     const STAYED_SHOP = '0';
     const MOVEABLE_SHOP = '1';
-
-    const ONLINE_STATUS = '1';
-    const OFFLINE_STATUS = '0';
+    
+    const CLOSED = '0';
+    const OPEN = '1';
 
     const VERIFIED_SERVICE = '1';
     const UNVERIFIED_SERVICE = '0';
 
     const ACTIVE_SERVICE = '1';
     const SUSPEND_SERVICE = '0';
-    
-    const AVAILABLE_SERVICE = '1';
-    const UNAVAILABLE_SERVICE = '0';
 
     const IN_ARMADA = '1';
     const NOT_IN_ARMADA = '0';
@@ -59,10 +56,10 @@ class Service extends Model
         'verified_service', //verified, unverified
         // 'setting_mode', //online, offline 
         'status', //active, suspend
-        'available', //available, unavailable khusus service kendaraan, seperti bemo, taksi, becak, bajaj, bentor, ojek 
         'armada',  //khusus taksi
         'id_driver',  //khusus taksi
         'location_abang', //lokasi abang menetap ato ngak
+        'status_shop',
         'rating',
         'rating_total',
         'rating_transactions_total',

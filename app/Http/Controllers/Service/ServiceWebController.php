@@ -99,7 +99,6 @@ class ServiceWebController extends Controller
                 $data['verified_service'] = Service::UNVERIFIED_SERVICE;
                 $data['vehicle_type'] = null;
                 $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
@@ -127,7 +126,6 @@ class ServiceWebController extends Controller
                 $data['verified_service'] = Service::UNVERIFIED_SERVICE;
                 $data['vehicle_type'] = null;
                 $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
@@ -164,7 +162,6 @@ class ServiceWebController extends Controller
                 $data['service_code'] = $serviceCode;
                 $data['verified_service'] = Service::UNVERIFIED_SERVICE;
                 $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::IN_ARMADA;
 
                 break;
@@ -193,12 +190,11 @@ class ServiceWebController extends Controller
                 $data['sim_image'] = $request->sim_image->store('');
                 $data['stnk_image'] = $request->stnk_image->store('');
                 $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 $data['verified_service'] = Service::UNVERIFIED_SERVICE;
         }
-
+        $data['status_shop'] = Service::CLOSED;
         $service = Service::create($data);
         flash('Your data service detail created successfully')->success()->important();
         return redirect()->route('view-create-servicedetails');
@@ -268,15 +264,6 @@ class ServiceWebController extends Controller
         }
 
         $service->setting_mode = Service::ONLINE_STATUS;
-        $service->available = Service::UNAVAILABLE_SERVICE;
-        if($request->has('status')) {
-            $service->status = Service::AVAILABLE_SERVICE;
-        }
-
-        if($mainservice->setting_mode == Service::ONLINE_STATUS && $mainservice->verified_service == Service::VERIFIED_SERVICE && $mainservice->status == Service::ACTIVE_SERVICE) {
-            $mainservice['available'] = Service::AVAILABLE_SERVICE;
-        }
-
 
         if($request->has('main_service_id')) {
             $service->main_service_id = $request->main_service_id;             
@@ -409,12 +396,8 @@ class ServiceWebController extends Controller
 
         if($request->status == Service::SUSPEND_SERVICE) {
             $service['status'] = Service::SUSPEND_SERVICE;
-            $service['available'] = Service::UNAVAILABLE_SERVICE;
         } elseif($request->status == Service::ACTIVE_SERVICE) {
             $service['status'] = Service::ACTIVE_SERVICE;
-            if($service['verified_service'] == Service::VERIFIED_SERVICE) {
-                $service['available'] = Service::AVAILABLE_SERVICE;
-            } 
         }
         $service->save();
 

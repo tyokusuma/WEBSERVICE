@@ -15,6 +15,7 @@
             <div class="rTableCell"><b>Category Service</b></div>
             <div class="rTableCell"><b>Verified</b></div>
             <div class="rTableCell"><b>Suspend</b></div>
+            <div class="rTableCell">Open/Closed</div>
             <div class="rTableCell"><b>Edit</b></div>
             <div class="rTableCell"><b>Delete</b></div>
             <div class="rTableCell"><b></b></div>
@@ -43,6 +44,11 @@
 			    	<div class="rTableCell"><input type="checkbox" disabled checked/></div>
 			    @else 
 			    	<div class="rTableCell"><input type="checkbox" disabled/></div>
+			    @endif
+			    @if ($servicedetail->service->status_shop == '0')
+			    	<div class="rTableCell"><input type="text" disabled readonly/>CLOSED</div>
+			    @else 
+			    	<div class="rTableCell"><input type="text" disabled readonly/>OPEN</div>
 			    @endif
 	    		<div class="rTableCell">
 	    			<p><a href="{{ route('view-update-servicedetails', ['id' => $servicedetail->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>	

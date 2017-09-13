@@ -9,6 +9,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\FCM\FCMController;
 use App\Http\Controllers\Other\OtherController;
 use App\MainService;
+use App\Notifications\AdminNotification;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
@@ -56,9 +57,6 @@ class ServiceController extends ApiController
             if ($findMainService != null) {
                 return $this->errorResponse('You already have a service account', 409);
             }
-            // if($user != $request->main_service_id) {
-            //     return $this->errorResponse('Your user id doesn\'t match with the access token', 409);
-            // }
 
         $find = Category::findOrFail($request->category_id);
         switch (strtolower($find->category_type)) {
@@ -78,10 +76,7 @@ class ServiceController extends ApiController
                 $data['sim_image'] = null;
                 $data['stnk_image'] = null; 
                 $data['license_platenumber'] = null; 
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
                 $data['vehicle_type'] = null;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
@@ -102,10 +97,7 @@ class ServiceController extends ApiController
                 $data['sim_image'] = null;
                 $data['stnk_image'] = null; 
                 $data['license_platenumber'] = null; 
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
                 $data['vehicle_type'] = null;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
                 break;
@@ -133,16 +125,12 @@ class ServiceController extends ApiController
                 $this->validate($request, $rules);
                 $data = $request->all();
                 $serviceCode = $this->generateServiceCode($find->category_type, $find->subcategory_type);
-                // $data['id_driver'] = $request->id_driver;
                 $data['main_service_id'] = auth()->user()->id;
                 $data['sim_image'] = $request->sim_image->store('');
                 $data['stnk_image'] = $request->stnk_image->store('');
                 $data['ktp_image'] = $request->ktp_image->store('');
                 $data['vehicle_image'] = $request->vehicle_image->store('');
                 $data['service_code'] = $serviceCode;
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
 
                 break;
             default:
@@ -164,30 +152,30 @@ class ServiceController extends ApiController
                 $data['vehicle_image'] = $request->vehicle_image->store('');
                 $data['sim_image'] = $request->sim_image->store('');
                 $data['stnk_image'] = $request->stnk_image->store('');
-                $data['status'] = Service::ACTIVE_SERVICE;
-                $data['available'] = Service::UNAVAILABLE_SERVICE;
                 $data['armada'] = Service::NOT_IN_ARMADA;
                 $data['id_driver'] = Service::NOT_HAVE_ID_DRIVER;
-                $data['verified_service'] = Service::UNVERIFIED_SERVICE;
         }
         $setting = OtherController::setting();
         $days = Carbon::now()->addDays($setting->trial_days);
         $data['expired_at'] = $days;
         $data['old_expired_at'] = $days;
         $data['rating'] = 0;
+        $data['status_shop'] = Service::CLOSED;
+        $data['status'] = Service::ACTIVE_SERVICE;
+        $data['verified_service'] = Service::UNVERIFIED_SERVICE;
         $service = Service::create($data);
 
         $msgAdmin = 'New Service created with ID Service '.$data['service_code'].', category: '.$find->category_type;
         event(new AdminNotificationEvent($msgAdmin));
-        $admin->notify(new AdminNotification($msgAdmin));
+        $this->admin->notify(new AdminNotification($msgAdmin));
         $title = Service::SERVICE_TITLE_CREATED;
         $message = 'Admin will verified your account before you can use the apps';
         $tag = Service::SERVICE_TAG_CREATED;
-        $this->sendAndroidNotification($user, $title, $message, $tag);
+        // $this->sendAndroidNotification($user, $title, $message, $tag);
         //retry if fail
-        retry(3, function() use ($user, $title, $message, $tag) {
-            $this->sendAndroidNotification($user, $title, $message, $tag);
-        });
+        // retry(3, function() use ($user, $title, $message, $tag) {
+        //     $this->sendAndroidNotification($user, $title, $message, $tag);
+        // });
         //------------------------------------
         return $this->showOne($service, 201);
     }
@@ -255,7 +243,6 @@ class ServiceController extends ApiController
 
                 $service->status = Service::ACTIVE_SERVICE;
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
-                $service->available = Service::UNAVAILABLE_SERVICE;
                 break;
             case 'abang':
                 $rules = [
@@ -276,7 +263,6 @@ class ServiceController extends ApiController
 
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
                 $service->status = Service::ACTIVE_SERVICE;
-                $service->available = Service::UNAVAILABLE_SERVICE;
                 break;
             case 'taksi':
                 $rules = [
@@ -330,7 +316,6 @@ class ServiceController extends ApiController
 
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
                 $service->status = Service::ACTIVE_SERVICE;
-                $service->available = Service::UNAVAILABLE_SERVICE;
 
                 break;
             default:
@@ -377,75 +362,30 @@ class ServiceController extends ApiController
 
                 $service->status = Service::ACTIVE_SERVICE;
                 $service->verified_service = Service::UNVERIFIED_SERVICE;
-                $service->available = Service::UNAVAILABLE_SERVICE;
         }
-
-        if ($service['status'] == '1' && $service['verified_service'] == '1') {
-            $service['available'] = '1';
-        } else {
-            $service['available'] = '0';
-        }
-
+        $service['status_shop'] = Service::CLOSED;
         $service->save();
 
         return $this->showOne($service);
     }
 
-    public function findTaksi(Request $request)
-    {
-        $user = Auth::user();
-        $findArmadas = Armada::where('company_name', strtolower($request->company_name))->get();
-        if($findArmadas == null) {
-            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
+    public function close(Request $request) {
+        $errors = array();
+        $rules = [
+            'status_shop' => 'required|in:'.Service::CLOSED.",".Service::OPEN,
+        ];
+        $this->validate($request, $rules);
+        $service = Service::where('main_service_id', auth()->user()->id)->first();
+        if($service == null) {
+            $errors['not_found'] = 'We can\'t find these service';
+        } elseif($service->status_shop == Service::CLOSED && $request->status_shop == Service::CLOSED) {
+            $errors['not_change'] = 'Your service already closed';
         }
-
-        foreach($findArmadas as $index => $findArmada) {
-            $data_armada[$index] = $findArmada->id_driver;
-        }
-        $services = Service::whereIn('id_driver', $data_armada)->where('available', '1')->get();
-        if($services == null) {
-            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
-        }
-
-        foreach($services as $key => $service) {
-            $data_service[$key] = $service->main_service_id;
-        }
-        $mainservices = MainService::whereIn('id', $data_service)->where('city_id', $user->city_id)->with('service')->paginate(10);
-        if($mainservices == null) {
-            return $this->errorResponse('Sorry we can\'t find any taksi driver',404);
-        }
-
-        return response()->json([
-                'data' => $mainservices,
-            ], 200);
-    }
-
-    public function findAbang(Request $request)
-    {
-        $user = Auth::user();
-        $findAbang = Category::where('subcategory_type', strtolower($request->subcategory_type))->get();
-        if($findAbang == null) {
-            return $this->errorResponse('Sorry we can\'t find any abang',404);
-        }
-        foreach($findAbang as $index => $find) {
-            $data_abang[$index] = $find->id;
-        }
-
-        $services = Service::whereIn('category_id', $data_abang)->where('available', '1')->get();
-        if($services == null) {
-            return $this->errorResponse('Sorry we can\'t find any abang',404);
-        }
-
-        foreach($services as $key => $service) {
-            $data_service[$key] = $service->main_service_id;
-        }
-        $mainservices = MainService::whereIn('id', $data_service)->where('city_id', $user->city_id)->with('service')->get();
-        if($mainservices == null) {
-            return $this->errorResponse('Sorry we can\'t find any abang',404);
-        }
-
-        return response()->json([
-                'data' => $mainservices,
-            ], 200);
+        if($errors != null) {
+            return $this->errorResponse($errors, 404);
+        }        
+        $service['status_shop'] = $request->status_shop;
+        $service->save();
+        return $this->showOne($service);
     }
 }

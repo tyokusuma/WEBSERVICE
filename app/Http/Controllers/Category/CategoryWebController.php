@@ -27,7 +27,7 @@ class CategoryWebController extends Controller
     }
 
     public function store(Request $request)
-    {
+    {   $category = new Category;
         if($request->subcategory_type != null) {
             $find = Category::where('category_type', $request->category_type)->where('subcategory_type', $request->subcategory_type)->first();
         } else {
@@ -148,13 +148,16 @@ class CategoryWebController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $data = $request->all();
-        $data['tags'] = implode(', ', $request->tags);
-        $data['admin_created'] = auth()->user()->id;
-        $data['admin_updated'] = auth()->user()->id;
+        // $data = $request->all();
+        $category['type'] = $request->type;
+        $category['category_type'] = $request->category_type;
+        $category['subcategory_type'] = $request->subcategory_type;
+        $category['tags'] = implode(', ', $request->tags);
+        $category['admin_created'] = auth()->user()->id;
+        $category['admin_updated'] = auth()->user()->id;
 
         if($valid == true) {
-            $category = Category::create($data);            
+            $category->save();            
             flash('Your data category created successfully')->success()->important();
         }
         return redirect()->route('view-categories');

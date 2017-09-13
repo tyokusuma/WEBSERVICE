@@ -72,12 +72,13 @@ class Transaction extends Model
     const TRANSACTION_MOBIL_MAX = 15; //dari buyer ke tujuan
     const TRANSACTION_PEDAGANG_MAX = 10; //waktu masak, untuk kasus abang yg moveable
 
-    //Max perbedaan waktu order dan waktu sekarang
-    const TRANSACTION_MAX_RANGE = 10; //time
+    //Penambahan minute ke $request->order_time untuk ngecek transaksi buyer apa ada yg bentrok ato nga
+    const TRANSACTION_ESTIMATE_REQUEST = 10; //time dalam minute
 
     // Max distance transaction
     const TRANSACTION_MAX_KM = 20;
-    const TRANSACTION_MAX_KM_MANUAL = 5; //untuk becak dan abang gerobak
+    const TRANSACTION_MAX_KM_BECAK = 5; //untuk becak
+    const TRANSACTION_MAX_KM_ABANG = 2; //untuk abang
 
     protected $dates = ['deleted_at'];
     protected $fillable = [
