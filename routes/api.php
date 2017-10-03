@@ -2,15 +2,6 @@
 
 use Illuminate\Http\Request;
 
-//--------------------------- BUANG ----------------------------------------------
-// Route::post('users/password/reset/{token}', 'User\UserController@reset');
-// Route::resource('messages', 'Message\MessageController', ['only' => ['store', 'destroy']]);
-// Route::resource('messages-details', 'MessageDetail\MessageDetailController', ['only' => ['store']]);
-// Route::get('mainservices', 'MainService\MainServiceController@show'); //Buat services
-Route::get('testing', 'Transaction\TransactionController@testing');
-//----------------------------------------------------------------------------------
-
-
 Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
 Route::post('users/password/forgot/{id}', 'User\UserController@sendResetLinkEmail');
 Route::resource('users', 'User\UserController', ['only' => ['store']]);
@@ -49,6 +40,8 @@ Route::group(['middleware' => ['auth:api']],function () {
 	Route::group(['middleware' => ['user_expired']], function() {
 		Route::prefix('buyers')->group(function() {
 
+			Route::get('remainingDays', 'User\UserController@remainingDays');
+
 			//---------------------------- FCM --------------------------------------------------
 			Route::post('fcm', 'FCM\FCMController@store');
 			Route::patch('fcm/{user_id}', 'FCM\FCMController@update');
@@ -79,6 +72,8 @@ Route::group(['middleware' => ['auth:api']],function () {
 	//----------------------------------- PROVIDER API -------------------------------------------------------
 	Route::group(['middleware' => ['provider_expired']], function() {
 		Route::prefix('mainservices')->group(function() {
+
+			Route::get('remainingDays', 'Service\ServiceController@remainingDays');
 
 			Route::post('services', 'Service\ServiceController@store');
 			Route::patch('services', 'Service\ServiceController@update'); 

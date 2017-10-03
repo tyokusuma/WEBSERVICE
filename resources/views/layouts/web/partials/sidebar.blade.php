@@ -84,6 +84,11 @@
           <a href="{{ route('view-armadas') }}"><i class="fa fa-taxi"></i> <span>Armada</span></a>
         </li>
 
+        <!-- Term menu -->
+        <li class="treeview">
+          <a href="{{ route('view-index-term') }}"><i class="fa fa-tasks"></i> <span> Term</span></a>
+        </li>
+
         <!-- Province menu -->
         <li class="treeview">
           <a href="#"><i class="fa fa-list-alt"></i> <span>Province & City</span>

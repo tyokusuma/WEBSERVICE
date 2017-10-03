@@ -98,7 +98,7 @@ class MessageController extends ApiController
     public function getMessageById() //$id user
     {
         $user = Auth::user()->id;
-        $messages = Message::where('user_id', $user)->where('deleted_by_user', null)->get();
+        $messages = Message::where('user_id', $user)->where('deleted_by_user', null)->orderBy('created_at', 'DESC')->get();
         return $this->showAll($messages);
     }
 }

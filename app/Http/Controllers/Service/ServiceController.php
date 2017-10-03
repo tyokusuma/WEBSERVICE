@@ -180,12 +180,6 @@ class ServiceController extends ApiController
         return $this->showOne($service, 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $service = Service::findOrFail($id);
@@ -193,13 +187,6 @@ class ServiceController extends ApiController
         return $this->showOne($service);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     { //cuma bisa update image klo admin ngerasa masi kurang lengkap data sevice nya
         $user = Auth::user();
@@ -387,5 +374,14 @@ class ServiceController extends ApiController
         $service['status_shop'] = $request->status_shop;
         $service->save();
         return $this->showOne($service);
+    }
+
+    public function remainingDays() {
+        $service = Service::where('main_service_id', auth()->user()->id)->first();
+        $now = Carbon::now();
+        return response()->json([
+                'remaining_days' => $service->expired_at->diffInDays($now),
+                'status' => 'OK',
+            ]);
     }
 }

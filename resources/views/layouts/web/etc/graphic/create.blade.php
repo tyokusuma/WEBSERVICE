@@ -40,6 +40,16 @@
                 </div>	           	
             </div>
 
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
+                <div class="col-sm-6 col-sm-offset-1 form-style">
+                  	<select id="type" name="type" class="form-control" placeholder="Choose type" required>
+                     	<option value="service">Service</option>
+                     	<option value="user">User</option>
+                  	</select>
+                </div>	           	
+            </div>
+
             <div class="col-sm-6 col-sm-offset-3">
 		       	<button class="btn btn-success btn-block custom-btn">
 		           Create graphic

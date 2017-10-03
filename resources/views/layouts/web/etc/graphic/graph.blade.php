@@ -44,7 +44,7 @@
               pointStrokeColor: "rgba(60,141,188,1)",
               pointHighlightFill: "#fff",
               pointHighlightStroke: "rgba(60,141,188,1)",
-              data: {{ json_encode($data) }}
+              data: [1, 4, 6, 2, 1, 1, 4, 5, 5, 8]
             }
           ]
         };

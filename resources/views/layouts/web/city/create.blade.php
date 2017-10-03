@@ -9,7 +9,7 @@
 	       	{{ csrf_field() }}
 	       	
 	       	<div class="form-group {{ $errors->has('province_id') ? ' has-error' : '' }}">
-                <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
+                <label class="col-sm-3 control-label">Province <span class="asterisk">*</span></label>
                 <div class="col-sm-6 col-sm-offset-1 form-style">
 	        		<select id="type" name="province_id" class="form-control chosen-select mySelect" required>
                      	@foreach($provinces as $province)

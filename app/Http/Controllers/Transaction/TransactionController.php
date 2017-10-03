@@ -59,16 +59,28 @@ class TransactionController extends ApiController
         $findService = MainService::where('id', $request->main_service_id)->with('service.category')->first();
 
         //Check transaksi buyer sesuai dengan tgl order_date trus d cari apa ada yg bentrok jamnya
-        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
+        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('order_time', '>')->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
 
-        if($request->main_service_id == $user->id) { //buyer can't do transaction with their own sevrvice account
+        if($request->main_service_id == $user->id) { 
             $errors['unauthorize'] = 'You can\'t create transaction with service id of your own id';
         } else {
             if($findService->service == null) {
                 $errors['not_found'] = 'We can\'t find this service id';
             }
         }
-        
+
+        // invalid time order if creating new transaction booking or not booking
+        $join = $request->order_date." ".$request->order_time;
+        if(Carbon::createFromFormat('Y-m-d H:i:s', $join)->lt($now)) {
+            $errors['invalid_date'] = 'Order request was past time';
+        }
+
+        // if(Carbon::createFromFormat('Y-m-d', $request->order_date)->lt($now)) {
+        //     $errors['invalid_date'] = Carbon::createFromFormat('Y-m-d', $request->order_date)->lt($now);
+        //     if(Carbon::createFromFormat('H:i:s', $request->order_time)->lt($now)) {
+        //         $errors['invalid_time'] = 'Invalid order_time request';
+        //     }
+        // }        
         $rules = [
             'main_service_id' => 'required|numeric',
             'booking' => 'required|in:'.Transaction::BOOKING.','.Transaction::NOT_BOOKING,
@@ -95,7 +107,7 @@ class TransactionController extends ApiController
         $data['comment'] = null;
         $data['priority'] = null;
 
-        $transactions = Transaction::where('main_service_id', $request->main_service_id)->where('order_date', $request->order_date)->whereNotIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_4])->get();
+        $transactions = Transaction::where('main_service_id', $request->main_service_id)->where('order_date', '=', $request->order_date)->whereNotIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_4])->whereNotIn('id', $findTransactions->pluck('id'))->get();
         if($findService->service->category->type == Category::CATEGORY_PEDAGANG || $findService->service->category->category_type == Category::CATEGORY_SUB_BECAK) {
             $distance = $this->distanceMatrixAbang($data['latitude_current'], $data['longitude_current'], $data['latitude_destination'], $data['longitude_destination']);
         } else {
@@ -121,26 +133,25 @@ class TransactionController extends ApiController
         }
         
         //untuk check apa ada transaksi yg bentrok
+            $req_order = $request->order_date." ".$request->order_time;
             if(strtolower($findService->service->category->type) == Category::CATEGORY_KENDARAAN) {
                 switch (strtolower($findService->service->category->category_type)) {
                     case Category::CATEGORY_SUB_OJEK:
                         $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_MOTOR_MIN);
                         $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_MOTOR_MAX);
                         if($transactions != null) {
-                            foreach($transactions as $transaction) {
-                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                                //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
-                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
-                                }
-                            }
                             foreach($findTransactions as $ftrans) {
                                 $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
                                 $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                                //check
                                 if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
                                     $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
+                                }
+                            }
+                            foreach($transactions as $transaction) {
+                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
+                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
+                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                                 }
                             }
                         }
@@ -149,80 +160,77 @@ class TransactionController extends ApiController
                         $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_MOBIL_MIN);
                         $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_MOBIL_MAX);
                         if($transactions != null) {
-                            foreach($transactions as $transaction) {
-                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                                //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
-                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
-                                }
-                            }
                             foreach($findTransactions as $ftrans) {
                                 $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
                                 $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                                //check
                                 if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
                                     $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
+                                }
+                            }
+                            foreach($transactions as $transaction) {
+                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
+                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
+                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                    $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                                 }
                             }
                         }
                         break;
                 }
+                $start = Carbon::createFromFormat('Y-m-d H:i:s', $req_order);
+                $end = Carbon::createFromFormat('Y-m-d H:i:s', $req_order)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
                 $data['distance'] = $distance->rows[0]->elements[0]->distance->text;
                 $data['traveling_time'] = $distance->rows[0]->elements[0]->duration->text;
                 $data['estimation_time_start'] = $start;
                 $data['estimation_time_end'] = $end;
 
             } else {
-                if($findService->service->location_abang != Service::STAYED_SHOP) { //abang yg berpindah perlu d tracking juga
+                if($findService->service->location_abang != Service::STAYED_SHOP) { 
                     $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
-                    $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
+                    $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MAX);
                     if($transactions != null) {
-                        foreach($transactions as $transaction) {
-                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                            //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-
-                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
-                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
-                            }
-                        }
                         foreach($findTransactions as $ftrans) {
                             $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
                             $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                            //check
                             if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
                                 $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
+                        foreach($transactions as $transaction) {
+                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
+                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
+                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            }
+                        }
                     }
+                    $start = Carbon::createFromFormat('Y-m-d H:i:s', $req_order);
+                    $end = Carbon::createFromFormat('Y-m-d H:i:s', $req_order)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
                     $data['distance'] = $distance->rows[0]->elements[0]->distance->text;
                     $data['traveling_time'] = $distance->rows[0]->elements[0]->duration->text;
                     $data['estimation_time_start'] = $start;
                     $data['estimation_time_end'] = $end;
-                } else { //abang yg stay tetp harus ada estimasi waktu mulai and nga nya yg beda nga ada waktu duration dari google nya
+                } else { 
                     $start = Carbon::createFromFormat('H:i:s', $request->order_time);
                     $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
                     if($transactions != null) {
-                        foreach($transactions as $transaction) {
-                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                            //check apa order_time_start / order_time_end ada diantara estimation_time_end, and estimation_time_start
-                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { //klo ada yg in between tampilin error
-                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
-                            }
-                        }
                         foreach($findTransactions as $ftrans) {
                             $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
                             $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                            //check
                             if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
                                 $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
+                        foreach($transactions as $transaction) {
+                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
+                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
+                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
+                            }
+                        }
                     }
-                    $start = Carbon::createFromFormat('H:i:s', $request->order_time);
-                    $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MAX);
+                    $start = Carbon::createFromFormat('Y-m-d H:i:s', $req_order);
+                    $end = Carbon::createFromFormat('Y-m-d H:i:s', $req_order)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
                     $data['distance'] = null;
                     $data['traveling_time'] = null;
                     $data['estimation_time_start'] = $start;
@@ -571,25 +579,27 @@ class TransactionController extends ApiController
             ], 200);
     }
 
-    public function todayService() {
-        $now = Carbon::today()->toDateString();
-        $transactions = Transaction::where('main_service_id', auth()->user()->id)->where('order_date', $now)->paginate(10);
+    public function todayService() { //transaksi hari ini yg tdk termasuk yg dibatalkan atau ditolak atau sudah selesai
+        $now = Carbon::now()->toDateString();
+        $transactions = Transaction::where('main_service_id', auth()->user()->id)->where('order_date', '=', $now)->whereNotIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_4])->orderBy('order_time', 'ASC')->with('mainservices')->with('buyers')->paginate(10);
         return $this->showAllNew($transactions);
     }
 
     public function todayBuyer() {
-        $now = Carbon::today()->toDateString();
-        $transactions = Transaction::where('buyer_id', auth()->user()->id)->where('order_date', $now)->paginate(10);
+        $now = Carbon::now()->toDateString();
+        $transactions = Transaction::where('buyer_id', auth()->user()->id)->where('order_date', '=', $now)->whereNotIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_4])->orderBy('order_time', 'ASC')->with('mainservices')->with('buyers')->paginate(10);
         return $this->showAllNew($transactions);
     }
 
-    public function historyService() {
-        $transactions = Transaction::where('main_service_id', auth()->user()->id)->paginate(10);
+    public function historyService() { //transaksi hari sebelumnya dst
+        $now = Carbon::now()->toDateString();
+        $transactions = Transaction::where('main_service_id', auth()->user()->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_4])->orderBy('order_date', 'DESC')->paginate(10);
         return $this->showAllNew($transactions);
     }
 
-    public function historyBuyer() {
-        $transactions = Transaction::where('buyer_id', auth()->user()->id)->paginate(10);
+    public function historyBuyer() { //transaksi hari sebelumnya dst
+        $now = Carbon::now()->toDateString();
+        $transactions = Transaction::where('buyer_id', auth()->user()->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_2, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_4])->orderBy('order_date', 'DESC')->paginate(10);
         return $this->showAllNew($transactions);
     }
 }

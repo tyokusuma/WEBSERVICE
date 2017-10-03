@@ -390,4 +390,13 @@ class UserController extends ApiController
                 'data' => 'Success update gps'
             ]);
     }
+
+    public function remainingDays() {
+        $user = auth()->user()->expired_at;
+        $now = Carbon::now();
+        return response()->json([
+                'remaining_days' => $user->diffInDays($now),
+                'status' => 'OK',
+            ]);
+    }
 }

@@ -9,7 +9,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-class GraphController extends Controller
+class GraphWebController extends Controller
 {
     public function index()
     {   
@@ -54,10 +54,7 @@ class GraphController extends Controller
     {
         // dd($request);
         $full_name = User::findOrFail($request->user_id)->full_name;
-        $chooseDate = 1;
-        $chooseMonth = $request->month;
-        $chooseYear = $request->year;
-        $setDate = Carbon::create($chooseYear, $chooseMonth, $chooseDate);
+        $setDate = Carbon::create($request->year, $request->month, 1);
 
         //find beginning date of month
         $awal = $setDate->startOfMonth();
@@ -67,19 +64,24 @@ class GraphController extends Controller
         $akhir = $setDate->endOfMonth();
         $tglAkhir = $akhir->toDateString();
 
-        $data = [];
+        $all = [];
+        $success = [];
+        $failed = [];
         $days = [];
-        $graphics = Graphic::where('user_id', $request->user_id)->get();
-        // dd($graphics);
+        $graphics = Graphic::where('user_id', $request->user_id)->where('type', $request->type)->get();
+        dd($graphics);
         if($graphics == null) {
             flash('Sorry you don\'t have any transactions')->error()->important();
+            return redirect()->back();
         }
 
         foreach($graphics as $keyIndex => $graphic) {
-            $data[$keyIndex] = $graphic->count;
+            $all[$keyIndex] = $graphic->count_created;
+            $success[$keyIndex] = $graphic->count_success;
+            $failed[$keyIndex] = $graphic->count_cancel;
             $tgl = substr($graphic->date, -2);
             $days[$keyIndex] = intval($tgl);
         }
-        return view('layouts.web.etc.graphic.graph')->with('data', $data)->with('days', $days)->with('date', $setDate->format('F Y'))->with('full_name', $full_name);
+        return view('layouts.web.etc.graphic.graph')->with('success', $success)->with('failed', $failed)->with('all', $all)->with('days', $days)->with('date', $setDate->format('F Y'))->with('full_name', $full_name);
     }
 }

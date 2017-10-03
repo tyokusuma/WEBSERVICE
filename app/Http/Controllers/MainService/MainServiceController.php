@@ -37,10 +37,6 @@ class MainServiceController extends ApiController
         ], 200);
     }
 
-    public function toRadians($degree) { //convert degree of latitude or longitude to radians
-        return $degree * M_PI / 180;
-    }
-
     public function available(Request $request) { //filter available, dan category_id di table services, di mainservices filter city, dan calculate distance sesuai user, dan has('service')
         $rules = [
             'find' => 'required|string',
@@ -87,7 +83,6 @@ class MainServiceController extends ApiController
             $origins[$key] = $lat.",".$langs[$key];
         }
         $response = $this->multipleDistanceMatrix($dests, $origins);
-        // return response()->json($response);
         $final = array();
         foreach($mainservices as $index => $mainservice) {
             $dist = $response->rows[$index]->elements[0]->distance->value;
@@ -99,48 +94,17 @@ class MainServiceController extends ApiController
         $available = MainService::whereIn('id', $final)->with('service.category')->get();
         return response()->json($available);
 
-        //using haversine formula
-        // $data_available = array();
-        // foreach ($mainservices as $index => $mainservice) { //lat1, long1 
-        //     $radius_earth = 6371*pow(10,3); //dlm meter
-        //     $lat1 = $buyer->gps_latitude;
-        //     $long1 = $buyer->gps_longitude;
-
-        //     $lat2 = $mainservice->gps_latitude;
-        //     $long2 = $mainservice->gps_longitude;
-
-        //     $φ1 = $this->toRadians($lat1); //ubah latitude1 jadi radian
-
-        //     $φ2 = $this->toRadians($lat2); //ubah latitude2 jadi radian
-        //     $Δφ = $this->toRadians($lat2 - $lat1); //hitung perbedaan longitude dalam radian
-        //     $Δλ = $this->toRadians($long2 - $long1); //hitung perbedaan longitude dalam radian
-        //     $a = (sin($Δφ/2) * sin($Δφ/2)) +
-        //          (cos($φ1) * cos($φ2)) *
-        //          (sin($Δλ/2) * sin($Δλ/2));
-        //     $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-        //     $d = $radius_earth * $c / 1000; //distance dalam km
-        //     if (floor($d) < Service::RADIUS_KM) { //radius 2km
-        //         $data_available[$index] = $mainservice->id;
-        //     }
-        // }
-        
-        // if ($data_available == null) {
-        //     return $this->showMessage('Sorry we can\'t find service near you please try in few minutes later', 404);
-        // }
-
-
         $final = MainService::whereIn('id', $data_available)->with('service.category')->get();
    
         return $this->showAllNew($final);
     }
-        // return $this->showAllNew($mainservices);
 
     public function searchService(Request $request)
     {
         // $buyer = Buyer::with('city')->findOrFail(auth()->user()->id);
         $categories = $this->search($request->find)->pluck('id');
 
-        //find service from $cat_id
+        //find service from $categories
         $services = Service::whereIn('category_id', $categories)->where('status', Service::ACTIVE_SERVICE)->where('verified_service', Service::VERIFIED_SERVICE)->where('status_shop', Service::OPEN)->pluck('main_service_id'); 
 
         //find main service and filter cari sekota

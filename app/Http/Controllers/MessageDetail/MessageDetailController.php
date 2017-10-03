@@ -64,7 +64,7 @@ class MessageDetailController extends ApiController
         return $this->showMessage('Success send your messages to admin', 201);
     }
 
-    public function getMessageDetailById($id) //fetch all message detail
+    public function getMessageDetailById($id) //fetch all message detail, $id->message bukan user
     {
         $messages = MessageDetail::where('message_id', $id)->with('message.users')->get();
         return $this->showAll($messages);

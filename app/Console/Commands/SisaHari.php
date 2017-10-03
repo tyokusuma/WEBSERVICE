@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\MainService;
 use App\Traits\FcmTrait;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class SisaHari extends Command
@@ -40,17 +42,18 @@ class SisaHari extends Command
      */
     public function handle()
     {
-        $users = User::all();
+        $users = User::with('fcm')->where('id', '>', 0)->get();
         foreach ($users as $user) {
-            $sisaHari = $user->expired_at->diffInDays(Carbon::now());
-            $this->sendAndroidNotification($user, 'Sisa masa aktif', 'Masa aktif tersisa'.$sisaHari, 'user');
+            $sisaHari = Carbon::createFromFormat('Y-m-d H:i:s', $user->expired_at)->diffInDays(Carbon::now());
+            // $this->sendAndroidNotification($user, 'Sisa masa aktif', 'Masa aktif tersisa'.$sisaHari, 'user');
         }
 
-        $services = MainService::has('service')->get();
+        $mainservices = MainService::has('service')->get()->pluck('id');
+        $services = User::with('fcm')->whereIn('id', $mainservices)->get(); 
         foreach ($services as $service) {
-            $sisaHariService = $service->expired_at->diffInDays(Carbon::now());
+            $sisaHariService = Carbon::createFromFormat('Y-m-d H:i:s', $user->expired_at)->diffInDays(Carbon::now());
             $this->sendAndroidNotification($user, 'Sisa masa aktif', 'Masa aktif tersisa'.$sisaHariService, 'service');
-        }
+        } //masi error karena fcm_token nya nga ada nanti coba testing begitu ada beberapa akun + fcm
 
 
     }

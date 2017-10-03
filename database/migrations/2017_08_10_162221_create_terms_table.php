@@ -15,7 +15,12 @@ class CreateTermsTable extends Migration
     {
         Schema::create('terms', function (Blueprint $table) {
             $table->increments('id');
-            $table->longText('content')->nullable();
+            $table->string('type_term');
+            $table->string('category_content')->nullable();
+            $table->longText('content');
+            $table->string('language')->nullable();
+            $table->unsignedInteger('admin_created');
+            $table->unsignedInteger('admin_updated');
             
             $table->timestamps();
             $table->softDeletes();
