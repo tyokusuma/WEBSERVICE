@@ -9,7 +9,6 @@ use App\Http\Controllers\Other\OtherController;
 use App\Mail\ForgotPassword;
 use App\Notifications\AdminNotification;
 use App\Other;
-use App\Province;
 use App\Service;
 use App\Traits\FcmTrait;
 use App\Traits\SmsTrait;
@@ -78,16 +77,11 @@ class UserController extends ApiController
             'gps_latitude' => 'required|numeric',
             'gps_longitude' => 'required|numeric',
             'city_id' => 'required|integer',
-            'province_id' => 'required|integer',
-
         ];
 
         $this->validate($request, $rules);
 
-        $findProvince = City::findOrFail($request->city_id);
-        if ($findProvince->province_id != $request->province_id) {
-            return $this->errorResponse('Maaf, kode provinsi yang anda masukkan salah', 409);
-        }
+        $findCity = City::findOrFail($request->city_id);
 
         $data = $request->all();
 
@@ -130,7 +124,7 @@ class UserController extends ApiController
 
     public function show()
     {
-        $user = User::where('id', auth()->user()->id)->with('city')->with('province')->get();
+        $user = User::where('id', auth()->user()->id)->with('city')->get();
 
         return $this->showAll($user);
     }
@@ -146,7 +140,6 @@ class UserController extends ApiController
             'phone' => 'regex:/[0-9]{10,13}/',
             'profile_image' => 'nullable|image',
             'city_id' => 'integer',
-            'province_id' => 'integer',
         ];
 
         $this->validate($request, $rules);
@@ -183,7 +176,6 @@ class UserController extends ApiController
 
         if ($request->has('city_id')) {
             $user['city_id'] = $request->city_id;
-            $user['province_id'] = $request->province_id;
         }
 
         if ($request->has('gps_latitude') || $request->has('gps_longitude')) {

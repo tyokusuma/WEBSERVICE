@@ -19,8 +19,8 @@ Route::get('termsApp', 'Other\OtherController@termsApp'); // belum ada
 Route::get('city', 'City\CityController@index');
 Route::post('city/search', 'City\CityController@searchByName');
 //------------------------------ PROVINCE ----------------------------------------
-Route::get('province', 'Province\ProvinceController@index');
-Route::post('province/search', 'Province\ProvinceController@searchByName');
+// Route::get('province', 'Province\ProvinceController@index');
+// Route::post('province/search', 'Province\ProvinceController@searchByName');
 
 Route::group(['middleware' => ['auth:api']],function () {
 	//------------------------------- BANK & PAYMENT ----------------------------------------

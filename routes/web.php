@@ -88,12 +88,12 @@ Route::prefix('adminpanel')->group(function () {
 		Route::patch('armadas/update/{id}', 'Armada\ArmadaWebController@update')->name('update-armadas');
 		Route::delete('armadas/delete/{id}', 'Armada\ArmadaWebController@destroy')->name('delete-armadas');
 		
-		Route::get('provinces', 'Province\ProvinceWebController@index')->name('view-provinces');
-		Route::get('provinces/add', 'Province\ProvinceWebController@create')->name('view-create-provinces');
-		Route::post('provinces/add', 'Province\ProvinceWebController@store')->name('create-provinces');
-		Route::get('provinces/update/{id}', 'Province\ProvinceWebController@edit')->name('view-update-provinces');
-		Route::patch('provinces/update/{id}', 'Province\ProvinceWebController@update')->name('update-provinces');
-		Route::delete('provinces/delete/{id}', 'Province\ProvinceWebController@destroy')->name('delete-provinces');
+		// Route::get('provinces', 'Province\ProvinceWebController@index')->name('view-provinces');
+		// Route::get('provinces/add', 'Province\ProvinceWebController@create')->name('view-create-provinces');
+		// Route::post('provinces/add', 'Province\ProvinceWebController@store')->name('create-provinces');
+		// Route::get('provinces/update/{id}', 'Province\ProvinceWebController@edit')->name('view-update-provinces');
+		// Route::patch('provinces/update/{id}', 'Province\ProvinceWebController@update')->name('update-provinces');
+		// Route::delete('provinces/delete/{id}', 'Province\ProvinceWebController@destroy')->name('delete-provinces');
 
 		Route::get('cities', 'City\CityWebController@index')->name('view-cities');
 		Route::get('cities/add', 'City\CityWebController@create')->name('view-create-cities');

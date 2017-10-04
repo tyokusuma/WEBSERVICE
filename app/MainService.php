@@ -2,7 +2,10 @@
 
 namespace App;
 
+use App\City;
+use App\FCM;
 use App\Favorite;
+use App\Payment;
 use App\Service;
 use App\Transaction;
 use App\User;
@@ -23,10 +26,6 @@ class MainService extends User
 
     public function city() {
         return $this->belongsTo(City::class);
-    }
-
-    public function province() {
-        return $this->belongsTo(Province::class);
     }
 
     public function payments() {

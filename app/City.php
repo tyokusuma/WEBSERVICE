@@ -4,13 +4,16 @@ namespace App;
 
 use App\MainService;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class City extends Model
 {
+    use SoftDeletes;
 	// protected $table = 'cities';
+    protected $dates = ['deleted_at'];
     protected $fillable = [
+        'name_province',
         'name_city',
-        'province_id',
         'admin_created',
         'admin_updated',
     ];
@@ -28,8 +31,12 @@ class City extends Model
         return ucwords($name_city);
     }
 
-    public function province() {
-        return $this->belongsTo(Province::class);
+    public function setNameProvinceAttribute($name_province) {
+        $this->attributes['name_province'] = strtolower($name_province);
+    }
+
+    public function getNameProvinceAttribute($name_province) {
+        return ucwords($name_province);
     }
 
     public function user() {

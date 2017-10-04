@@ -4,7 +4,6 @@ namespace App\Http\Controllers\City;
 
 use App\City;
 use App\Http\Controllers\Controller;
-use App\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -12,22 +11,20 @@ class CityWebController extends Controller
 {
     public function index()
     {
-        $cities = City::with('province')->paginate(10);
-        $provinces = Province::all()->sortBy('name_province');
-        return view('layouts.web.city.index')->with('cities', $cities)->with('provinces', $provinces);
+        $cities = City::paginate(10);
+        return view('layouts.web.city.index')->with('cities', $cities);
     }
 
     public function create()
     {
-        $provinces = Province::all();
-        return view('layouts.web.city.create')->with('provinces', $provinces);
+        return view('layouts.web.city.create');
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name_city' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'province_id' => 'required|numeric',
+            'name_province' => 'required|regex:/^[a-zA-Z ]+$/',
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +34,7 @@ class CityWebController extends Controller
         }
 
         $data = $request->all();
-        $province = City::create($data);
+        $city = City::create($data);
         flash('Your new city created successfully')->success()->important();
         return redirect()->route('create-cities');
     }
@@ -49,16 +46,15 @@ class CityWebController extends Controller
 
     public function edit($id)
     {
-        $provinces = Province::all();
-        $city = City::where('id', $id)->with('province')->first();
-        return view('layouts.web.city.edit')->with('provinces', $provinces)->with('city', $city);
+        $city = City::where('id', $id)->first();
+        return view('layouts.web.city.edit')->with('city', $city);
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'name_city' => 'required|regex:/^[a-zA-Z. ]+$/',
-            'province_id' => 'required|numeric',
+            'name_province' => 'required|regex:/^[a-zA-Z. ]+$/',
         ]);
 
         if ($validator->fails()) {
@@ -69,7 +65,7 @@ class CityWebController extends Controller
 
         $find = City::findOrFail($id);
         $find['name_city'] = $request->name_city;
-        $find['province_id'] = $request->province_id;
+        $find['name_province'] = $request->name_province;
         $find->save();
         flash('Your data city updated successfully')->success()->important();
         return redirect()->route('view-cities');
@@ -77,6 +73,10 @@ class CityWebController extends Controller
 
     public function destroy($id)
     {
-        //
+        $city = City::findOrFail($id);
+        $city->delete();
+
+        flash('Success delete your city')->success()->important();
+        return redirect()->route('view-cities');
     }
 }

@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->string('gender', 1); 
             $table->string('phone');
             $table->unsignedInteger('city_id');
-            $table->unsignedInteger('province_id');
             $table->double('gps_latitude', 11,6)->nullable(); 
             $table->double('gps_longitude', 11,6)->nullable();
             $table->string('profile_image', 255);
@@ -48,7 +47,6 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
 
             $table->foreign('city_id')->references('id')->on('cities');
-            $table->foreign('province_id')->references('id')->on('provinces');
 
         });
     }

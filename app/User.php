@@ -58,7 +58,6 @@ class User extends Authenticatable
         'gender',
         'phone',
         'city_id',
-        'province_id',
         'gps_latitude',
         'gps_longitude',
         'profile_image',
@@ -149,10 +148,6 @@ class User extends Authenticatable
 
     public function city() {
         return $this->belongsTo(City::class);
-    }
-
-    public function province() {
-        return $this->belongsTo(Province::class);
     }
 
     public function payments() {

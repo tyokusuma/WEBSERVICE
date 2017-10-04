@@ -59,7 +59,7 @@ class TransactionController extends ApiController
         $findService = MainService::where('id', $request->main_service_id)->with('service.category')->first();
 
         //Check transaksi buyer sesuai dengan tgl order_date trus d cari apa ada yg bentrok jamnya
-        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('order_time', '>')->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
+        $findTransactions = Transaction::where('order_date', '=', $request->order_date)->where('buyer_id', $user->id)->whereIn('status_order', [Transaction::TRANSACTION_STATUS_1, Transaction::TRANSACTION_STATUS_3, Transaction::TRANSACTION_STATUS_6, Transaction::TRANSACTION_STATUS_8])->with('mainservices.service.category')->get();
 
         if($request->main_service_id == $user->id) { 
             $errors['unauthorize'] = 'You can\'t create transaction with service id of your own id';
@@ -135,42 +135,50 @@ class TransactionController extends ApiController
         //untuk check apa ada transaksi yg bentrok
             $req_order = $request->order_date." ".$request->order_time;
             if(strtolower($findService->service->category->type) == Category::CATEGORY_KENDARAAN) {
+                //waktu request dgn traveling time saja
+                $start_only_travel = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time);
+                $end_only_travel = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->addSeconds($distance->rows[0]->elements[0]->duration->value);
                 switch (strtolower($findService->service->category->category_type)) {
                     case Category::CATEGORY_SUB_OJEK:
-                        $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_MOTOR_MIN);
-                        $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_MOTOR_MAX);
+                        //waktu request dgn estimasi keberangkatan dan keterlambatan
+                        $start_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->subMinutes(Transaction::TRANSACTION_MOTOR_MIN);
+                        $end_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->addMinutes(Transaction::TRANSACTION_MOTOR_MAX)->addSeconds($distance->rows[0]->elements[0]->duration->value);
+                      
                         if($transactions != null) {
                             foreach($findTransactions as $ftrans) {
-                                $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
-                                $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                                if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                $estimate_start = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_start);
+                                $estimate_end = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_end);
+                                if($start_only_travel->between($estimate_start, $estimate_end) || $end_only_travel->between($estimate_start, $estimate_end) || $start_with_est->between($estimate_start, $estimate_end) || $end_with_est->between($estimate_start, $estimate_end)) {
                                     $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                                 }
                             }
                             foreach($transactions as $transaction) {
-                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                $start_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_start);
+                                $end_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_end);
+                                if($start_only_travel->between($start_old, $end_old) || $end_only_travel->between($start_old, $end_old) || $start_with_est->between($start_old, $end_old) || $end_with_est->between($start_old, $end_old)) { 
                                     $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                                 }
                             }
                         }
                         break;
                     default:
-                        $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_MOBIL_MIN);
-                        $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_MOBIL_MAX);
+                        //waktu request dgn estimasi keberangkatan dan keterlambatan
+                        $start_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->subMinutes(Transaction::TRANSACTION_MOBIL_MIN);
+                        $end_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->addMinutes(Transaction::TRANSACTION_MOBIL_MAX)->addSeconds($distance->rows[0]->elements[0]->duration->value);
+
                         if($transactions != null) {
                             foreach($findTransactions as $ftrans) {
-                                $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
-                                $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                                if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                                $estimate_start = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_start);
+                                $estimate_end = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_end);
+                               
+                                if($start_only_travel->between($estimate_start, $estimate_end) || $end_only_travel->between($estimate_start, $estimate_end) || $start_with_est->between($estimate_start, $estimate_end) || $end_with_est->between($estimate_start, $estimate_end)) {
                                     $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                                 }
                             }
                             foreach($transactions as $transaction) {
-                                $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                                $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                                if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                                $start_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_start);
+                                $end_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_end);
+                                if($start_only_travel->between($start_old, $end_old) || $end_only_travel->between($start_old, $end_old) || $start_with_est->between($start_old, $end_old) || $end_with_est->between($start_old, $end_old)) { 
                                     $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                                 }
                             }
@@ -186,20 +194,22 @@ class TransactionController extends ApiController
 
             } else {
                 if($findService->service->location_abang != Service::STAYED_SHOP) { 
-                    $start = Carbon::createFromFormat('H:i:s', $request->order_time)->subMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
-                    $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addSeconds($travel_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MAX);
+                    //waktu request dgn estimasi keberangkatan dan keterlambatan
+                    $start_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->subMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
+                    $end_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MAX)->addSeconds($distance->rows[0]->elements[0]->duration->value);
+
                     if($transactions != null) {
                         foreach($findTransactions as $ftrans) {
-                            $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
-                            $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                            if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                            $estimate_start = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_start);
+                            $estimate_end = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_end);
+                            if($start_only_travel->between($estimate_start, $estimate_end) || $end_only_travel->between($estimate_start, $estimate_end) || $start_with_est->between($estimate_start, $estimate_end) || $end_with_est->between($estimate_start, $estimate_end)) {
                                 $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
                         foreach($transactions as $transaction) {
-                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                            $start_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_start);
+                            $end_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_end);
+                            if($start_only_travel->between($start_old, $end_old) || $end_only_travel->between($start_old, $end_old) || $start_with_est->between($start_old, $end_old) || $end_with_est->between($start_old, $end_old)) { 
                                 $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                             }
                         }
@@ -211,20 +221,20 @@ class TransactionController extends ApiController
                     $data['estimation_time_start'] = $start;
                     $data['estimation_time_end'] = $end;
                 } else { 
-                    $start = Carbon::createFromFormat('H:i:s', $request->order_time);
-                    $end = Carbon::createFromFormat('H:i:s', $request->order_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MIN);
+                    //waktu request dgn estimasi keberangkatan dan keterlambatan
+                    $end_with_est = Carbon::createFromFormat('Y-m-d H:i:s', $request->order_date.' '.$request->order_time)->addMinutes(Transaction::TRANSACTION_PEDAGANG_MAX)->addSeconds($distance->rows[0]->elements[0]->duration->value);
                     if($transactions != null) {
                         foreach($findTransactions as $ftrans) {
-                            $estimate_start = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_start);
-                            $estimate_end = Carbon::createFromFormat('H:i:s', $ftrans->estimation_time_end);
-                            if($start->between($estimate_start, $estimate_end) || $end->between($estimate_start, $estimate_end)) {
+                            $estimate_start = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_start);
+                            $estimate_end = Carbon::createFromFormat('Y-m-d H:i:s', $ftrans->estimation_time_end);
+                            if($start_only_travel->between($estimate_start, $estimate_end) || $end_only_travel->between($estimate_start, $estimate_end) || $end_with_est->between($estimate_start, $estimate_end)) {
                                 $errors['buyer_conflict'] = 'Your request has conflict estimation time with other transaction of yours';
                             }
                         }
                         foreach($transactions as $transaction) {
-                            $start_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_start);
-                            $end_old = Carbon::createFromFormat('H:i:s', $transaction->estimation_time_end);
-                            if($start->between($start_old, $end_old) || $end->between($start_old, $end_old)) { 
+                            $start_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_start);
+                            $end_old = Carbon::createFromFormat('Y-m-d H:i:s', $transaction->estimation_time_end);
+                            if($start_only_travel->between($start_old, $end_old) || $end_only_travel->between($start_old, $end_old) || $end_with_est->between($start_old, $end_old)) { 
                                 $errors['service_conflict'] = 'Sorry your booking time is conflict with other transaction of these provider';
                             }
                         }

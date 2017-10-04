@@ -11,7 +11,6 @@ use App\Message;
 use App\MessageDetail;
 use App\Other;
 use App\Payment;
-use App\Province;
 use App\Service;
 use App\Transaction;
 use App\User;
@@ -36,7 +35,6 @@ class DatabaseSeeder extends Seeder
         MessageDetail::truncate();
         Favorite::truncate();
         Category::truncate();
-        Province::truncate();
         Armada::truncate();
         Other::truncate();
         Advertisement::truncate();
@@ -52,7 +50,6 @@ class DatabaseSeeder extends Seeder
         Service::flushEventListeners();
         Message::flushEventListeners();
         MessageDetail::flushEventListeners();
-        Province::flushEventListeners();
         Armada::flushEventListeners();
         Other::flushEventListeners();
         Advertisement::flushEventListeners();
@@ -68,7 +65,6 @@ class DatabaseSeeder extends Seeder
     	$categoryQty = 1;
         $messageQty = 10;
         $messageDetailQty = 15;
-        $provinceQty = 1;
         $armadaQty = 10;
         $otherQty = 1;
         $adsQty = 5;
@@ -81,7 +77,6 @@ class DatabaseSeeder extends Seeder
     	factory(Favorite::class, $favoriteQty)->create();
         factory(Message::class, $messageQty)->create();
         factory(MessageDetail::class, $messageDetailQty)->create();
-        factory(Province::class, $provinceQty)->create();
         factory(City::class, $cityQty)->create();
         factory(Armada::class, $armadaQty)->create();
         factory(Other::class, $otherQty)->create();

@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Favorite;
-use App\Province;
+use App\City;
 use App\Transaction;
 use App\User;
 
@@ -27,7 +27,7 @@ class Buyer extends User
     	return $this->hasMany(Favorite::class);
     }
 
-    public function province() {
-    	return $this->belongsTo(Province::class);
+    public function city() {
+    	return $this->belongsTo(City::class);
     }
 }

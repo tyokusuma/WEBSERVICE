@@ -8,17 +8,13 @@
    			<form action="{{ route('create-cities') }}" method="post" role="form">
 	       	{{ csrf_field() }}
 	       	
-	       	<div class="form-group {{ $errors->has('province_id') ? ' has-error' : '' }}">
-                <label class="col-sm-3 control-label">Province <span class="asterisk">*</span></label>
+	       	<div class="form-group {{ $errors->has('name_province') ? ' has-error' : '' }}">
+                <label class="col-sm-3 control-label">Name Province/Kabupaten <span class="asterisk">*</span></label>
                 <div class="col-sm-6 col-sm-offset-1 form-style">
-	        		<select id="type" name="province_id" class="form-control chosen-select mySelect" required>
-                     	@foreach($provinces as $province)
-	                     	<option value="{{ $province->id }}">{{ $province->name_province }}</option>
-                     	@endforeach
-                  	</select>
-	                @if ($errors->has('type'))
+	        		<input type="text" name="name_province" class="form-control" placeholder="Province" required/>
+	                @if ($errors->has('name_province'))
 		               	<span class="help-block">
-		                   	<strong>{{ $errors->first('type') }}</strong>
+		                   	<strong>{{ $errors->first('name_province') }}</strong>
 		               	</span>
 		           	@endif
                 </div>
@@ -27,7 +23,7 @@
 	       	<div class="form-group {{ $errors->has('name_city') ? ' has-error' : '' }}">
               	<label class="col-sm-3 control-label">Name City <span class="asterisk">*</span></label>
               	<div class="col-sm-7 col-sm-offset-1 form-style">
-	        		<input type="text" name="name_city" class="form-control" placeholder="City Name" required/>
+	        		<input type="text" name="name_city" class="form-control" placeholder="City" required/>
 		           	@if ($errors->has('name_city'))
 		            	<span class="help-block">
 		                	<strong>{{ $errors->first('name_city') }}</strong>
@@ -38,7 +34,7 @@
 			</div>	
 
 	       	<div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block custom-btn">
+		       	<button class="btn btn-info btn-block custom-btn">
 		           Register
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />
@@ -51,6 +47,6 @@
 
 @section('script')
 <script>
-	$('.mySelect').select2();
+
 </script>
 @endsection

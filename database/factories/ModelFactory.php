@@ -12,7 +12,6 @@ use App\Message;
 use App\MessageDetail;
 use App\Notification;
 use App\Other;
-use App\Province;
 use App\Service;
 use App\Transaction;
 use App\User;
@@ -42,7 +41,6 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'gender' => $faker->randomElement([User::FEMALE_GENDER, User::MALE_GENDER]),
         'phone' => '085721024770',
         'city_id' => 1,
-        'province_id' => 1,
         'profile_image' => 'pp.jpeg',
         'verified' => $verified = '1',
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
@@ -145,16 +143,16 @@ $increment = 0;
     ];
 });
 
-$factory->define(Province::class, function (Faker\Generator $faker) {
-    return [
-        'name_province' => 'jawa barat',
-    ];
-});
+// $factory->define(Province::class, function (Faker\Generator $faker) {
+//     return [
+//         'name_province' => 'jawa barat',
+//     ];
+// });
 
 $factory->define(City::class, function (Faker\Generator $faker) {
     return [
         'name_city' => 'bandung',
-        'province_id' => 1,
+        'name_province' => 'jawa barat',
     ];
 });
 

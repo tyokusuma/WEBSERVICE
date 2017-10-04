@@ -6,7 +6,6 @@ use App\City;
 use App\Events\AdminNotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Other;
-use App\Province;
 use App\Traits\FcmTrait;
 use App\Traits\SmsTrait;
 use App\User;
@@ -75,7 +74,7 @@ class UserWebController extends Controller
                 ->withInput();
         }
 
-        $findProv = City::findOrFail($request->city_id);
+        $findCity = City::findOrFail($request->city_id);
         $data = $request->all();
         $data['admin'] = User::REGULER_USER;
         $data['password'] = bcrypt($request->password);
@@ -88,7 +87,6 @@ class UserWebController extends Controller
         }
         $data['admin_created'] = auth()->user()->id;
         $data['admin_updated'] = auth()->user()->id;
-        $data['province_id'] = $findProv->province_id;
         $data['profile_image'] = $request->profile_image->store('');
 
         $trial_days = Other::all()->last()->trial_days;
@@ -223,7 +221,6 @@ class UserWebController extends Controller
                 ->withInput();
         }
 
-        $findProv = City::findOrFail($request->city_id);
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $data['verified'] = User::UNVERIFIED_USER;
@@ -235,7 +232,6 @@ class UserWebController extends Controller
         }
         $data['admin_created'] = auth()->user()->id;
         $data['admin_updated'] = auth()->user()->id;
-        $data['province_id'] = $findProv->province_id;
         $data['profile_image'] = $request->profile_image->store('');
 
         $data['expired_at'] = null;

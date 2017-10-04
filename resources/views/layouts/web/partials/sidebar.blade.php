@@ -86,20 +86,12 @@
 
         <!-- Term menu -->
         <li class="treeview">
-          <a href="{{ route('view-index-term') }}"><i class="fa fa-tasks"></i> <span> Term</span></a>
+          <a href="{{ route('view-index-term') }}"><i class="fa fa-tasks"></i> <span>Term</span></a>
         </li>
 
-        <!-- Province menu -->
+        <!-- City, Province menu -->
         <li class="treeview">
-          <a href="#"><i class="fa fa-list-alt"></i> <span>Province & City</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="treeview"><a href="{{ route('view-provinces') }}"><i class="fa fa-globe" aria-hidden="true"></i><span>View provinces</span></a></li>
-            <li class="treeview"><a href="{{ route('view-cities') }}"><i class="fa fa-university" aria-hidden="true"></i><span>View city</span></a></li>
-          </ul>
+          <a href="{{ route('view-cities') }}"><i class="fa fa-list-alt"></i> <span>City, Province</span></a>
         </li>
 
         <!-- Misc menu -->
