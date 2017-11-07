@@ -16,7 +16,7 @@ class CategoryWebController extends Controller
 {
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.category.index')->with('categories', $categories);
     }
 

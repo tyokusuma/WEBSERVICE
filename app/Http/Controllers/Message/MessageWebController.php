@@ -21,7 +21,7 @@ class MessageWebController extends Controller
 
     public function index()
     {
-        $messages = Message::where('deleted_by_admin', null)->with('users')->paginate(10);
+        $messages = Message::where('deleted_by_admin', null)->with('users')->orderBy('id', 'desc')->paginate(10);
         foreach($messages as $message) {
             $count = MessageDetail::where('message_id', $message->id)->where('admin_id', 0)->where('read_admin', '0')->count();
             $message['count'] = $count;

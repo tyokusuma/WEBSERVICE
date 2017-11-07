@@ -22,7 +22,7 @@ class PaymentWebController extends Controller
      */
     public function index()
     {
-        $payments = Payment::with('users')->with('banks')->paginate(10);
+        $payments = Payment::with('users')->with('banks')->orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.payment.index')->with('payments', $payments);
     }
 
@@ -78,7 +78,7 @@ class PaymentWebController extends Controller
                     $user->save();
                 }   
             } else {
-                $service = Service::where('main_service_id', $user_id)->firstOrFail();
+                $service = Service::where('main_service_id', $user_id)->findOrFail();
                 if($request->payment_verified == Payment::PAYMENT_VERIFIED && Str::lower($payment->type_payment) == Payment::PAYMENT_YEAR) {
                     $service['old_expired_at'] = $service['expired_at'];
                     $service['expired_at'] = Carbon::now()->addDays($setting->buying_days);
@@ -95,7 +95,7 @@ class PaymentWebController extends Controller
                 $user['expired_at'] = $user->old_expired_at;
                 $user->save();
             } else {
-                $service = Service::where('main_service_id', $user_id)->firstOrFail();
+                $service = Service::where('main_service_id', $user_id)->findOrFail();
                 $service['expired_at'] = $service['old_expired_at'];
                 $service->save();
             }

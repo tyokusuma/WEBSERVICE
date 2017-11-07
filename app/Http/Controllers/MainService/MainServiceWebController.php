@@ -11,7 +11,7 @@ class MainServiceWebController extends Controller
 {
     public function index()
     {
-        $mainservices = MainService::with(['service.category'])->paginate(10);
+        $mainservices = MainService::with(['service.category'])->orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.mainservice.index')->with('mainservices', $mainservices);
     }
 

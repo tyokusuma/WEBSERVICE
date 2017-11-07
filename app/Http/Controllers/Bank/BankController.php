@@ -16,7 +16,7 @@ class BankController extends ApiController
      */
     public function index()
     {
-        $banks = Bank::all();
+        $banks = Bank::orderBy('id', 'desc')->all();
         return $this->showAll($banks);
     }
 }

@@ -17,7 +17,7 @@ class BankWebController extends Controller
      */
     public function index()
     {
-        $banks = Bank::paginate(10);
+        $banks = Bank::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.bank.index')->with('banks', $banks);
     }
 

@@ -62,7 +62,7 @@ class MessageController extends ApiController
      */
     public function show($id)
     {
-        $messages = Message::where('user_id', $id)->with('users')->get();
+        $messages = Message::where('user_id', $id)->with('users')->orderBy('id', 'desc')->get();
 
         return $this->showAll($messages);
     }

@@ -15,7 +15,7 @@ class TransactionWebController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('mainservices.service.category')->with('buyers')->paginate(10);
+        $transactions = Transaction::with('mainservices.service.category')->with('buyers')->orderBy('id', 'desc')->paginate(10);
         // return response()->json([
         //         'data' => $transactions,
         //     ]);

@@ -15,7 +15,7 @@ class ArmadaController extends ApiController
      */
     public function index()
     {
-        $armadas_name = Armada::distinct()->get(['company_name']);
+        $armadas_name = Armada::distinct()->orderBy('id', 'desc')->get(['company_name']);
         return $this->showMessage($armadas_name);
     }
 }

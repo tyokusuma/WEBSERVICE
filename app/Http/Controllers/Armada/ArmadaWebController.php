@@ -11,7 +11,7 @@ class ArmadaWebController extends Controller
 {
     public function index()
     {
-    	$armadas = Armada::paginate(10);
+    	$armadas = Armada::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.armada.index')->with('armadas', $armadas);
     }
 

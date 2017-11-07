@@ -37,7 +37,7 @@ class ServiceWebController extends Controller
      */
     public function index()
     {
-        $servicedetails = MainService::has('service')->with(['service.category'])->paginate(10);
+        $servicedetails = MainService::has('service')->with(['service.category'])->orderBy('id', 'desc')->paginate(10);
         // return response()->json([
         //         'data' => $servicedetails
         //     ]);
@@ -377,8 +377,11 @@ class ServiceWebController extends Controller
     public function destroy($id)
     {
         $find = Service::findOrFail($id);   
-        $findCategory = Category::where('id', $find->category_id); 
+        // $findCategory = Category::where('id', $find->category_id); 
         $find->delete();
+
+        flash('Success delete the service data')->success()->important;
+        return redirect()->route('view-servicedetails');
     }
 
     public function getImages($images)

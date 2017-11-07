@@ -86,7 +86,7 @@ class FavoriteController extends ApiController
 
     public function getFavoriteById() { 
         $user = Auth::user();
-        $faves = Favorite::where('buyer_id', $user->id)->with('mainservices')->with('mainservices.service.category')->paginate(10);
+        $faves = Favorite::where('buyer_id', $user->id)->with('mainservices')->with('mainservices.service.category')->orderBy('id', 'desc')->paginate(10);
         return $this->showAllNew($faves);
     }
 }

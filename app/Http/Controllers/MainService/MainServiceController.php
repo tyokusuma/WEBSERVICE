@@ -31,7 +31,7 @@ class MainServiceController extends ApiController
             return $this->errorResponse('Sorry your id isn\'t a service', 409);
         }
 
-        $mainservice = MainService::where('id', $id)->with('service')->with('service.category')->with('city')->get();
+        $mainservice = MainService::where('id', $id)->with('service')->with('service.category')->with('city')->orderBy('id', 'desc')->get();
         return response()->json([
                 'data' => $mainservice,
         ], 200);
@@ -86,7 +86,7 @@ class MainServiceController extends ApiController
         $final = array();
         foreach($mainservices as $index => $mainservice) {
             $dist = $response->rows[$index]->elements[0]->distance->value;
-            if(floor($dist / pow(10,3)) <= Service::RADIUS_KM) {
+            if(floor($dist / 1000) <= Service::RADIUS_KM) {
                 $final[$index] = $mainservice->id;
             }
         }
@@ -94,7 +94,7 @@ class MainServiceController extends ApiController
         $available = MainService::whereIn('id', $final)->with('service.category')->get();
         return response()->json($available);
 
-        $final = MainService::whereIn('id', $data_available)->with('service.category')->get();
+        $final = MainService::whereIn('id', $data_available)->with('service.category')->orderBy('id', 'desc')->get();
    
         return $this->showAllNew($final);
     }
@@ -108,7 +108,7 @@ class MainServiceController extends ApiController
         $services = Service::whereIn('category_id', $categories)->where('status', Service::ACTIVE_SERVICE)->where('verified_service', Service::VERIFIED_SERVICE)->where('status_shop', Service::OPEN)->pluck('main_service_id'); 
 
         //find main service and filter cari sekota
-        $mainservices = MainService::with('service.category')->where('city_id', auth()->user()->city_id)->whereIn('id', $services)->paginate(10);
+        $mainservices = MainService::with('service.category')->where('city_id', auth()->user()->city_id)->whereIn('id', $services)->orderBy('id', 'desc')->paginate(10);
 
         return $this->showAllNew($mainservices);
     }

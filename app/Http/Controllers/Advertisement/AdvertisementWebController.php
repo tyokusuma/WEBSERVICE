@@ -12,7 +12,7 @@ class AdvertisementWebController extends Controller
 {
     public function index()
     {
-        $ads = Advertisement::paginate(10);
+        $ads = Advertisement::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.etc.ads.index')->with('ads', $ads);
     }
 

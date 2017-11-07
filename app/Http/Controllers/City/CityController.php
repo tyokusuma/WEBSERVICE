@@ -19,13 +19,13 @@ class CityController extends ApiController
      */
     public function index()
     {
-        $cities = City::all();
+        $cities = City::orderBy('id', 'desc')->all();
         return $this->showAll($cities);
     }
 
     public function searchByName(Request $request)
     {
-        $find = City::where('name_city', 'like', '%'.$request->city_name.'%')->get();
+        $find = City::where('name_city', 'like', '%'.$request->city_name.'%')->orderBy('id', 'desc')->get();
         if ($find->first() == null) {
             return $this->errorResponse('Sorry your city is not in our list, please check again', 404);
         }

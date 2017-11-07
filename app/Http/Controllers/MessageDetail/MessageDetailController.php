@@ -19,7 +19,7 @@ class MessageDetailController extends ApiController
     }
 
     public function index() {
-        $messages = MessageDetail::all();
+        $messages = MessageDetail::orderBy('id', 'desc')->all();
 
         return response()->json([
                 'data' => $messages,
@@ -66,7 +66,7 @@ class MessageDetailController extends ApiController
 
     public function getMessageDetailById($id) //fetch all message detail, $id->message bukan user
     {
-        $messages = MessageDetail::where('message_id', $id)->with('message.users')->get();
+        $messages = MessageDetail::where('message_id', $id)->with('message.users')->orderBy('id', 'desc')->get();
         return $this->showAll($messages);
     }
 }

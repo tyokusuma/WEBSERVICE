@@ -11,7 +11,7 @@ class TermWebController extends Controller
 {
     public function index()
     {
-        $terms = Term::paginate(10);
+        $terms = Term::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.term.index')->with('terms', $terms);
     }
 

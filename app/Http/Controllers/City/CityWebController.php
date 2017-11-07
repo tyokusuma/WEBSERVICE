@@ -11,7 +11,7 @@ class CityWebController extends Controller
 {
     public function index()
     {
-        $cities = City::paginate(10);
+        $cities = City::orderBy('id', 'desc')->paginate(10);
         return view('layouts.web.city.index')->with('cities', $cities);
     }
 

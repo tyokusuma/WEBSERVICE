@@ -52,7 +52,6 @@ class GraphWebController extends Controller
 
     public function show(Request $request) //showing grpahic for user transaction based on choosen year and month
     {
-        // dd($request);
         $full_name = User::findOrFail($request->user_id)->full_name;
         $setDate = Carbon::create($request->year, $request->month, 1);
 

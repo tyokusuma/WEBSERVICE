@@ -32,7 +32,7 @@ class TransactionController extends ApiController
     }
 
     public function generateTransactionCode($cat, $sub, $name) {
-        $lastTransaction = DB::table('transactions')->get()->last();
+        $lastTransaction = DB::table('transactions')->orderBy('id', 'desc')->get()->first();
         if ( ! $lastTransaction ) {
             $number = 0;
         } else  {
@@ -553,7 +553,7 @@ class TransactionController extends ApiController
         $user = Auth::user()->id;
         $transactions = Transaction::where('main_service_id', $user)->where('order_date', $today)->sortBy('priority');
         return response()->json([
-                'data' => $priority,
+                'data' => $transactions,
             ], 200);
     }
 

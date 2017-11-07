@@ -63,7 +63,7 @@ class MessageDetailWebController extends Controller
         $read['read_admin'] = Message::READ_MESSAGE;
         $read->save();
 
-        $messages = MessageDetail::where('message_id', $id_message)->get();
+        $messages = MessageDetail::where('message_id', $id_message)->orderBy('id', 'desc')->get();
         $pp = User::where('id', $user_id)->first()->profile_image;
         return view('layouts.web.messagedetail.index')->with('messages', $messages)->with('id', $id_message)->with('user_id', $user_id)->with('full_name', $full_name)->with('profile_image', $pp);
 
