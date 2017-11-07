@@ -69,7 +69,6 @@ class GraphWebController extends Controller
         $failed = [];
         $days = [];
         $graphics = Graphic::where('user_id', $request->user_id)->where('type', $request->type)->get();
-        dd($graphics);
         if($graphics == null) {
             flash('Sorry you don\'t have any transactions')->error()->important();
             return redirect()->back();
