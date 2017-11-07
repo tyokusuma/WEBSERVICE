@@ -19,7 +19,7 @@ class CityController extends ApiController
      */
     public function index()
     {
-        $cities = City::orderBy('id', 'desc')->all();
+        $cities = City::orderBy('id', 'desc')->get();
         return $this->showAll($cities);
     }
 

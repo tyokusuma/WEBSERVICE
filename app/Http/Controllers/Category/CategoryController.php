@@ -20,7 +20,7 @@ class CategoryController extends ApiController
 
     public function index()
     {
-        $categories = Category::orderBy('id', 'desc')->all();
+        $categories = Category::orderBy('id', 'desc')->get();
 
         return $this->showAll($categories);
     }

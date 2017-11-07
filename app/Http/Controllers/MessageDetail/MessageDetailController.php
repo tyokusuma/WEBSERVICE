@@ -19,7 +19,7 @@ class MessageDetailController extends ApiController
     }
 
     public function index() {
-        $messages = MessageDetail::orderBy('id', 'desc')->all();
+        $messages = MessageDetail::orderBy('id', 'desc')->get();
 
         return response()->json([
                 'data' => $messages,

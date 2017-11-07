@@ -3,8 +3,8 @@
 @section('content-subheader', 'List Services Detail')
 @section('main-content')
     @include ('flash::message')
-	 <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-provinces') }}"><span>  Add</span></a></div>
-	<div id="service" class="rTable">
+	 <div class="btn-add"><i class="fa fa-plus" aria-hidden="true"></i><a href="{{ route('view-create-servicedetails') }}"><span>  Add</span></a></div>
+	<div id="service" class="rTable" style="overflow-x: scroll; width: 100%">
 	    <div class="rTableHead">
            	<div class="rTableCell"><b>No</b></div>
             <div class="rTableCell"><b>Profile Image</b></div>
@@ -46,9 +46,9 @@
 			    	<div class="rTableCell"><input type="checkbox" disabled/></div>
 			    @endif
 			    @if ($servicedetail->service->status_shop == '0')
-			    	<div class="rTableCell"><input type="text" disabled readonly/>CLOSED</div>
+			    	<div class="rTableCell">CLOSED</div>
 			    @else 
-			    	<div class="rTableCell"><input type="text" disabled readonly/>OPEN</div>
+			    	<div class="rTableCell">OPEN</div>
 			    @endif
 	    		<div class="rTableCell">
 	    			<p><a href="{{ route('view-update-servicedetails', ['id' => $servicedetail->id]) }}"><button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a></p>	

@@ -16,7 +16,10 @@ class BankController extends ApiController
      */
     public function index()
     {
-        $banks = Bank::orderBy('id', 'desc')->all();
+        $banks = Bank::orderBy('id', 'desc')->get();
+        if($banks->first() == null) {
+            return $this->errorMessage('Sorry we can\'t find any bank account, please retry in a few more minutes', 404);
+        }
         return $this->showAll($banks);
     }
 }

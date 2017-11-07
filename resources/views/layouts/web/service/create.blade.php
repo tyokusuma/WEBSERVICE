@@ -48,7 +48,7 @@
                 <label class="col-sm-3 control-label">KTP Photo <span class="asterisk">*</span></label>
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="ktp_image_show" name="ktp_image_show" required>	
-	            	<label for="ktp_image" class="btn-upload">Choose File</label>	            	
+	            	<label for="ktp_image" class="btn btn-info">Choose File</label>	            	
 	                <input type="file" class="hidden" id="ktp_image" name="ktp_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('ktp_image')"/>
 
 	                @if ($errors->has('ktp_image'))
@@ -64,7 +64,7 @@
                 <label class="col-sm-3 control-label">SIM Photo <span class="asterisk">*</span></label>
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="sim_image_show" name="sim_image_show" required>	
-	            	<label for="sim_image" class="btn-upload">Choose File</label>	            	
+	            	<label for="sim_image" class="btn btn-info">Choose File</label>	            	
 	                <input type="file" class="hidden" id="sim_image" name="sim_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('sim_image')">
 
 	                @if ($errors->has('sim_image'))
@@ -80,7 +80,7 @@
                 <label class="col-sm-3 control-label">STNK Photo <span class="asterisk">*</span></label>
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="stnk_image_show" name="stnk_image_show" required>	
-	            	<label for="stnk_image" class="btn-upload">Choose File</label>	            	
+	            	<label for="stnk_image" class="btn btn-info">Choose File</label>	            	
 	                <input type="file" class="hidden" id="stnk_image" name="stnk_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('stnk_image')">
 
 	                @if ($errors->has('stnk_image'))
@@ -96,7 +96,7 @@
                 <label class="col-sm-3 control-label">Vehicle Photo <span class="asterisk">*</span></label>
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="vehicle_image_show" name="vehicle_image_show" required>	
-	            	<label for="vehicle_image" class="btn-upload">Choose File</label>	            	
+	            	<label for="vehicle_image" class="btn btn-info">Choose File</label>	            	
 	                <input type="file" class="hidden" id="vehicle_image" name="vehicle_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('vehicle_image')">
 
 	                @if ($errors->has('vehicle_image'))

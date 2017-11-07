@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class OtherController extends ApiController
 {
     public static function setting() {
-        $setting = Other::orderBy('id', 'desc')->all()->first();
+        $setting = Other::orderBy('id', 'desc')->get()->first();
 
         return $setting;        
     }
