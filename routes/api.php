@@ -46,8 +46,8 @@ Route::group(['middleware' => ['auth:api']],function () {
 			Route::post('fcm', 'FCM\FCMController@store');
 			Route::patch('fcm/{user_id}', 'FCM\FCMController@update');
 
-			Route::get('buyers', 'User\UserController@show');
-			Route::patch('buyers', 'User\UserController@update');
+			Route::get('/', 'User\UserController@show');
+			Route::patch('/', 'User\UserController@update');
 			Route::patch('changePassword', 'User\UserController@changePassword');
 
 			Route::get('messages', 'Message\MessageController@getMessageById');

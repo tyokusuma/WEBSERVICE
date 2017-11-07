@@ -70,7 +70,6 @@ class User extends Authenticatable
         'verification_link',
         'admin_created',
         'admin_updated',
-        //new field
         'share_newfriends', //format json
         'already_hadfriends' //format json
     ];

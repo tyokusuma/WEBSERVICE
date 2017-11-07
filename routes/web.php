@@ -51,8 +51,8 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('serviceDetails', 'Service\ServiceWebController@index')->name('view-servicedetails');
 		Route::get('serviceDetails/add', 'Service\ServiceWebController@create')->name('view-create-servicedetails');
-		Route::get('serviceDetails/{id}', 'Service\ServiceWebController@getImages')->name('get-images');
 		Route::post('serviceDetails/add', 'Service\ServiceWebController@store')->name('create-servicedetails');
+		Route::get('serviceDetails/{id}', 'Service\ServiceWebController@getImages')->name('get-images');
 		Route::get('serviceDetails/update/{id}', 'Service\ServiceWebController@edit')->name('view-update-servicedetails');
 		Route::patch('serviceDetails/update/{id}', 'Service\ServiceWebController@update')->name('update-servicedetails');
 		Route::patch('serviceDetails/suspend/{id}', 'Service\ServiceWebController@suspend')->name('suspend-service');

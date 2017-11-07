@@ -38,9 +38,7 @@ class ServiceWebController extends Controller
     public function index()
     {
         $servicedetails = MainService::has('service')->with(['service.category'])->orderBy('id', 'desc')->paginate(10);
-        // return response()->json([
-        //         'data' => $servicedetails
-        //     ]);
+        
         return view('layouts.web.service.index')->with('servicedetails', $servicedetails);
     }
 
