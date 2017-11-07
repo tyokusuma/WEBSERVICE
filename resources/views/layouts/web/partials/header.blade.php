@@ -9,7 +9,7 @@
           <div class="navbar-custom-menu" id="markasread">
               <ul class="nav navbar-nav">
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="">
+                  <a href="{{ route('all-notifications') }}">
                       <i class="fa fa-bell-o"></i>
                       <!-- <span class="label label-warning">12</span> -->
                   </a>

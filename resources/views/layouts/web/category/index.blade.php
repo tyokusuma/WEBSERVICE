@@ -45,8 +45,6 @@
 
 @section('script')
 <script type="text/javascript">
-  function edit_submit() {
-    document.getElementById("update{{ $category->id }}").submit();
-   }    
-  </script>
+    
+</script>
 @endsection

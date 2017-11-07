@@ -82,7 +82,9 @@ class UserController extends ApiController
         $this->validate($request, $rules);
 
         $findCity = City::findOrFail($request->city_id);
-
+        if($findCity == null) {
+            return $this->errorMessage('Sorry your city_id is invalid', 404);
+        }
         $data = $request->all();
 
         $data['password'] = bcrypt($request->password);

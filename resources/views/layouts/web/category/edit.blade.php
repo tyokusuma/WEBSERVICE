@@ -75,7 +75,7 @@
             	</div>
             </div>
             <div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-warning btn-block custom-btn">
+		       	<button class="btn btn-info btn-block custom-btn">
 		           Update
 		       	</button>
 		       	<input type="hidden" name="action" value="update" />

@@ -127,7 +127,7 @@ Route::prefix('adminpanel')->group(function () {
 
 		Route::get('markasread', 'Other\OtherWebController@markasread');
 		// Route::get('unread', 'Other\OtherWebController@unread')->name('unread-notifs');
-		// Route::get('notifications', 'Other\OtherWebController@notifications')->name('all-notifications');
+		Route::get('notifications', 'Other\OtherWebController@notifications')->name('all-notifications');
 
 		Route::get('trackingMap/currentLat={current_lat}&currentLng={current_lng}&lastLat={last_lat}&lastLng={last_lng}', 'Other\OtherWebController@map')->name('tracking-map');
 

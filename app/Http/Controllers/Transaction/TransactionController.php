@@ -255,8 +255,8 @@ class TransactionController extends ApiController
         $transaction = Transaction::create($data);
 
         // Create notification for service about new order
-        // $service = User::with('fcm')->findOrFail($request->main_service_id);
-        // $pushService = $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_SERVICE_CONFIRMATION), Transaction::TRANSACTION_TAG_CREATED);
+        $service = User::with('fcm')->findOrFail($request->main_service_id);
+        $pushService = $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_CREATED), ucfirst(Transaction::TRANSACTION_SERVICE_CONFIRMATION), Transaction::TRANSACTION_TAG_CREATED);
 
         // Create notification for buyer about new order
         $buyerGraph = User::with('fcm')->findOrFail(auth()->user()->id);
@@ -293,6 +293,7 @@ class TransactionController extends ApiController
         $service = Service::where('main_service_id', $transaction->main_service_id)->first();
         
         if($transaction->buyer_id != auth()->user()->id) {
+            dd(auth()->user()->id);
             $errors['unauthorize'] = 'You don\'t have authorize to update these transaction';
         }
         switch (strtolower($transaction->status_order)) {
@@ -310,17 +311,34 @@ class TransactionController extends ApiController
                 //kasi komentar sama rating, update data service rating
                 $rules = [
                     'satisfaction_level' => 'required|in:'.Service::RATING_BURUK.','.Service::RATING_KURANG.','.Service::RATING_BIASA.','.Service::RATING_CAKEP.','.Service::RATING_MANTAP,
-                    'comment' => 'required',
+                    'comment' => 'required|string',
                 ];
 
                 $this->validate($request, $rules);
-                if($request->has('satisfaction_level')) {
-                    $service['rating_total'] = $service['rating_total'] + 1;
-                    $service['rating_transactions_total'] = $service['rating_transactions_total'] + $request->satisfaction_level;
-                    $service['rating'] = $service['rating_transactions_total'] / $service['rating_total'];
-                    $service['satisfaction_level'] = $request->comment;
-                    $service['comment'] = $request->comment;
+                $service['rating_total'] = $service['rating_total'] + 1;
+                $service['rating_transactions_total'] = $service['rating_transactions_total'] + $request->satisfaction_level;
+                $service['rating'] = $service['rating_transactions_total'] / $service['rating_total'];
+                switch ($request->satisfaction_level) {
+                    case Service::RATING_BURUK:
+                        $satisfy = 1;
+                        break;
+                    case Service::RATING_KURANG:
+                        $satisfy = 2;
+                        break;
+                    case Service::RATING_BIASA:
+                        $satisfy = 3;
+                        break;
+                    case Service::RATING_CAKEP:
+                        $satisfy = 4;
+                        break;
+                    case Service::RATING_MANTAP:
+                        $satisfy = 5;
+                        break;
+                    default:
+                        break;
                 }
+                $transaction['satisfaction_level'] = $satisfy;
+                $transaction['comment'] = $request->comment;
                 break;
             default:
                 if($request->has('cancel')) {
@@ -495,7 +513,7 @@ class TransactionController extends ApiController
                         //--------------------
 
                         //notification ke service transaksi berhasil
-                        $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_UPDATED), ucfirst(Transaction::TRANSACTION_SUCCESS), Transaction::TRANSACTION_TAG_UPDATED);
+                        // $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_UPDATED), ucfirst(Transaction::TRANSACTION_SUCCESS), Transaction::TRANSACTION_TAG_UPDATED);
                         // retry if fail
                         // retry(3, function() use ($service) {
                             // $this->sendAndroidNotification($service, ucwords(Transaction::TRANSACTION_UPDATED), ucfirst(Transaction::TRANSACTION_SUCCESS), Transaction::TRANSACTION_TAG_UPDATED);

@@ -68,8 +68,9 @@
 	        		<div class="form-group {{ $errors->has('profile_image') ? ' has-error' : '' }}">
 		        		<label class="col-sm-3 control-label">Profile Image</label>
 		        		<div class="col-sm-7 col-sm-offset-1 form-style">
-				            <input type="text" class="btn-up form-control" id="profile_image_show{{ $servicedetail->id }}" name="profile_image_show" placeholder="{{ $servicedetail->profile_image }}" disabled>
-			            	<label for="profile_image{{ $servicedetail->id }}" class="btn-upload">Choose File</label>
+				            <input type="text" disabled="disabled" class="btn-up form-control" id="profile_image_show" name="profile_image_show" required>	
+			            	<label for="profile_image" class="btn-upload">Choose File</label>	           	
+			                <input type="file" class="hidden" id="profile_image" name="profile_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('profile_image')"/>
 		                </div>
 		                @if ($errors->has('profile_image'))
         			 	<span class="help-block">
@@ -159,9 +160,11 @@
 	        		</div>
 	        		<div class="form-group {{ $errors->has('ktp_image') ? ' has-error' : '' }}">
 		        		<label class="col-sm-3 control-label">KTP Image</label>
-	        			<div class="col-sm-7 col-sm-offset-1 form-style">
-				            <input type="text" class="btn-up form-control" id="ktp_image_show{{ $servicedetail->id }}" name="ktp_image_show" placeholder="{{ $servicedetail->service->ktp_image }}" disabled>
-			            	<label for="ktp_image{{ $servicedetail->id }}" class="btn-upload">Choose File</label>
+		        		<div class="col-sm-7 col-sm-offset-1 form-style">
+				            <input type="text" disabled="disabled" class="btn-up form-control" id="ktp_image_show" name="ktp_image_show" required>	
+			            	<label for="ktp_image" class="btn-upload">Choose File</label>	           	
+			                <input type="file" class="hidden" id="ktp_image" name="ktp_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('ktp_image')"/>
+		                </div>
 		                @if ($errors->has('ktp_image'))
         			 	<span class="help-block">
         			     	<strong>{{ $errors->first('ktp_image') }}</strong>
@@ -172,9 +175,11 @@
 	        		</div>
 	        		<div class="form-group {{ $errors->has('sim_image') ? ' has-error' : '' }}">
 		        		<label class="col-sm-3 control-label">SIM Image</label>
-	        			<div class="col-sm-7 col-sm-offset-1 form-style">
-				            <input type="text" class="btn-up form-control" id="sim_image_show{{ $servicedetail->id }}" name="sim_image_show" placeholder="{{ $servicedetail->service->sim_image }}" disabled>
-			            	<label for="sim_image{{ $servicedetail->id }}" class="btn-upload">Choose File</label>
+		        		<div class="col-sm-7 col-sm-offset-1 form-style">
+				            <input type="text" disabled="disabled" class="btn-up form-control" id="sim_image_show" name="sim_image_show" required>	
+			            	<label for="sim_image" class="btn-upload">Choose File</label>	           	
+			                <input type="file" class="hidden" id="sim_image" name="sim_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('sim_image')"/>
+		                </div>
 		                @if ($errors->has('sim_image'))
         			 	<span class="help-block">
         			     	<strong>{{ $errors->first('sim_image') }}</strong>
@@ -185,9 +190,11 @@
 	        		</div>
 	        		<div class="form-group {{ $errors->has('stnk_image') ? ' has-error' : '' }}">
 		        		<label class="col-sm-3 control-label">STNK Image</label>
-	        			<div class="col-sm-7 col-sm-offset-1 form-style">
-				            <input type="text" class="btn-up form-control" id="stnk_image_show{{ $servicedetail->id }}" name="stnk_image_show" placeholder="{{ $servicedetail->service->stnk_image }}" disabled>
-			            	<label for="stnk_image{{ $servicedetail->id }}" class="btn-upload">Choose File</label>
+		        		<div class="col-sm-7 col-sm-offset-1 form-style">
+				            <input type="text" disabled="disabled" class="btn-up form-control" id="stnk_image_show" name="stnk_image_show" required>	
+			            	<label for="stnk_image" class="btn-upload">Choose File</label>	           	
+			                <input type="file" class="hidden" id="stnk_image" name="stnk_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('stnk_image')"/>
+		                </div>
 		                @if ($errors->has('stnk_image'))
         			 	<span class="help-block">
         			     	<strong>{{ $errors->first('stnk_image') }}</strong>
@@ -198,9 +205,11 @@
 	        		</div>
 	        		<div class="form-group {{ $errors->has('vehicle_image') ? ' has-error' : '' }}">
 		        		<label class="col-sm-3 control-label">Vehicle Image</label>
-	        			<div class="col-sm-7 col-sm-offset-1 form-style">
-				            <input type="text" class="btn-up form-control" id="vehicle_image_show{{ $servicedetail->id }}" name="vehicle_image_show" placeholder="{{ $servicedetail->service->vehicle_image }}" disabled>
-			            	<label for="vehicle_image{{ $servicedetail->id }}" class="btn-upload">Choose File</label>
+		        		<div class="col-sm-7 col-sm-offset-1 form-style">
+				            <input type="text" disabled="disabled" class="btn-up form-control" id="vehicle_image_show" name="vehicle_image_show" required>	
+			            	<label for="vehicle_image" class="btn-upload">Choose File</label>	           	
+			                <input type="file" class="hidden" id="vehicle_image" name="vehicle_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('vehicle_image')"/>
+		                </div>
 		                @if ($errors->has('vehicle_image'))
         			 	<span class="help-block">
         			     	<strong>{{ $errors->first('vehicle_image') }}</strong>
@@ -278,5 +287,14 @@
 @endsection
 
 @section('script')
-
+<script type="text/javascript">
+	function uploadOnChange(id) {
+	    var filename = document.getElementById(id).value;
+	    var lastIndex = filename.lastIndexOf("\\");
+	    if (lastIndex >= 0) {
+	        filename = filename.substring(lastIndex + 1);
+	    }
+		document.getElementById(id+'_show').value = filename;
+	}
+</script>
 @endsection

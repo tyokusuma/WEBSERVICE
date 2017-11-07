@@ -37,7 +37,6 @@
 			    			{{ csrf_field() }}
 			    			{{ method_field('DELETE') }}
 				    		<p><button class="btn btn-danger btn-xs"><span  class="glyphicon glyphicon-trash"></span></button></p>
-			    			}
 			    		</form>
 			    		@endif
 			    	</td>

@@ -33,20 +33,6 @@
 		        	</div>	          
 				</div>
 
-		       	<!-- <div class="form-group {{ $errors->has('profile_image') ? ' has-error' : '' }}">
-	                <label class="col-sm-3 control-label">Profile Image <span class="asterisk">*</span></label>
-	                <div class="col-sm-7 col-sm-offset-1 form-style">
-			            <input type="text" disabled="disabled" class="btn-up form-control" id="profile_image_show" name="profile_image_show" required>	
-		            	<label for="profile_image" class="btn-upload" >Choose File</label>	            	
-		                <input type="file" class="hidden" id="profile_image" name="profile_image" accept=".jpeg, .png, .jpg">
-		                @if ($errors->has('profile_image'))
-			               	<span class="help-block">
-			                   	<strong>{{ $errors->first('profile_image') }}</strong>
-			               	</span>
-			           	@endif		                
-	                </div>
-	            </div> -->
-
 	            <div class="form-group {{ $errors->has('gender') ? ' has-error' : '' }}">
 	                <label class="col-sm-3 control-label">Gender <span class="asterisk">*</span></label>
 	                <div class="col-sm-6 col-sm-offset-1 form-style">
@@ -66,31 +52,6 @@
 			               	</span>
 			           	@endif
 	                </div>	           	
-	            </div>
-
-		       	<div class="form-group {{ $errors->has('admin') ? ' has-error' : '' }}">
-	                <label class="col-sm-3 control-label">Type <span class="asterisk">*</span></label>
-	                <div class="col-sm-6 col-sm-offset-1 form-style">
-	                  	<span class="funkyradio">
-		        			<div class="funkyradio-info radio-inline">
-        			            <input type="radio" name="admin" id="admin-reg" value="0" {{ $user->admin == '0' ? 'checked' : ''}}/>
-        			            <label for="admin-reg">Regular User</label>
-        			        </div>
-        			        <div class="funkyradio-info radio-inline"> 
-        			            <input type="radio" name="admin" id="admin-adm" value="1" {{ $user->admin == '1' ? 'checked' : ''}}/>
-        			            <label for="admin-adm">Admin</label>
-        			        </div>
-        			        <div class="funkyradio-info radio-inline"> 
-        			            <input type="radio" name="admin" id="admin-spr" value="2" {{ $user->admin == '2' ? 'checked' : ''}} {{ auth()->user()->admin != '2' ? 'disabled' : ''}}/>
-        			            <label for="admin-spr">Superadmin</label>
-        			        </div>
-        			    </span>
-		                @if ($errors->has('admin'))
-			               	<span class="help-block">
-			                   	<strong>{{ $errors->first('admin') }}</strong>
-			               	</span>
-			           	@endif
-	                </div>
 	            </div>
 
         		<div class="form-group {{ $errors->has('verified') ? ' has-error' : '' }}">
@@ -200,16 +161,5 @@
 <script>
 	$('.mySelect').select2();
 
-	function uploadOnChange(id)
-	{
-		idNew = id.substring(13); 
-	    filename = document.getElementById('profile_image'+idNew).value;
-	    lastIndex = filename.lastIndexOf("\\");
-	    if (lastIndex >= 0) {
-	        filename = filename.substring(lastIndex + 1);
-	    }
-		document.getElementById('profile_image_show'+idNew).value = filename;
-		document.getElementById('profile_image_show'+idNew).innerHTML = filename;
-	}
 </script>
 @endsection

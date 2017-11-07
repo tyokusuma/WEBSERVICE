@@ -25,11 +25,11 @@ class CityController extends ApiController
 
     public function searchByName(Request $request)
     {
-        $find = City::where('name_city', strtolower($request->city_name))->first();
-        if ($find == null) {
+        $find = City::where('name_city', 'like', '%'.$request->city_name.'%')->get();
+        if ($find->first() == null) {
             return $this->errorResponse('Sorry your city is not in our list, please check again', 404);
         }
 
-        return $this->showOne($find);
+        return $this->showAll($find);
     }
 }

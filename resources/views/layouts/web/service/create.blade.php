@@ -49,7 +49,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="ktp_image_show" name="ktp_image_show" required>	
 	            	<label for="ktp_image" class="btn-upload">Choose File</label>	            	
-	                <input type="file" class="hidden" id="ktp_image" name="ktp_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="ktp_image" name="ktp_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('ktp_image')"/>
 
 	                @if ($errors->has('ktp_image'))
 		               	<span class="help-block">
@@ -65,7 +65,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="sim_image_show" name="sim_image_show" required>	
 	            	<label for="sim_image" class="btn-upload">Choose File</label>	            	
-	                <input type="file" class="hidden" id="sim_image" name="sim_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="sim_image" name="sim_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('sim_image')">
 
 	                @if ($errors->has('sim_image'))
 		               	<span class="help-block">
@@ -81,7 +81,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="stnk_image_show" name="stnk_image_show" required>	
 	            	<label for="stnk_image" class="btn-upload">Choose File</label>	            	
-	                <input type="file" class="hidden" id="stnk_image" name="stnk_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="stnk_image" name="stnk_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('stnk_image')">
 
 	                @if ($errors->has('stnk_image'))
 		               	<span class="help-block">
@@ -97,7 +97,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="vehicle_image_show" name="vehicle_image_show" required>	
 	            	<label for="vehicle_image" class="btn-upload">Choose File</label>	            	
-	                <input type="file" class="hidden" id="vehicle_image" name="vehicle_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="vehicle_image" name="vehicle_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('vehicle_image')">
 
 	                @if ($errors->has('vehicle_image'))
 		               	<span class="help-block">
@@ -153,7 +153,7 @@
             </div>
 
             <div class="col-sm-8 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block custom-btn">
+		       	<button class="btn btn-info btn-block custom-btn">
 		           Register
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />
@@ -169,48 +169,13 @@
 	$('.mySelect').select2();
 	$('.mySelect1').select2();
 
-	document.getElementById('ktp_image').onchange = uploadOnChange;
-
-	function uploadOnChange() {
-	    var filename = this.value;
+	function uploadOnChange(id) {
+	    var filename = document.getElementById(id).value;
 	    var lastIndex = filename.lastIndexOf("\\");
 	    if (lastIndex >= 0) {
 	        filename = filename.substring(lastIndex + 1);
 	    }
-		document.getElementById('ktp_image_show').value = filename;
-	}
-
-	document.getElementById('sim_image').onchange = uploadOnChange1;
-
-	function uploadOnChange1() {
-	    var filename = this.value;
-	    var lastIndex = filename.lastIndexOf("\\");
-	    if (lastIndex >= 0) {
-	        filename = filename.substring(lastIndex + 1);
-	    }
-		document.getElementById('sim_image_show').value = filename;
-	}
-
-	document.getElementById('stnk_image').onchange = uploadOnChange2;
-
-	function uploadOnChange2() {
-	    var filename = this.value;
-	    var lastIndex = filename.lastIndexOf("\\");
-	    if (lastIndex >= 0) {
-	        filename = filename.substring(lastIndex + 1);
-	    }
-		document.getElementById('stnk_image_show').value = filename;
-	}
-
-	document.getElementById('vehicle_image').onchange = uploadOnChange3;
-
-	function uploadOnChange3() {
-	    var filename = this.value;
-	    var lastIndex = filename.lastIndexOf("\\");
-	    if (lastIndex >= 0) {
-	        filename = filename.substring(lastIndex + 1);
-	    }
-		document.getElementById('vehicle_image_show').value = filename;
+		document.getElementById(id+'_show').value = filename;
 	}
 
 	// to reveal the hidden field based on category_type

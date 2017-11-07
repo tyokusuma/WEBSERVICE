@@ -65,16 +65,6 @@
 
 @section('script')
 <script>
-	function uploadOnChange(id)
-	{
-		idNew = id.substring(13); 
-	    filename = document.getElementById('profile_image'+idNew).value;
-	    lastIndex = filename.lastIndexOf("\\");
-	    if (lastIndex >= 0) {
-	        filename = filename.substring(lastIndex + 1);
-	    }
-		document.getElementById('profile_image_show'+idNew).value = filename;
-		document.getElementById('profile_image_show'+idNew).innerHTML = filename;
-	}
+	
 </script>
 @endsection

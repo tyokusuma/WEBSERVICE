@@ -41,7 +41,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'gender' => $faker->randomElement([User::FEMALE_GENDER, User::MALE_GENDER]),
         'phone' => '085721024770',
         'city_id' => 1,
-        'profile_image' => 'pp.jpeg',
+        'profile_image' => 'pp.png',
         'verified' => $verified = '1',
         'verification_link' => $verified == User::VERIFIED_USER ? null : User::generateVerificationPhone(),
         'reset_password' => null,

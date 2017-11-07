@@ -233,7 +233,7 @@
 		            </div>
 		        </div>
 		       	<div class="col-sm-6 col-sm-offset-3">
-			       	<button class="btn btn-warning btn-lg btn-update" form="update-others">
+			       	<button class="btn btn-info btn-lg btn-update" form="update-others">
 			           Update
 			       	</button>
 		       	</div>

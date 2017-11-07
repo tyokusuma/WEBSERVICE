@@ -3618,9 +3618,12 @@ img.gender {
 }
 
 .btn-add {
+   color: #3C8DBC;
+   font-size: 16px;
    border-radius: 3px;
-   border: 1px, solid, #fdfdfd;
+   border: 1px solid #dbdbdb;
    float: right;
+   background-color: white;
    padding: 7px 5px 7px 5px;
 }
 

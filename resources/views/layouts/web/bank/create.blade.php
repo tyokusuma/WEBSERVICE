@@ -27,7 +27,7 @@
                     <div class="col-sm-7 col-sm-offset-1 form-style">
     		            <input type="text" disabled="disabled" class="btn-up form-control" id="bank_image_show" name="bank_image_show" required>	
     	            	<label for="bank_image" class="btn-upload" >Choose File</label>	            	
-    	                <input type="file" class="hidden" id="bank_image" name="bank_image" accept=".jpeg, .png, .jpg">
+    	                <input type="file" class="hidden" id="bank_image" name="bank_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('bank_image')">
     	                @if ($errors->has('bank_image'))
     		               	<span class="help-block">
     		                   	<strong>{{ $errors->first('bank_image') }}</strong>
@@ -44,7 +44,7 @@
 	            </div>
 
 		       	<div class="col-sm-6 col-sm-offset-3">
-			       	<button class="btn btn-success btn-block custom-btn">
+			       	<button class="btn btn-info btn-block custom-btn">
 			           Register
 			       	</button>
 			       	<input type="hidden" name="action" value="add" />
@@ -57,15 +57,13 @@
 
 @section('script')
 <script>
-	document.getElementById('bank_image').onchange = uploadOnChange;
-
-	function uploadOnChange() {
-	    var filename = this.value;
+	function uploadOnChange(id) {
+	    var filename = document.getElementById(id).value;
 	    var lastIndex = filename.lastIndexOf("\\");
 	    if (lastIndex >= 0) {
 	        filename = filename.substring(lastIndex + 1);
 	    }
-		document.getElementById('bank_image_show').value = filename;
+		document.getElementById(id+'_show').value = filename;
 	}
 </script>
 @endsection

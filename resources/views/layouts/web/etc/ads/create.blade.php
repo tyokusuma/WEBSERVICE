@@ -13,7 +13,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="ads_image_show" name="ads_image_show" required>	
 	            	<label for="ads_image" class="btn-upload" >Choose File</label>	            	
-	                <input type="file" class="hidden" id="ads_image" name="ads_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="ads_image" name="ads_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('ads_image')">
 	                @if ($errors->has('ads_image'))
 		               	<span class="help-block">
 		                   	<strong>{{ $errors->first('ads_image') }}</strong>
@@ -36,15 +36,13 @@
 
 @section('script')
 <script>
-	document.getElementById('ads_image').onchange = uploadOnChange;
-
-	function uploadOnChange() {
-	    var filename = this.value;
+	function uploadOnChange(id) {
+	    var filename = document.getElementById(id).value;
 	    var lastIndex = filename.lastIndexOf("\\");
 	    if (lastIndex >= 0) {
 	        filename = filename.substring(lastIndex + 1);
 	    }
-		document.getElementById('ads_image_show').value = filename;
+		document.getElementById(id+'_show').value = filename;
 	}
 </script>
 @endsection

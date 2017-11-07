@@ -1,6 +1,5 @@
 /node_modules
 /public/hot
-/public/storage
 /storage/*.key
 /vendor
 /.idea
@@ -10,3 +9,5 @@ Homestead.yaml
 npm-debug.log
 .env
 bangsinibang.sublime-project
+bangsinibang.sublime-workspace
+bang-sini-bang.zip

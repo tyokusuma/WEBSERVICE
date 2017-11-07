@@ -12,7 +12,7 @@
             @foreach($notifs as $notif)
               <tr>
                   <td>{{ $skipped + $i }}</td>
-                  <td>{{ $notif->data['message'] }}</td>
+                  <td>{{ json_decode($notif->data)->message }}</td>
               </tr>
               <?php $i++; ?>
             @endforeach

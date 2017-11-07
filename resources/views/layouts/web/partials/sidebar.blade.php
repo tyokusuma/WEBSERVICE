@@ -5,7 +5,7 @@
     <section class="sidebar">
 
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
+      <div class="user-panel" style="background-color: #fff;">
           <img src="{{ asset ('/logo/logo.png') }}" class="user-panel image" alt="User Image">
       </div>
 

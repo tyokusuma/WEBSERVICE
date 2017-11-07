@@ -51,7 +51,7 @@
             </div>
 
             <div class="col-sm-6 col-sm-offset-3">
-		       	<button class="btn btn-success btn-block custom-btn">
+		       	<button class="btn btn-info btn-block custom-btn">
 		           Create graphic
 		       	</button>
 		       	<input type="hidden" name="action" value="register" />

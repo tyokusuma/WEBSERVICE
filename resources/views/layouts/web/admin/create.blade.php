@@ -62,7 +62,7 @@
                 <div class="col-sm-7 col-sm-offset-1 form-style">
 		            <input type="text" disabled="disabled" class="btn-up form-control" id="profile_image_show" name="profile_image_show" required>	
 	            	<label for="profile_image" class="btn-upload" >Choose File</label>	            	
-	                <input type="file" class="hidden" id="profile_image" name="profile_image" accept=".jpeg, .png, .jpg">
+	                <input type="file" class="hidden" id="profile_image" name="profile_image" accept=".jpeg, .png, .jpg" onchange="uploadOnChange('profile_image')">
 	                @if ($errors->has('profile_image'))
 		               	<span class="help-block">
 		                   	<strong>{{ $errors->first('profile_image') }}</strong>
@@ -148,21 +148,13 @@
 <script>
 	$('.mySelect').select2();
 
-  //   if (performance.navigation.type == 1) {
-		// document.getElementById("profile_image_show").value = "";
-  //   } else {
-		// document.getElementById("profile_image_show").value = "";
-  //   }
-    
-	document.getElementById('profile_image').onchange = uploadOnChange;
-
-	function uploadOnChange() {
-	    var filename = this.value;
+	function uploadOnChange(id) {
+	    var filename = document.getElementById(id).value;
 	    var lastIndex = filename.lastIndexOf("\\");
 	    if (lastIndex >= 0) {
 	        filename = filename.substring(lastIndex + 1);
 	    }
-		document.getElementById('profile_image_show').value = filename;
+		document.getElementById(id+'_show').value = filename;
 	}
 </script>
 @endsection

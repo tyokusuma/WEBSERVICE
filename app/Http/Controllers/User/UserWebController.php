@@ -192,7 +192,7 @@ class UserWebController extends Controller
 
     public function indexAdmin()
     {
-        $users = User::where('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->paginate(10);
+        $users = User::whereIn('admin', [User::ADMIN_USER, User::SUPERADMIN_USER])->paginate(10);
         return view('layouts.web.admin.index')->with('users', $users);
     }
 

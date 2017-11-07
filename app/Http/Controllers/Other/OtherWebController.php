@@ -116,11 +116,12 @@ class OtherWebController extends Controller
     //     return view('layouts.web.partials.header')->with('notifs', $notifs);
     // }
 
-    // public function notifications(Request $request) 
-    // {
-    //     $notifs = auth()->user()->unreadNotifications()->paginate(10);
-    //     return view('layouts.web.notifications.index')->with('notifs', $notifs);
-    // }
+    public function notifications() 
+    {
+        $notifs = DB::table('notifications')->orderBy('created_at', 'ASC')->paginate(10);
+
+        return view('layouts.web.notifications.index')->with('notifs', $notifs);
+    }
 
     public function markasread() 
     {
@@ -135,11 +136,6 @@ class OtherWebController extends Controller
     public function slash()
     {
         return redirect()->route('login');
-    }
-
-    public function error401() 
-    {
-        return view('layouts.error.master_error');
     }
 
     public function map($current_lat, $current_lng, $last_lat, $last_lng)
