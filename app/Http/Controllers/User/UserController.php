@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Storage;
+use Nexmo\Laravel\Facade\Nexmo;
 
 /**
  * @resource User
@@ -104,7 +105,14 @@ class UserController extends ApiController
         $user = User::create($data);
 
         //kirim verifikasi ke handphone
-        $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        $message='Dear '.$user->full_name.' please verify your account by input this number '.$user->verification_link.' to Bang Sini Bang Application';
+        $phone='+62' . substr($user->phone, 1);
+        Nexmo::message()->send([
+            'to'   => $phone,
+            'from' => 'BangSiniBang',
+            'text' => $message,
+        ]);
+        // $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
         // retry(3, function() use ($user)) {
         //     $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
         //     }, 350);
@@ -207,10 +215,17 @@ class UserController extends ApiController
         $user->verification_link = User::generateVerificationPhone();
         $user->save();
 
-        $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
-        retry(3, function() {
-            $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
-            }, 350);
+        $message='Dear '.$user->full_name.' please verify your account by input this number '.$user->verification_link.' to Bang Sini Bang Application';
+        $phone='+62' . substr($user->phone, 1);
+        Nexmo::message()->send([
+            'to'   => $phone,
+            'from' => 'BangSiniBang',
+            'text' => $message,
+        ]);
+        // $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        // retry(3, function() {
+        //     $this->sendVerificationPhone($user->phone, $user->full_name, $user->verification_link);
+        //     }, 350);
 
         return $this->showMessage('The verification number has been resend to your phone');
     }
@@ -250,21 +265,22 @@ class UserController extends ApiController
     //         ], 200);
     // }
 
-    public function sendResetLinkEmail(Request $request) // required email
+    public function sendResetLinkEmail($id) // required email
     {
-        $rules = [
-            'email' => 'required|email',
-        ];
+        // $rules = [
+        //     'email' => 'required|email',
+        // ];
 
-        $valid = $this->validate($request, $rules);
-        $user = User::where('email', $request->email)->firstOrFail();
+        // $valid = $this->validate($request, $rules);
+        $user = User::findOrFail($id);
+        // $user = User::where('email', $request->email)->firstOrFail();
         $verification_code = User::generateResetPasswordEmail();
         $user['reset_password'] = $verification_code;
         $user->save(); 
         Mail::to($user)->send(new ForgotPassword($user));
-        retry(3, function() use ($user) {
-            Mail::to($user)->send(new ForgotPassword($user));
-            }, 350);
+        // retry(3, function() use ($user) {
+        //     Mail::to($user)->send(new ForgotPassword($user));
+        //     }, 350);
 
         return response()->json([
                 'success' => 'We have send your password reset link, please check your email'

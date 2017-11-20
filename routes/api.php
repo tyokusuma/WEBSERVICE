@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 
 Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-Route::post('users/password/forgot/{id}', 'User\UserController@sendResetLinkEmail');
+Route::get('users/password/forgot/{id}', 'User\UserController@sendResetLinkEmail');
 Route::resource('users', 'User\UserController', ['only' => ['store']]);
 Route::get('users/{id}/verify/{token}', 'User\UserController@verify')->name('verify');
 Route::get('users/{id}/resend', 'User\UserController@resend')->name('resend');
