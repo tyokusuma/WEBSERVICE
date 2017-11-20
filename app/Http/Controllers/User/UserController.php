@@ -265,15 +265,14 @@ class UserController extends ApiController
     //         ], 200);
     // }
 
-    public function sendResetLinkEmail($id) // required email
+    public function sendResetLinkEmail(Request $request) // required email
     {
-        // $rules = [
-        //     'email' => 'required|email',
-        // ];
+        $rules = [
+            'email' => 'required|email',
+        ];
 
-        // $valid = $this->validate($request, $rules);
-        $user = User::findOrFail($id);
-        // $user = User::where('email', $request->email)->firstOrFail();
+        $valid = $this->validate($request, $rules);
+        $user = User::where('email', $request->email)->first();
         $verification_code = User::generateResetPasswordEmail();
         $user['reset_password'] = $verification_code;
         $user->save(); 
