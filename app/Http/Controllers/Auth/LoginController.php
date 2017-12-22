@@ -51,7 +51,7 @@ class LoginController extends Controller
         $request->session()->regenerate();
 
         $this->clearLoginAttempts($request);
-        
+
         $adminstatus = User::where('email', $request->email)->first();
         if (($adminstatus->admin == '1' || $adminstatus->admin == '2') && $adminstatus->verified == '1' ) {
             return $this->authenticated($request, $this->guard()->user())
